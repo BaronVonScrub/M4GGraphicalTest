@@ -48,6 +48,7 @@
     <Compile Include="Bullet.cs" />
     <Compile Include="Global.cs" />
     <Compile Include="PlayerController.cs" />
+    <Compile Include="Sprites.cs" />
     <Compile Include="Turret.cs" />
     <Compile Include="Tank.cs" />
     <Compile Include="Game.cs" />

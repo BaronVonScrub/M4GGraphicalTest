@@ -5,6 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using static GraphicalTest.Global;
+using System.IO;
+using Raylib;
+using static Raylib.Raylib;
 
 namespace GraphicalTest
 {
@@ -19,19 +22,21 @@ namespace GraphicalTest
         
         float x, y, dir, vel;
         Turret turret;
+        Image sprite;
 
         public float X { get => x; set => x = value; }
         public float Y { get => y; set => y = value; }
         public float Dir { get => dir; set => dir = value; }
         public float Speed { get => vel; set => vel = value; }
 
-        public Tank(float x, float y, float rot, float turretRot)
+        public Tank(float x, float y, float rot, float turretRot, Image sprite)
         {
             this.X = x;
             this.Y = y;
             this.Dir = rot;
             turret = new Turret(0,0,0);
             allTanks.Add(this);
+            this.sprite = sprite;
         }
 
         internal float Forward() => Speed = Global.Clamp<float>(Speed+DeltaTime*Acceleration, MinSpeed, MaxSpeed);
@@ -43,7 +48,7 @@ namespace GraphicalTest
         internal float TurretLeft() => turret.Dir = (float)((turret.Dir + DeltaTime * TurretSpeed) % (2 * Math.PI));
         internal float TurretRight() => turret.Dir = (float)((turret.Dir - DeltaTime * TurretSpeed) % (2 * Math.PI));
 
-        internal float Fire() => new Bullet(X,Y,turret.Dir);
+        internal Bullet Fire() => new Bullet(X,Y,turret.Dir);
 
         internal TankState Update()
         {

@@ -16,11 +16,10 @@ namespace GraphicalTest
         public float Speed { get => speed; set => speed = value; }
         public float Dir { get => dir; set => dir = value; }
 
-        public Bullet(float x, float y, float vel, float dir)
+        public Bullet(float x, float y, float dir)
         {
             this.X = x;
             this.Y = y;
-            this.Speed = vel;
             this.Dir = dir;
             allBullets.Add(this);
         }

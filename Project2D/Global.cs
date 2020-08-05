@@ -8,6 +8,15 @@ namespace GraphicalTest
 {
     static class Global
     {
+        internal enum SPRITE
+        {
+            BEIGE,
+            BLACK,
+            BLUE,
+            GREEN,
+            RED
+        }
+
         internal static List<Tank> allTanks = new List<Tank>();
         internal static List<Bullet> allBullets = new List<Bullet>();
         internal static List<Turret> allTurrets = new List<Turret>();
@@ -31,6 +40,11 @@ namespace GraphicalTest
         internal static void Log(Coordinate val)
         {
             Console.WriteLine("{" + val.x + "," + val.y + "}");
+        }
+
+        internal static void Log(Bullet val)
+        {
+            Console.WriteLine(val.ToString());
         }
     }
 

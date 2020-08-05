@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 using Raylib;
 using static Raylib.Raylib;
 using static GraphicalTest.Global;
+using System.Resources;
+using static GraphicalTest.Sprites;
 
 namespace GraphicalTest
 {
@@ -25,10 +27,9 @@ namespace GraphicalTest
 
         Image logo;
         Texture2D texture;
-
         public Game()
         {
-            playerController = new PlayerController(new Tank(0, 0, 0, 0));
+            playerController = new PlayerController(new Tank(0, 0, 0, 0, TANK_BLACK));
         }
 
         public void Init()
