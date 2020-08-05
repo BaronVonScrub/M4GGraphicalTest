@@ -64,6 +64,8 @@ namespace GraphicalTest
             }
             frames++;
 
+            Globals.DeltaTime = deltaTime;
+
             player.UpdateStatus();
         }
 

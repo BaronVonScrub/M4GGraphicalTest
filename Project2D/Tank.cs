@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using static GraphicalTest.Game;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,11 +12,11 @@ namespace GraphicalTest
     {
         static float MaxSpeed = 5F;
         static float MinSpeed = -2F;
-        static float Acceleration = 0.1F;
-        static float Deceleration = 0.05F;
+        static float Acceleration = 3F;
+        static float Deceleration = 1.5F;
         static float TurnSpeed = 3F;
         static float TurretSpeed = 3F;
-
+        
         float x, y, dir, vel;
         Turret turret;
         List<Bullet> bullets = new List<Bullet>();
@@ -33,14 +34,14 @@ namespace GraphicalTest
             turret = new Turret(0,0,0);
         }
 
-        internal float Forward() => Speed = Globals.Clamp<float>(Speed+Acceleration, MinSpeed, MaxSpeed);
-        internal float Backward() => Speed = Globals.Clamp<float>(Speed-Deceleration, MinSpeed, MaxSpeed);
+        internal float Forward() => Speed = Globals.Clamp<float>(Speed+DeltaTime*Acceleration, MinSpeed, MaxSpeed);
+        internal float Backward() => Speed = Globals.Clamp<float>(Speed- DeltaTime * Deceleration, MinSpeed, MaxSpeed);
 
-        internal float TurnLeft() => Dir = (float)((Dir + TurnSpeed) % (2 * Math.PI));
-        internal float TurnRight() => Dir = (float)((Dir - TurnSpeed) % (2*Math.PI));
+        internal float TurnLeft() => Dir = (float)((Dir + DeltaTime * TurnSpeed) % (2 * Math.PI));
+        internal float TurnRight() => Dir = (float)((Dir - DeltaTime * TurnSpeed) % (2*Math.PI));
 
-        internal float TurretLeft() => turret.Dir = (float)((turret.Dir + TurretSpeed) % (2 * Math.PI));
-        internal float TurretRight() => turret.Dir = (float)((turret.Dir - TurretSpeed) % (2 * Math.PI));
+        internal float TurretLeft() => turret.Dir = (float)((turret.Dir + DeltaTime * TurretSpeed) % (2 * Math.PI));
+        internal float TurretRight() => turret.Dir = (float)((turret.Dir - DeltaTime * TurretSpeed) % (2 * Math.PI));
 
         internal Coordinate UpdatePosition()
         {
