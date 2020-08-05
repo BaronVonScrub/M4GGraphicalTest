@@ -31,8 +31,8 @@ namespace GraphicalTest
             turret = new Turret(0,0,0);
         }
 
-        internal float Forward() => Speed = (float)Math.Min(MaxSpeed, Speed + Acceleration);
-        internal float Backward() => Speed = (float)Math.Min(MaxSpeed, Speed - Deceleration);
+        internal float Forward() => Speed = (float)Clamp(MaxSpeed, Speed + Acceleration);
+        internal float Backward() => Speed = (float)Math.Max(MaxSpeed, Speed - Deceleration);
 
         internal float TurnLeft() => Dir = (float)((Dir + TurnSpeed) % (2 * Math.PI));
         internal float TurnRight() => Dir = (float)((Dir - TurnSpeed) % (2*Math.PI));

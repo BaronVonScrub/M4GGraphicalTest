@@ -20,13 +20,14 @@ namespace GraphicalTest
         private int frames;
 
         private float deltaTime = 0.005f;
+        PlayerController player;
 
         Image logo;
         Texture2D texture;
 
         public Game()
         {
-            PlayerController player = new PlayerController(new Tank(0, 0, 0, 0));
+            player = new PlayerController(new Tank(0, 0, 0, 0));
         }
 
         public void Init()
@@ -63,7 +64,7 @@ namespace GraphicalTest
             }
             frames++;
 
-            // insert game logic here            
+            player.UpdateStatus();
         }
 
         public void Draw()
@@ -78,16 +79,6 @@ namespace GraphicalTest
                 GetScreenWidth() / 2 - texture.width / 2, GetScreenHeight() / 2 - texture.height / 2, Color.WHITE);
 
             EndDrawing();
-        }
-    }
-
-    struct Coordinate
-    {
-        public float x, y;
-        public Coordinate(float x, float y)
-        {
-            this.x = x;
-            this.y = y;
         }
     }
 }

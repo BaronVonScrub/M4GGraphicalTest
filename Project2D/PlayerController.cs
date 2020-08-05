@@ -44,15 +44,5 @@ namespace GraphicalTest
                 Log(player.TurretRight());
             }
         }
-
-        public void Log(float val)
-        {
-            Console.WriteLine(val);
-        }
-
-        public void Log(Coordinate val)
-        {
-            Console.WriteLine("{"+val.x+","+val.y+"}");
-        }
     }
 }
