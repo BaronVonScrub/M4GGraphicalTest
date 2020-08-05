@@ -20,7 +20,7 @@ namespace GraphicalTest
 
             while (!WindowShouldClose())
             {
-                game.Update();
+                game.UpdateGame();
                 game.Draw();
             }
 

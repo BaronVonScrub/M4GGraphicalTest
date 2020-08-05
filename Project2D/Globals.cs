@@ -8,6 +8,10 @@ namespace GraphicalTest
 {
     static class Globals
     {
+        internal static List<Tank> allTanks = new List<Tank>();
+        internal static List<Bullet> allBullets = new List<Bullet>();
+        internal static List<Turret> allTurrets = new List<Turret>();
+
         private static float deltaTime;
 
         internal static float DeltaTime { get => deltaTime; set => deltaTime = value; }
@@ -27,6 +31,46 @@ namespace GraphicalTest
         internal static void Log(Coordinate val)
         {
             Console.WriteLine("{" + val.x + "," + val.y + "}");
+        }
+    }
+
+    struct TankState
+    {
+        float x, y, dir, speed;
+        Turret turret;
+
+        public TankState(float x, float y, float dir, float speed, Turret turret)
+        {
+            this.x = x;
+            this.y = y;
+            this.dir = dir;
+            this.speed = speed;
+            this.turret = turret;
+        }
+    }
+
+    struct TurretState
+    {
+        float relX, relY, dir;
+
+        public TurretState(float relX, float relY, float dir)
+        {
+            this.relX = relX;
+            this.relY = relY;
+            this.dir = dir;
+        }
+    }
+
+    struct BulletState
+    {
+        float x, y, vel, dir;
+
+        public BulletState(float x, float y, float vel, float dir)
+        {
+            this.x = x;
+            this.y = y;
+            this.vel = vel;
+            this.dir = dir;
         }
     }
 

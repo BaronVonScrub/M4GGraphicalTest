@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Raylib;
 using static Raylib.Raylib;
+using static GraphicalTest.Globals;
 
 namespace GraphicalTest
 {
@@ -50,7 +51,7 @@ namespace GraphicalTest
         {
         }
 
-        public void Update()
+        public void UpdateGame()
         {
             lastTime = currentTime;
             currentTime = stopwatch.ElapsedMilliseconds;
@@ -66,19 +67,18 @@ namespace GraphicalTest
 
             Globals.DeltaTime = deltaTime;
 
-            player.UpdateStatus();
+            allTanks.ForEach(t => t.Update());
+            allTurrets.ForEach(t => t.Update());
+            allBullets.ForEach(t => t.Update());
         }
 
         public void Draw()
         {
             BeginDrawing();
 
-            ClearBackground(Color.WHITE);
+            ClearBackground(Color.LIGHTGRAY);
 
-            DrawText(fps.ToString(), 10, 10, 14, Color.RED);
-
-            DrawTexture(texture, 
-                GetScreenWidth() / 2 - texture.width / 2, GetScreenHeight() / 2 - texture.height / 2, Color.WHITE);
+            DrawText(fps.ToString(), 10, 10, 14, Color.RED);                                      
 
             EndDrawing();
         }

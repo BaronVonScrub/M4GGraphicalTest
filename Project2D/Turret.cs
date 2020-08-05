@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static GraphicalTest.Globals;
 
 namespace GraphicalTest
 {
@@ -19,7 +20,14 @@ namespace GraphicalTest
             this.RelX = relX;
             this.RelY = relY;
             this.Dir = dir;
+            allTurrets.Add(this);
         }
+
+        public TurretState Update()
+        {
+            return new TurretState(RelX, RelY, Dir);
+        }
+
 
     }
 }

@@ -13,7 +13,7 @@ namespace GraphicalTest
             this.player = player;
         }
 
-        public void UpdateStatus()
+        public void Update()
         {
             if (IsKeyDown(KeyboardKey.KEY_W) && !IsKeyDown(KeyboardKey.KEY_S))
             {

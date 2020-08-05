@@ -19,7 +19,6 @@ namespace GraphicalTest
         
         float x, y, dir, vel;
         Turret turret;
-        List<Bullet> bullets = new List<Bullet>();
 
         public float X { get => x; set => x = value; }
         public float Y { get => y; set => y = value; }
@@ -32,6 +31,7 @@ namespace GraphicalTest
             this.Y = y;
             this.Dir = rot;
             turret = new Turret(0,0,0);
+            allTanks.Add(this);
         }
 
         internal float Forward() => Speed = Globals.Clamp<float>(Speed+DeltaTime*Acceleration, MinSpeed, MaxSpeed);
@@ -43,11 +43,11 @@ namespace GraphicalTest
         internal float TurretLeft() => turret.Dir = (float)((turret.Dir + DeltaTime * TurretSpeed) % (2 * Math.PI));
         internal float TurretRight() => turret.Dir = (float)((turret.Dir - DeltaTime * TurretSpeed) % (2 * Math.PI));
 
-        internal Coordinate UpdatePosition()
+        internal TankState Update()
         {
             X += Speed * (float)Math.Cos(Dir);
             Y += Speed * (float)Math.Sin(Dir);
-            return new Coordinate(X, Y);
+            return new TankState(X,Y,Dir,Speed,turret);
         }
     }
 }
