@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static GraphicalTest.Globals;
 
 namespace GraphicalTest
 {
     class Tank
     {
         static float MaxSpeed = 5F;
+        static float MinSpeed = -2F;
         static float Acceleration = 0.1F;
         static float Deceleration = 0.05F;
         static float TurnSpeed = 3F;
@@ -31,8 +33,8 @@ namespace GraphicalTest
             turret = new Turret(0,0,0);
         }
 
-        internal float Forward() => Speed = (float)Clamp(MaxSpeed, Speed + Acceleration);
-        internal float Backward() => Speed = (float)Math.Max(MaxSpeed, Speed - Deceleration);
+        internal float Forward() => Speed = Globals.Clamp<float>(Speed+Acceleration, MinSpeed, MaxSpeed);
+        internal float Backward() => Speed = Globals.Clamp<float>(Speed-Deceleration, MinSpeed, MaxSpeed);
 
         internal float TurnLeft() => Dir = (float)((Dir + TurnSpeed) % (2 * Math.PI));
         internal float TurnRight() => Dir = (float)((Dir - TurnSpeed) % (2*Math.PI));
