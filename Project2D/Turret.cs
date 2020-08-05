@@ -8,12 +8,18 @@ namespace GraphicalTest
 {
     class Turret
     {
-        float relX, relY, rot;
-        public Turret(float relX, float relY, float rot)
+        float relX, relY, dir;
+
+        public float RelX { get => relX; set => relX = value; }
+        public float RelY { get => relY; set => relY = value; }
+        public float Dir { get => dir; set => dir = value; }
+
+        public Turret(float relX, float relY, float dir)
         {
-            this.relX = relX;
-            this.relY = relY;
-            this.rot = rot;
+            this.RelX = relX;
+            this.RelY = relY;
+            this.Dir = dir;
         }
+
     }
 }

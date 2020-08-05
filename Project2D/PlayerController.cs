@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Raylib;
+using static Raylib.Raylib;
+using System;
 
 namespace GraphicalTest
 {
@@ -12,6 +10,39 @@ namespace GraphicalTest
         public PlayerController(Tank player)
         {
             this.player = player;
+        }
+
+        public void UpdateStatus()
+        {
+            if (IsKeyDown(KeyboardKey.KEY_W) && !IsKeyDown(KeyboardKey.KEY_S))
+            {
+                player.Forward();
+            }
+
+            if (IsKeyDown(KeyboardKey.KEY_S) && !IsKeyDown(KeyboardKey.KEY_W))
+            {
+                player.Backward();
+            }
+
+            if (IsKeyDown(KeyboardKey.KEY_A) && !IsKeyDown(KeyboardKey.KEY_D))
+            {
+                player.TurnLeft();
+            }
+
+            if (IsKeyDown(KeyboardKey.KEY_D) && !IsKeyDown(KeyboardKey.KEY_A))
+            {
+                player.TurnRight();
+            }
+
+            if (IsKeyDown(KeyboardKey.KEY_Q) && !IsKeyDown(KeyboardKey.KEY_E))
+            {
+                player.TurretLeft();
+            }
+
+            if (IsKeyDown(KeyboardKey.KEY_E) && !IsKeyDown(KeyboardKey.KEY_Q))
+            {
+                player.TurretRight();
+            }
         }
     }
 }
