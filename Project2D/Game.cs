@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using Raylib;
 using static Raylib.Raylib;
 
-namespace Project2D
+namespace GraphicalTest
 {
     class Game
     {
