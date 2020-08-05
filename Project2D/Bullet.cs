@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using static GraphicalTest.Globals;
+using static GraphicalTest.Global;
 
 namespace GraphicalTest
 {
     class Bullet
     {
-        float x, y, speed, dir;
+        static float speed = 20;
+        float x, y, dir;
         public float X { get => x; set => x = value; }
         public float Y { get => y; set => y = value; }
         public float Speed { get => speed; set => speed = value; }
@@ -29,7 +30,7 @@ namespace GraphicalTest
         {
 
 
-            return new BulletState(X, Y, Speed, Dir);
+            return new BulletState(X, Y, Dir);
         }
     }
 }

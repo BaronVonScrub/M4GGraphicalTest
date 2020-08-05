@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace GraphicalTest
 {
-    static class Globals
+    static class Global
     {
         internal static List<Tank> allTanks = new List<Tank>();
         internal static List<Bullet> allBullets = new List<Bullet>();
@@ -63,13 +63,12 @@ namespace GraphicalTest
 
     struct BulletState
     {
-        float x, y, vel, dir;
+        float x, y, dir;
 
-        public BulletState(float x, float y, float vel, float dir)
+        public BulletState(float x, float y, float dir)
         {
             this.x = x;
             this.y = y;
-            this.vel = vel;
             this.dir = dir;
         }
     }

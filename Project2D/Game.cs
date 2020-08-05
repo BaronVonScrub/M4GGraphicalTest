@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Raylib;
 using static Raylib.Raylib;
-using static GraphicalTest.Globals;
+using static GraphicalTest.Global;
 
 namespace GraphicalTest
 {
@@ -21,14 +21,14 @@ namespace GraphicalTest
         private int frames;
 
         private float deltaTime = 0.005f;
-        PlayerController player;
+        PlayerController playerController;
 
         Image logo;
         Texture2D texture;
 
         public Game()
         {
-            player = new PlayerController(new Tank(0, 0, 0, 0));
+            playerController = new PlayerController(new Tank(0, 0, 0, 0));
         }
 
         public void Init()
@@ -53,6 +53,7 @@ namespace GraphicalTest
 
         public void UpdateGame()
         {
+            #region Time
             lastTime = currentTime;
             currentTime = stopwatch.ElapsedMilliseconds;
             deltaTime = (currentTime - lastTime) / 1000.0f;
@@ -64,9 +65,10 @@ namespace GraphicalTest
                 timer -= 1;
             }
             frames++;
+            #endregion
 
-            Globals.DeltaTime = deltaTime;
-
+            Global.DeltaTime = deltaTime;
+            playerController.Update();
             allTanks.ForEach(t => t.Update());
             allTurrets.ForEach(t => t.Update());
             allBullets.ForEach(t => t.Update());

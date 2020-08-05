@@ -4,7 +4,7 @@ using static GraphicalTest.Game;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using static GraphicalTest.Globals;
+using static GraphicalTest.Global;
 
 namespace GraphicalTest
 {
@@ -34,14 +34,16 @@ namespace GraphicalTest
             allTanks.Add(this);
         }
 
-        internal float Forward() => Speed = Globals.Clamp<float>(Speed+DeltaTime*Acceleration, MinSpeed, MaxSpeed);
-        internal float Backward() => Speed = Globals.Clamp<float>(Speed- DeltaTime * Deceleration, MinSpeed, MaxSpeed);
+        internal float Forward() => Speed = Global.Clamp<float>(Speed+DeltaTime*Acceleration, MinSpeed, MaxSpeed);
+        internal float Backward() => Speed = Global.Clamp<float>(Speed- DeltaTime * Deceleration, MinSpeed, MaxSpeed);
 
         internal float TurnLeft() => Dir = (float)((Dir + DeltaTime * TurnSpeed) % (2 * Math.PI));
         internal float TurnRight() => Dir = (float)((Dir - DeltaTime * TurnSpeed) % (2*Math.PI));
 
         internal float TurretLeft() => turret.Dir = (float)((turret.Dir + DeltaTime * TurretSpeed) % (2 * Math.PI));
         internal float TurretRight() => turret.Dir = (float)((turret.Dir - DeltaTime * TurretSpeed) % (2 * Math.PI));
+
+        internal float Fire() => new Bullet(X,Y,turret.Dir);
 
         internal TankState Update()
         {
