@@ -16,33 +16,43 @@ namespace GraphicalTest
         {
             if (IsKeyDown(KeyboardKey.KEY_W) && !IsKeyDown(KeyboardKey.KEY_S))
             {
-                player.Forward();
+                Log(player.Forward());
             }
 
             if (IsKeyDown(KeyboardKey.KEY_S) && !IsKeyDown(KeyboardKey.KEY_W))
             {
-                player.Backward();
+                Log(player.Backward());
             }
 
             if (IsKeyDown(KeyboardKey.KEY_A) && !IsKeyDown(KeyboardKey.KEY_D))
             {
-                player.TurnLeft();
+                Log(player.TurnLeft());
             }
 
             if (IsKeyDown(KeyboardKey.KEY_D) && !IsKeyDown(KeyboardKey.KEY_A))
             {
-                player.TurnRight();
+                Log(player.TurnRight());
             }
 
             if (IsKeyDown(KeyboardKey.KEY_Q) && !IsKeyDown(KeyboardKey.KEY_E))
             {
-                player.TurretLeft();
+                Log(player.TurretLeft());
             }
 
             if (IsKeyDown(KeyboardKey.KEY_E) && !IsKeyDown(KeyboardKey.KEY_Q))
             {
-                player.TurretRight();
+                Log(player.TurretRight());
             }
+        }
+
+        public void Log(float val)
+        {
+            Console.WriteLine(val);
+        }
+
+        public void Log(Coordinate val)
+        {
+            Console.WriteLine("{"+val.x+","+val.y+"}");
         }
     }
 }

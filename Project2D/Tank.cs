@@ -31,13 +31,20 @@ namespace GraphicalTest
             turret = new Turret(0,0,0);
         }
 
-        public void Forward() => Speed = (float)Math.Min(MaxSpeed, Speed + Acceleration);
-        internal void Backward() => Speed = (float)Math.Min(MaxSpeed, Speed - Deceleration);
+        internal float Forward() => Speed = (float)Math.Min(MaxSpeed, Speed + Acceleration);
+        internal float Backward() => Speed = (float)Math.Min(MaxSpeed, Speed - Deceleration);
 
-        internal void TurnLeft() => Dir = (float)((Dir + TurnSpeed) % (2 * Math.PI));
-        internal void TurnRight() => Dir = (float)((Dir - TurnSpeed) % (2*Math.PI));
+        internal float TurnLeft() => Dir = (float)((Dir + TurnSpeed) % (2 * Math.PI));
+        internal float TurnRight() => Dir = (float)((Dir - TurnSpeed) % (2*Math.PI));
 
-        internal void TurretLeft() => turret.Dir = (float)((turret.Dir + TurretSpeed) % (2 * Math.PI));
-        internal void TurretRight() => turret.Dir = (float)((turret.Dir - TurretSpeed) % (2 * Math.PI));
+        internal float TurretLeft() => turret.Dir = (float)((turret.Dir + TurretSpeed) % (2 * Math.PI));
+        internal float TurretRight() => turret.Dir = (float)((turret.Dir - TurretSpeed) % (2 * Math.PI));
+
+        internal Coordinate UpdatePosition()
+        {
+            X += Speed * (float)Math.Cos(Dir);
+            Y += Speed * (float)Math.Sin(Dir);
+            return new Coordinate(X, Y);
+        }
     }
 }

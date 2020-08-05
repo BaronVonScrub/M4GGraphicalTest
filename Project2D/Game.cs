@@ -21,12 +21,12 @@ namespace GraphicalTest
 
         private float deltaTime = 0.005f;
 
-
         Image logo;
         Texture2D texture;
 
         public Game()
         {
+            PlayerController player = new PlayerController(new Tank(0, 0, 0, 0));
         }
 
         public void Init()
@@ -79,6 +79,15 @@ namespace GraphicalTest
 
             EndDrawing();
         }
+    }
 
+    struct Coordinate
+    {
+        public float x, y;
+        public Coordinate(float x, float y)
+        {
+            this.x = x;
+            this.y = y;
+        }
     }
 }
