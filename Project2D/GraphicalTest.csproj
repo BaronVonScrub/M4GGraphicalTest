@@ -153,6 +153,12 @@
     <Content Include="topdowntanks\Vector\vector_tanks.svg" />
     <Content Include="topdowntanks\Vector\vector_tanks.swf" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MathClasses\MathClasses.csproj">
+      <Project>{93bc4ff5-4a18-468d-a676-f62f770a6937}</Project>
+      <Name>MathClasses</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="..\Raylib\Bindings\Raylib.projitems" Label="Shared" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

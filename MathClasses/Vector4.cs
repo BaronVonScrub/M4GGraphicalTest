@@ -26,6 +26,14 @@ namespace MathClasses
             w = ww;
         }
 
+        public Vector4(float xx, float yy, float zz)
+        {
+            x = xx;
+            y = yy;
+            z = zz;
+            w = 1;
+        }
+
         public static Vector4 operator +(Vector4 a, Vector4 b)
         {
             Vector4 newVec = new Vector4

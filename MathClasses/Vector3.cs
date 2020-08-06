@@ -24,6 +24,13 @@ namespace MathClasses
             z = zz;
         }
 
+        public Vector3(float xx, float yy)
+        {
+            x = xx;
+            y = yy;
+            z = 1;
+        }
+
         public static Vector3 operator+ (Vector3 a, Vector3 b)
         {
             Vector3 newVec = new Vector3
@@ -98,11 +105,12 @@ namespace MathClasses
 
         public Vector3 Cross(Vector3 v)
         {
-            Vector3 newVec = new Vector3();
-
-            newVec.x = y * v.z - z * v.y;
-            newVec.y = z * v.x - x * v.z;
-            newVec.z = x * v.y - y * v.x;
+            Vector3 newVec = new Vector3
+            {
+                x = y * v.z - z * v.y,
+                y = z * v.x - x * v.z,
+                z = x * v.y - y * v.x
+            };
 
             return newVec;
         }

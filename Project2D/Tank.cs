@@ -8,53 +8,70 @@ using static GraphicalTest.Global;
 using System.IO;
 using Raylib;
 using static Raylib.Raylib;
+using MFG = MathClasses;
 
 namespace GraphicalTest
 {
     class Tank
     {
         static float MaxSpeed = 5F;
-        static float MinSpeed = -2F;
-        static float Acceleration = 3F;
-        static float Deceleration = 1.5F;
+        static float AccRate = 3F;
+        static float DecRate = 1.5F;
         static float TurnSpeed = 3F;
         static float TurretSpeed = 3F;
-        
-        float x, y, dir, vel;
-        Turret turret;
+
+        MFG.Vector3 position;
+        MFG.Vector3 velocity;
+        internal Turret turret;
         Image sprite;
+        float pointDirection;
 
-        public float X { get => x; set => x = value; }
-        public float Y { get => y; set => y = value; }
-        public float Dir { get => dir; set => dir = value; }
-        public float Speed { get => vel; set => vel = value; }
-
-        public Tank(float x, float y, float rot, float turretRot, Image sprite)
+        public MFG.Vector3 Velocity
         {
-            this.X = x;
-            this.Y = y;
-            this.Dir = rot;
-            turret = new Turret(0,0,0);
-            allTanks.Add(this);
-            this.sprite = sprite;
+            get => velocity;
+
+            set
+            {
+                velocity = value;
+                if (velocity.Magnitude() > MaxSpeed)
+                    velocity = velocity * (MaxSpeed / velocity.Magnitude());
+            }
         }
 
-        internal float Forward() => Speed = Global.Clamp<float>(Speed+DeltaTime*Acceleration, MinSpeed, MaxSpeed);
-        internal float Backward() => Speed = Global.Clamp<float>(Speed- DeltaTime * Deceleration, MinSpeed, MaxSpeed);
+        public float PointDirection
+        {
+            get => pointDirection;
+            set
+            {
+                pointDirection = (value + 360) % 360;
+            }
+        }
 
-        internal float TurnLeft() => Dir = (float)((Dir + DeltaTime * TurnSpeed) % (2 * Math.PI));
-        internal float TurnRight() => Dir = (float)((Dir - DeltaTime * TurnSpeed) % (2*Math.PI));
+        public Tank(MFG.Vector3 position, MFG.Vector3 velocity, float pointDirection, float turretRot, Image sprite)
+        {
+            this.position = position;
+            this.Velocity = velocity;
+            turret = new Turret(new MFG.Vector3(0,0),0);
+            allTanks.Add(this);
+            this.sprite = sprite;
+            this.PointDirection = pointDirection;
+        }
 
-        internal float TurretLeft() => turret.Dir = (float)((turret.Dir + DeltaTime * TurretSpeed) % (2 * Math.PI));
-        internal float TurretRight() => turret.Dir = (float)((turret.Dir - DeltaTime * TurretSpeed) % (2 * Math.PI));
+        internal MFG.Vector3 Forward() => Velocity += DeltaTime * DistDirToXY(AccRate, PointDirection);
+        internal MFG.Vector3 Backward() => Velocity += DeltaTime * DistDirToXY(DecRate, PointDirection+(float)Math.PI);
 
-        internal Bullet Fire() => new Bullet(X,Y,turret.Dir);
+        internal float TurnLeft() => PointDirection = (float)((PointDirection + DeltaTime * TurnSpeed) % (2 * Math.PI));
+        internal float TurnRight() => PointDirection = (float)((PointDirection - DeltaTime * TurnSpeed) % (2*Math.PI));
+
+        internal float TurretLeft() => turret.AimDirection += DeltaTime * TurretSpeed;
+        internal float TurretRight() => turret.AimDirection -= DeltaTime * TurretSpeed;
+
+        internal Bullet Fire() => turret.Fire();
 
         internal TankState Update()
         {
-            X += Speed * (float)Math.Cos(Dir);
-            Y += Speed * (float)Math.Sin(Dir);
-            return new TankState(X,Y,Dir,Speed,turret);
+            position += velocity * DeltaTime;
+            return new TankState(position,Velocity,turret);
         }
     }
 }

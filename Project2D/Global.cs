@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MFG = MathClasses;
 
 namespace GraphicalTest
 {
@@ -25,21 +26,14 @@ namespace GraphicalTest
 
         internal static float DeltaTime { get => deltaTime; set => deltaTime = value; }
 
-        internal static T Clamp<T>(this T val, T min, T max) where T : IComparable<T>
+        internal static MFG.Vector3 DistDirToXY(float distance, float direction)
         {
-            if (val.CompareTo(min) < 0) return min;
-            else if (val.CompareTo(max) > 0) return max;
-            else return val;
+            return new MFG.Vector3(distance*(float)Math.Sin(direction), distance * (float)Math.Cos(direction));
         }
 
         internal static void Log(float val)
         {
             Console.WriteLine(val);
-        }
-
-        internal static void Log(Coordinate val)
-        {
-            Console.WriteLine("{" + val.x + "," + val.y + "}");
         }
 
         internal static void Log(Bullet val)
@@ -50,50 +44,37 @@ namespace GraphicalTest
 
     struct TankState
     {
-        float x, y, dir, speed;
+        MFG.Vector3 position, velocity;
         Turret turret;
 
-        public TankState(float x, float y, float dir, float speed, Turret turret)
+        public TankState(MFG.Vector3 position, MFG.Vector3 velocity, Turret turret)
         {
-            this.x = x;
-            this.y = y;
-            this.dir = dir;
-            this.speed = speed;
+            this.position = position;
+            this.velocity = velocity;
             this.turret = turret;
         }
     }
 
     struct TurretState
     {
-        float relX, relY, dir;
+        MFG.Vector3 relativePosition;
+        float aimDirection;
 
-        public TurretState(float relX, float relY, float dir)
+        public TurretState(MFG.Vector3 relativePosition, float aimDirection)
         {
-            this.relX = relX;
-            this.relY = relY;
-            this.dir = dir;
+            this.relativePosition = relativePosition;
+            this.aimDirection = aimDirection;
         }
     }
 
     struct BulletState
     {
-        float x, y, dir;
+        MFG.Vector3 position, velocity;
 
-        public BulletState(float x, float y, float dir)
+        public BulletState(MFG.Vector3 position, MFG.Vector3 velocity)
         {
-            this.x = x;
-            this.y = y;
-            this.dir = dir;
-        }
-    }
-
-    struct Coordinate
-    {
-        internal float x, y;
-        internal Coordinate(float x, float y)
-        {
-            this.x = x;
-            this.y = y;
+            this.position = position;
+            this.velocity = velocity;
         }
     }
 }

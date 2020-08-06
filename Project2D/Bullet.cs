@@ -4,32 +4,26 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using static GraphicalTest.Global;
+using MFG = MathClasses;
 
 namespace GraphicalTest
 {
     class Bullet
     {
-        static float speed = 20;
-        float x, y, dir;
-        public float X { get => x; set => x = value; }
-        public float Y { get => y; set => y = value; }
-        public float Speed { get => speed; set => speed = value; }
-        public float Dir { get => dir; set => dir = value; }
+        private static float speed = 20;
+        MFG.Vector3 position, velocity;
 
-        public Bullet(float x, float y, float dir)
+        public Bullet(MFG.Vector3 position, float dir)
         {
-            this.X = x;
-            this.Y = y;
-            this.Dir = dir;
+            this.position = position;
+            velocity = new MFG.Vector3(speed, dir);
             allBullets.Add(this);
         }
 
-
         internal BulletState Update()
         {
-
-
-            return new BulletState(X, Y, Dir);
+            position += velocity*DeltaTime;
+            return new BulletState(position,velocity);
         }
     }
 }
