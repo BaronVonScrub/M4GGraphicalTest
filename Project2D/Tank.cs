@@ -17,8 +17,8 @@ namespace GraphicalTest
         static float MaxSpeed = 50F;
         static float AccRate = 30F;
         static float DecRate = 15F;
-        static float TurnSpeed = 30F;
-        static float TurretSpeed = 30F;
+        static float TurnSpeed = 1F;
+        static float TurretSpeed = 1F;
 
         MFG.Vector3 position;
         MFG.Vector3 velocity;
@@ -43,7 +43,7 @@ namespace GraphicalTest
             get => pointDirection;
             set
             {
-                pointDirection = (value + 360) % 360;
+                pointDirection = (value + 2 * (float)Math.PI) % (2 * (float)Math.PI);
             }
         }
 
@@ -65,6 +65,7 @@ namespace GraphicalTest
 
         internal float TurretLeft() => turret.AimDirection += DeltaTime * TurretSpeed;
         internal float TurretRight() => turret.AimDirection -= DeltaTime * TurretSpeed;
+
         internal Bullet Fire() => turret.Fire();
 
         internal TankState Update()

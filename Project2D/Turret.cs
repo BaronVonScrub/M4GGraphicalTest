@@ -21,7 +21,7 @@ namespace GraphicalTest
         public float AimDirection { get => aimDirection;
             set
             {
-                aimDirection = (value + 360) % 360;
+                aimDirection = (value + 2*(float)Math.PI) % (2*(float)Math.PI);
                 aimPosition = DistDirToXY(length,aimDirection);
             }
         }
@@ -40,6 +40,7 @@ namespace GraphicalTest
         }
 
         internal Bullet Fire() => new Bullet(aimPosition,aimDirection);
+
         internal void Draw()
         {
             
