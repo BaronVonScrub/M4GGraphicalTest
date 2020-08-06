@@ -5,23 +5,22 @@ using System.Text;
 using System.Threading.Tasks;
 using Raylib;
 using static Raylib.Raylib;
+using System.IO;
 
 namespace GraphicalTest
 {
     static class Sprites
     {
-        static string d = GetWorkingDirectory()+"\\";
+        internal static Texture2D TANK_BEIGE = LoadTextureFromImage(LoadImage("../Images/Tanks/tankBeige_outline.png"));
+        internal static Texture2D TANK_BLACK = LoadTextureFromImage(LoadImage("../Images/Tanks/tankBlack_outline.png"));
+        internal static Texture2D TANK_BLUE = LoadTextureFromImage(LoadImage("../Images/Tanks/tankBlue_outline.png"));
+        internal static Texture2D TANK_GREEN = LoadTextureFromImage(LoadImage("../Images/Tanks/tankGreen_outline.png"));
+        internal static Texture2D TANK_RED = LoadTextureFromImage(LoadImage("../Images/Tanks/tankRed_outline.png"));
 
-        internal static Image TANK_BEIGE = LoadImage(d+"tankBeige_outline.png");
-        internal static Image TANK_BLACK = LoadImage(d + "tankBlack_outline.png");
-        internal static Image TANK_BLUE = LoadImage(d + "tankBlue_outline.png");
-        internal static Image TANK_GREEN = LoadImage(d + "tankGreen_outline.png");
-        internal static Image TANK_RED = LoadImage(d + "tankRed_outline.png");
-
-        internal static Image BARREL_BEIGE = LoadImage(d + "barrelBeige_outline.png");
-        internal static Image BARREL_BLACK = LoadImage(d + "barrelBlack_outline.png");
-        internal static Image BARREL_BLUE = LoadImage(d + "barrelBlue_outline.png");
-        internal static Image BARREL_GREEN = LoadImage(d + "barrelGreen_outline.png");
-        internal static Image BARREL_RED = LoadImage(d + "barrelRed_outline.png");
+        internal static Texture2D BARREL_BEIGE = LoadTextureFromImage(LoadImage("../Images/Tanks/barrelBeige_outline.png"));
+        internal static Texture2D BARREL_BLACK = LoadTextureFromImage(LoadImage("../Images/Tanks/barrelBlack_outline.png"));
+        internal static Texture2D BARREL_BLUE = LoadTextureFromImage(LoadImage("../Images/Tanks/barrelBlue_outline.png"));
+        internal static Texture2D BARREL_GREEN = LoadTextureFromImage(LoadImage("../Images/Tanks/barrelGreen_outline.png"));
+        internal static Texture2D BARREL_RED = LoadTextureFromImage(LoadImage("../Images/Tanks/barrelRed_outline.png"));
     }
 }

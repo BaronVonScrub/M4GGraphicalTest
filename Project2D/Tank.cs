@@ -14,16 +14,16 @@ namespace GraphicalTest
 {
     class Tank
     {
-        static float MaxSpeed = 5F;
-        static float AccRate = 3F;
-        static float DecRate = 1.5F;
-        static float TurnSpeed = 3F;
-        static float TurretSpeed = 3F;
+        static float MaxSpeed = 50F;
+        static float AccRate = 30F;
+        static float DecRate = 15F;
+        static float TurnSpeed = 30F;
+        static float TurretSpeed = 30F;
 
         MFG.Vector3 position;
         MFG.Vector3 velocity;
         internal Turret turret;
-        Image sprite;
+        Texture2D sprite;
         float pointDirection;
 
         public MFG.Vector3 Velocity
@@ -47,11 +47,11 @@ namespace GraphicalTest
             }
         }
 
-        public Tank(MFG.Vector3 position, MFG.Vector3 velocity, float pointDirection, float turretRot, Image sprite)
+        public Tank(MFG.Vector3 position, MFG.Vector3 velocity, float pointDirection, float turretRot, Texture2D sprite)
         {
             this.position = position;
             this.Velocity = velocity;
-            turret = new Turret(new MFG.Vector3(0,0),0);
+            turret = new Turret(new MFG.Vector3(0,0,0),0);
             allTanks.Add(this);
             this.sprite = sprite;
             this.PointDirection = pointDirection;
@@ -60,18 +60,22 @@ namespace GraphicalTest
         internal MFG.Vector3 Forward() => Velocity += DeltaTime * DistDirToXY(AccRate, PointDirection);
         internal MFG.Vector3 Backward() => Velocity += DeltaTime * DistDirToXY(DecRate, PointDirection+(float)Math.PI);
 
-        internal float TurnLeft() => PointDirection = (float)((PointDirection + DeltaTime * TurnSpeed) % (2 * Math.PI));
-        internal float TurnRight() => PointDirection = (float)((PointDirection - DeltaTime * TurnSpeed) % (2*Math.PI));
+        internal float TurnLeft() => PointDirection += DeltaTime * TurnSpeed;
+        internal float TurnRight() => PointDirection -= DeltaTime * TurnSpeed;
 
         internal float TurretLeft() => turret.AimDirection += DeltaTime * TurretSpeed;
         internal float TurretRight() => turret.AimDirection -= DeltaTime * TurretSpeed;
-
         internal Bullet Fire() => turret.Fire();
 
         internal TankState Update()
         {
             position += velocity * DeltaTime;
             return new TankState(position,Velocity,turret);
+        }
+
+        internal void Draw()
+        {
+            DrawTexture(sprite,(int)position.x,(int)position.y,Color.WHITE);
         }
     }
 }

@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Raylib;
 using static Raylib.Raylib;
+using static GraphicalTest.Sprites;
 
 namespace GraphicalTest
 {
@@ -12,10 +13,8 @@ namespace GraphicalTest
     {
         static void Main(string[] args)
         {
-            Game game = new Game();
-
             InitWindow(640, 480, "Hello World");
-
+            Game game = new Game();
             game.Init();
 
             while (!WindowShouldClose())

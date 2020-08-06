@@ -16,7 +16,7 @@ namespace GraphicalTest
         public Bullet(MFG.Vector3 position, float dir)
         {
             this.position = position;
-            velocity = new MFG.Vector3(speed, dir);
+            velocity = new MFG.Vector3(speed, dir,0);
             allBullets.Add(this);
         }
 
@@ -25,5 +25,7 @@ namespace GraphicalTest
             position += velocity*DeltaTime;
             return new BulletState(position,velocity);
         }
+
+        internal void Draw() => throw new NotImplementedException();
     }
 }

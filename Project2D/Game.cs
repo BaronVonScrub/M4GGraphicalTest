@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 using Raylib;
 using static Raylib.Raylib;
 using static GraphicalTest.Global;
-using System.Resources;
 using static GraphicalTest.Sprites;
+using MFG = MathClasses;
 
 namespace GraphicalTest
 {
@@ -25,11 +25,9 @@ namespace GraphicalTest
         private float deltaTime = 0.005f;
         PlayerController playerController;
 
-        Image logo;
-        Texture2D texture;
         public Game()
         {
-            playerController = new PlayerController(new Tank(0, 0, 0, 0, TANK_BLACK));
+            playerController = new PlayerController(new Tank(new MFG.Vector3(0,0,0), new MFG.Vector3(0,0,0), 0, 0, TANK_BLACK));
         }
 
         public void Init()
@@ -42,10 +40,6 @@ namespace GraphicalTest
                 Console.WriteLine("Stopwatch high-resolution frequency: {0} ticks per second", Stopwatch.Frequency);
             }
 
-            //logo = LoadImage("..\\Images\\aie-logo-dark.jpg");
-            //logo = LoadImage(@"..\Images\aie-logo-dark.jpg");
-            logo = LoadImage("../Images/aie-logo-dark.jpg");
-            texture = LoadTextureFromImage(logo);
         }
 
         public void Shutdown()
@@ -80,6 +74,10 @@ namespace GraphicalTest
             BeginDrawing();
 
             ClearBackground(Color.LIGHTGRAY);
+
+            allTanks.ForEach(t => t.Draw());
+            allTurrets.ForEach(t => t.Draw());
+            allBullets.ForEach(t => t.Draw());
 
             DrawText(fps.ToString(), 10, 10, 14, Color.RED);                                      
 

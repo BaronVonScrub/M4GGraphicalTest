@@ -40,6 +40,11 @@ namespace GraphicalTest
         {
             Console.WriteLine(val.ToString());
         }
+
+        internal static void Log(MFG.Vector3 val)
+        {
+            Console.WriteLine("{"+val.x+","+val.y+","+val.z+"}");
+        }
     }
 
     struct TankState

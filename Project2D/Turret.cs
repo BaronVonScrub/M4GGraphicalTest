@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using static GraphicalTest.Global;
 using MFG = MathClasses;
 
+
 namespace GraphicalTest
 {
     class Turret
@@ -39,5 +40,9 @@ namespace GraphicalTest
         }
 
         internal Bullet Fire() => new Bullet(aimPosition,aimDirection);
+        internal void Draw()
+        {
+            
+        }
     }
 }
