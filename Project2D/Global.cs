@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using MFG = MathClasses;
+using Raylib;
+using static Raylib.Raylib;
 
 namespace GraphicalTest
 {
@@ -80,6 +82,18 @@ namespace GraphicalTest
         {
             this.position = position;
             this.velocity = velocity;
+        }
+    }
+
+    struct TankSpriteSet
+    {
+        Image body, barrel, bullet;
+
+        public TankSpriteSet(Image body, Image barrel, Image bullet)
+        {
+            this.body = body;
+            this.barrel = barrel;
+            this.bullet = bullet;
         }
     }
 }

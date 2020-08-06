@@ -23,14 +23,15 @@ namespace GraphicalTest
         MFG.Vector3 position;
         MFG.Vector3 velocity;
         internal Turret turret;
-        Texture2D sprite;
+        TankSpriteSet sprites;
         float pointDirection;
+
 
         public MFG.Vector3 Velocity
         {
             get => velocity;
 
-            set
+            set                                                             //Cap speed
             {
                 velocity = value;
                 if (velocity.Magnitude() > MaxSpeed)
@@ -38,7 +39,7 @@ namespace GraphicalTest
             }
         }
 
-        public float PointDirection
+        public float PointDirection                                         //Rotation modulo
         {
             get => pointDirection;
             set
@@ -47,13 +48,13 @@ namespace GraphicalTest
             }
         }
 
-        public Tank(MFG.Vector3 position, MFG.Vector3 velocity, float pointDirection, float turretRot, Texture2D sprite)
+        public Tank(MFG.Vector3 position, MFG.Vector3 velocity, float pointDirection, float turretRot, TankSpriteSet sprites)
         {
             this.position = position;
             this.Velocity = velocity;
             turret = new Turret(new MFG.Vector3(0,0,0),0);
             allTanks.Add(this);
-            this.sprite = sprite;
+            this.sprites = sprites;
             this.PointDirection = pointDirection;
         }
 
@@ -76,7 +77,6 @@ namespace GraphicalTest
 
         internal void Draw()
         {
-            DrawTexture(sprite,(int)position.x,(int)position.y,Color.WHITE);
         }
     }
 }

@@ -11,16 +11,29 @@ namespace GraphicalTest
 {
     static class Sprites
     {
-        internal static Texture2D TANK_BEIGE = LoadTextureFromImage(LoadImage("../Images/Tanks/tankBeige_outline.png"));
-        internal static Texture2D TANK_BLACK = LoadTextureFromImage(LoadImage("../Images/Tanks/tankBlack_outline.png"));
-        internal static Texture2D TANK_BLUE = LoadTextureFromImage(LoadImage("../Images/Tanks/tankBlue_outline.png"));
-        internal static Texture2D TANK_GREEN = LoadTextureFromImage(LoadImage("../Images/Tanks/tankGreen_outline.png"));
-        internal static Texture2D TANK_RED = LoadTextureFromImage(LoadImage("../Images/Tanks/tankRed_outline.png"));
+        internal static TankSpriteSet TANK_BEIGE =
+            new TankSpriteSet(LoadImage("../Images/Tanks/tankBeige_outline.png"),
+                              LoadImage("../Images/Tanks/barrelBeige_outline.png"),
+                              LoadImage("../Images/Bullets/bulletBeigeSilver_outline.png"));
 
-        internal static Texture2D BARREL_BEIGE = LoadTextureFromImage(LoadImage("../Images/Tanks/barrelBeige_outline.png"));
-        internal static Texture2D BARREL_BLACK = LoadTextureFromImage(LoadImage("../Images/Tanks/barrelBlack_outline.png"));
-        internal static Texture2D BARREL_BLUE = LoadTextureFromImage(LoadImage("../Images/Tanks/barrelBlue_outline.png"));
-        internal static Texture2D BARREL_GREEN = LoadTextureFromImage(LoadImage("../Images/Tanks/barrelGreen_outline.png"));
-        internal static Texture2D BARREL_RED = LoadTextureFromImage(LoadImage("../Images/Tanks/barrelRed_outline.png"));
+        internal static TankSpriteSet TANK_BLACK =
+            new TankSpriteSet(LoadImage("../Images/Tanks/tankBlack_outline.png"),
+                              LoadImage("../Images/Tanks/barrelBlack_outline.png"),
+                              LoadImage("../Images/Bullets/bulletSilverSilver_outline.png"));
+
+        internal static TankSpriteSet TANK_BLUE =
+            new TankSpriteSet(LoadImage("../Images/Tanks/tankBlue_outline.png"),
+                              LoadImage("../Images/Tanks/barrelBlue_outline.png"),
+                              LoadImage("../Images/Bullets/bulletBlueSilver_outline.png"));
+
+        internal static TankSpriteSet TANK_GREEN =
+            new TankSpriteSet(LoadImage("../Images/Tanks/tankGreen_outline.png"),
+                              LoadImage("../Images/Tanks/barrelGreen_outline.png"),
+                              LoadImage("../Images/Bullets/bulletGreenSilver_outline.png"));
+
+        internal static TankSpriteSet TANK_RED =
+            new TankSpriteSet(LoadImage("../Images/Tanks/tankRed_outline.png"),
+                              LoadImage("../Images/Tanks/barrelRed_outline.png"),
+                              LoadImage("../Images/Bullets/bulletRedSilver_outline.png"));
     }
 }
