@@ -87,11 +87,22 @@ namespace GraphicalTest
 
     struct TankSpriteSet
     {
-        Image body, barrel, bullet;
+        internal Image body;
+        internal TurretSpriteSet turretSet;
 
         public TankSpriteSet(Image body, Image barrel, Image bullet)
         {
             this.body = body;
+            turretSet = new TurretSpriteSet(barrel, bullet);
+        }
+    }
+
+    struct TurretSpriteSet
+    {
+        internal Image barrel, bullet;
+
+        public TurretSpriteSet(Image barrel, Image bullet)
+        {
             this.barrel = barrel;
             this.bullet = bullet;
         }

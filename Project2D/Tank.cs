@@ -24,6 +24,7 @@ namespace GraphicalTest
         MFG.Vector3 velocity;
         internal Turret turret;
         TankSpriteSet sprites;
+        Image body;
         float pointDirection;
 
 
@@ -52,9 +53,11 @@ namespace GraphicalTest
         {
             this.position = position;
             this.Velocity = velocity;
-            turret = new Turret(new MFG.Vector3(0,0,0),0);
+            this.body = sprites.body;
+            turret = new Turret(new MFG.Vector3(0,0,0),0,sprites.turretSet);
+
             allTanks.Add(this);
-            this.sprites = sprites;
+
             this.PointDirection = pointDirection;
         }
 

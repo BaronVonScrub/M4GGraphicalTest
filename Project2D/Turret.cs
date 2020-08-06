@@ -5,18 +5,21 @@ using System.Text;
 using System.Threading.Tasks;
 using static GraphicalTest.Global;
 using MFG = MathClasses;
+using static Raylib.Raylib;
+using Raylib;
 
 
 namespace GraphicalTest
 {
     class Turret
     {
-
         private static float length=10;
 
         MFG.Vector3 relativePosition;
         private MFG.Vector3 aimPosition;
         float aimDirection;
+        internal Image sprite;
+        internal Image bulletSprite;
 
         public float AimDirection { get => aimDirection;
             set
@@ -26,10 +29,12 @@ namespace GraphicalTest
             }
         }
 
-        public Turret(MFG.Vector3 relativePosition, float aimDirection)
+        public Turret(MFG.Vector3 relativePosition, float aimDirection, TurretSpriteSet sprites)
         {
             this.relativePosition = relativePosition;
             this.aimDirection = aimDirection;
+            this.sprite = sprites.barrel;
+            this.bulletSprite = sprites.bullet;
             allTurrets.Add(this);
         }
 
@@ -39,7 +44,7 @@ namespace GraphicalTest
             return new TurretState(relativePosition,aimDirection);
         }
 
-        internal Bullet Fire() => new Bullet(aimPosition,aimDirection);
+        internal Bullet Fire() => new Bullet(aimPosition,aimDirection,bulletSprite);
 
         internal void Draw()
         {
