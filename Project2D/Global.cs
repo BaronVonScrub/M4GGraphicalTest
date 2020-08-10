@@ -9,7 +9,7 @@ using static Raylib.Raylib;
 
 namespace GraphicalTest
 {
-    static class Global
+    static class GlobalVariables
     {
         internal enum SPRITE
         {

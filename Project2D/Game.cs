@@ -6,9 +6,10 @@ using System.Text;
 using System.Threading.Tasks;
 using Raylib;
 using static Raylib.Raylib;
-using static GraphicalTest.Global;
+using static GraphicalTest.GlobalVariables;
 using static GraphicalTest.Sprites;
 using MFG = MathClasses;
+using TankGame;
 
 namespace GraphicalTest
 {
@@ -24,6 +25,7 @@ namespace GraphicalTest
 
         private float deltaTime = 0.005f;
         PlayerController playerController;
+        SceneObject scene = new SceneObject();
 
         public Game()
         {
@@ -62,26 +64,18 @@ namespace GraphicalTest
             frames++;
             #endregion
 
-            Global.DeltaTime = deltaTime;
+            GlobalVariables.DeltaTime = deltaTime;
+
             playerController.Update();
-            allTanks.ForEach(t => t.Update());
-            allTurrets.ForEach(t => t.Update());
-            allBullets.ForEach(t => t.Update());
-        }
 
-        public void Draw()
-        {
+            scene.UpdatePositions();
+            scene.UpdateTransforms();
+
             BeginDrawing();
-
             ClearBackground(Color.LIGHTGRAY);
-
-            allTanks.ForEach(t => t.Draw());
-            allTurrets.ForEach(t => t.Draw());
-            allBullets.ForEach(t => t.Draw());
-
-            DrawText(fps.ToString(), 10, 10, 14, Color.RED);                                      
-
+            scene.Draw();
             EndDrawing();
+
         }
     }
 }

@@ -1,7 +1,7 @@
 ﻿using Raylib;
 using static Raylib.Raylib;
 using System;
-using static GraphicalTest.Global;
+using static GraphicalTest.GlobalVariables;
 
 namespace GraphicalTest
 {

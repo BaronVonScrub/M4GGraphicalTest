@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using static GraphicalTest.Global;
+using static GraphicalTest.GlobalVariables;
 using MFG = MathClasses;
 using Raylib;
 
