@@ -9,7 +9,7 @@ using Raylib;
 
 namespace GraphicalTest
 {
-    class Bullet
+    class Bullet : SceneObject
     {
         private static float speed = 20;
         MFG.Vector3 position, velocity;
@@ -28,7 +28,5 @@ namespace GraphicalTest
             position += velocity*DeltaTime;
             return new BulletState(position,velocity);
         }
-
-        internal void Draw() => throw new NotImplementedException();
     }
 }

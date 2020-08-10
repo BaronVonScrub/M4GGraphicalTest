@@ -1,17 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
+using MFG = MathClasses;
 using System.Text;
 
-namespace TankGame
+namespace GraphicalTest
 {
     class SceneObject
     {
         private bool dirty = false;
         private SceneObject parent;
         private List<SceneObject> children = new List<SceneObject>();
-        private Matrix3 globalTransform;
-        private Matrix3 localTransform;
-        public Matrix3 GlobalTransform { get => globalTransform; }
+        private MFG.Matrix3 globalTransform;
+        private MFG.Matrix3 localTransform;
+        public MFG.Matrix3 GlobalTransform { get => globalTransform; }
 
         public void UpdateTransforms()
         {

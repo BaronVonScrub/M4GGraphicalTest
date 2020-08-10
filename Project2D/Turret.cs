@@ -11,7 +11,7 @@ using Raylib;
 
 namespace GraphicalTest
 {
-    class Turret
+    class Turret : SceneObject
     {
         private static float length=10;
 

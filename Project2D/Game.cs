@@ -9,7 +9,6 @@ using static Raylib.Raylib;
 using static GraphicalTest.GlobalVariables;
 using static GraphicalTest.Sprites;
 using MFG = MathClasses;
-using TankGame;
 
 namespace GraphicalTest
 {

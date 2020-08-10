@@ -12,7 +12,7 @@ using MFG = MathClasses;
 
 namespace GraphicalTest
 {
-    class Tank
+    class Tank : SceneObject
     {
         static float MaxSpeed = 50F;
         static float AccRate = 30F;
