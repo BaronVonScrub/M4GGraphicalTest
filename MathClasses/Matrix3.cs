@@ -51,6 +51,30 @@ namespace MathClasses
             return newMat;
         }
 
+        public static Boolean operator ==(Matrix3 a, Matrix3 b)
+        {
+            if (a.m.Length != b.m.Length)
+                return false;
+
+            for (int i = 0; i < a.m.Length; i++)
+                if (a.m[i] != b.m[i])
+                    return false;
+
+            return true;
+        }
+
+        public static Boolean operator !=(Matrix3 a, Matrix3 b)
+        {
+            if (a.m.Length != b.m.Length)
+                return true;
+
+            for (int i = 0; i < a.m.Length; i++)
+                if (a.m[i] != b.m[i])
+                    return true;
+
+            return false;
+        }
+
         public void SetRotateX(float v)
         {
             Matrix3 rot = new Matrix3(1,                 0,                  0,

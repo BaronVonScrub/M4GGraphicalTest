@@ -24,33 +24,14 @@ namespace GraphicalTest
         private Matrix3 localTransform = new Matrix3();
         private float MaxSpeed = Int32.MaxValue;
 
-        private Matrix3 Scale {
-            get
-            {
-                return new Matrix3(scale,0,0,0,scale,0,0,0,1);
-            }
-        }
-
-        private Matrix3 Rotate
-        {
-            get
-            {
-                return new Matrix3((float)Math.Cos(Rotation), (float)Math.Sin(Rotation),0, (float)-Math.Sin(Rotation), (float)Math.Cos(Rotation),0,0,0,1);
-            }
-        }
-        private Matrix3 Translate
-        {
-            get
-            {
-                return new Matrix3(1, 0, 0, 0, 1, 0, position.x, position.y, 1);
-            }
-        }
-
         private Matrix3 Transform
         {
             get
             {
-                return new Matrix3() * Scale * Rotate * Translate;
+                return
+                    new Matrix3(scale, 0, 0, 0, scale, 0, 0, 0, 1) *
+                    new Matrix3((float)Math.Cos(Rotation), (float)Math.Sin(Rotation), 0, (float)-Math.Sin(Rotation), (float)Math.Cos(Rotation), 0, 0, 0, 1) *
+                    new Matrix3(1, 0, 0, 0, 1, 0, Position.x, Position.y, 1);
             }
         }
 
@@ -68,13 +49,26 @@ namespace GraphicalTest
             }
         }
 
+        public Vector3 Position { get => position;
+            set
+            {
+                if (value == position)
+                    return;
+                MakeDirty();
+                position = value;
+            }
+        }
+
         public Matrix3 GlobalTransform { get; }
 
         public float Rotation {
             get => rotation;
             set
             {
+                if (value == rotation)
+                    return;
                 rotation = (value + 2 * (float)Math.PI) % (2 * (float)Math.PI);
+                MakeDirty();
             }
         }
 
@@ -105,9 +99,10 @@ namespace GraphicalTest
         internal void UpdateLocalTransforms()
         {
             Velocity += acceleration * DeltaTime;
-            position += velocity * DeltaTime;
+            Position += velocity * DeltaTime;
             Rotation += rotationShift * DeltaTime;
-            RotationShift = 0;
+
+            rotationShift = 0;                                      //Reset it to zero
 
             if (dirty==true)
                 localTransform = baseTransform * Transform;
@@ -116,6 +111,12 @@ namespace GraphicalTest
                 child.UpdateLocalTransforms();
         }
 
-        internal void Draw() => throw new NotImplementedException();
+        internal void Draw()
+        {
+            //Personal draw code
+
+            foreach (SceneObject child in children)
+                child.Draw();
+        }
     }
 }
