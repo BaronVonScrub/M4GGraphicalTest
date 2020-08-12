@@ -28,7 +28,7 @@ namespace GraphicalTest
 
         public Game()
         {
-            playerController = new PlayerController(new Tank(new MFG.Vector3(0,0,0), new MFG.Vector3(0,0,0), 0, 0, TANK_BLACK));
+            playerController = new PlayerController(new Tank(new Vector3(0,0,0), new Vector3(0,0,0), 0, 0, TANK_BLACK));
         }
 
         public void Init()
@@ -65,10 +65,10 @@ namespace GraphicalTest
 
             GlobalVariables.DeltaTime = deltaTime;
 
-            playerController.Update();
+            playerController.ProcessInput();
 
-            scene.UpdatePositions();
-            scene.UpdateTransforms();
+            scene.UpdateLocalTransforms();
+            scene.UpdateGlobalTransforms();
 
             BeginDrawing();
             ClearBackground(Color.LIGHTGRAY);

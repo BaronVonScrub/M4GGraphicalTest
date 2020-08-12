@@ -12,13 +12,13 @@ namespace GraphicalTest
     class Bullet : SceneObject
     {
         private static float speed = 20;
-        MFG.Vector3 position, velocity;
+        Vector3 position, velocity;
         Image sprite;
 
-        public Bullet(MFG.Vector3 position, float dir, Image sprite)
+        public Bullet(Vector3 position, float dir, Image sprite)
         {
             this.position = position;
-            velocity = new MFG.Vector3(speed, dir,0);
+            velocity = new Vector3(speed, dir,0);
             this.sprite = sprite;
             allBullets.Add(this);
         }

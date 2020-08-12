@@ -13,7 +13,7 @@ namespace GraphicalTest
             this.player = player;
         }
 
-        public void Update()
+        public void ProcessInput()
         {
             if (IsKeyDown(KeyboardKey.KEY_W) && !IsKeyDown(KeyboardKey.KEY_S))      Log(player.Forward());
 
