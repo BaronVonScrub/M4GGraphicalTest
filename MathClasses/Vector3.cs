@@ -85,6 +85,19 @@ namespace MathClasses
             return newVec;
         }
 
+        public static Boolean operator ==(Vector3 a, Vector3 b)
+        {
+            if (a.x == b.x && a.y == b.y && a.z == b.z)
+                return true;
+            return false;
+        }
+        public static Boolean operator !=(Vector3 a, Vector3 b)
+        {
+            if (a.x != b.x || a.y != b.y || a.z != b.z)
+                return true;
+            return false;
+        }
+
         public float Dot(Vector3 v)
         {
             return x * v.x + y * v.y + z * v.z;
@@ -113,6 +126,17 @@ namespace MathClasses
             };
 
             return newVec;
+        }
+
+        public override bool Equals(object obj) => obj is Vector3 vector && x == vector.x && y == vector.y && z == vector.z;
+
+        public override int GetHashCode()
+        {
+            var hashCode = 373119288;
+            hashCode = hashCode * -1521134295 + x.GetHashCode();
+            hashCode = hashCode * -1521134295 + y.GetHashCode();
+            hashCode = hashCode * -1521134295 + z.GetHashCode();
+            return hashCode;
         }
     }
 }

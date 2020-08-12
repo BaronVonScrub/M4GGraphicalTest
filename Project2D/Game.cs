@@ -29,7 +29,7 @@ namespace GraphicalTest
         {
             playerController = new PlayerController(
                 new Tank(
-                    new  MFG.Vector3(0,0,0),
+                    new  MFG.Vector3(0,0,1),
                     new  MFG.Vector3(0,0,0),
                     0, 0, TANK_BLACK, Scene));
         }
@@ -75,7 +75,7 @@ namespace GraphicalTest
 
             BeginDrawing();
             ClearBackground(Color.LIGHTGRAY);
-            Scene.Draw();
+            Scene.DrawRecursive();
             EndDrawing();
 
         }

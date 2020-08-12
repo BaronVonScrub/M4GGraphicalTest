@@ -21,11 +21,11 @@ namespace GraphicalTest
         protected MFG.Vector3 position = new MFG.Vector3(0, 0, 1);
         protected MFG.Vector3 velocity = new MFG.Vector3(0, 0, 0);
         protected SpriteSet sprites;
-        protected Image image;
+        protected Texture2D image;
         internal MFG.Vector3 acceleration = new MFG.Vector3(0, 0, 0);
         private Matrix3 globalTransform = new Matrix3();
         private Matrix3 baseTransform = new Matrix3();
-        private Matrix3 localTransform = new Matrix3();
+        protected Matrix3 localTransform = new Matrix3();
         protected float MaxSpeed = Int32.MaxValue;
 
         public SceneObject()
@@ -37,11 +37,13 @@ namespace GraphicalTest
             this.Position = position;
             this.Velocity = velocity;
             this.Rotation = rotation;
+            this.localTransform = TransformMatrix;
             this.sprites = sprites;
             this.parent = parent;
+            parent.children.Add(this);
         }
 
-        private Matrix3 Transform
+        private Matrix3 TransformMatrix
         {
             get
             {
@@ -71,12 +73,12 @@ namespace GraphicalTest
             {
                 if (value == position)
                     return;
-                MakeDirty();
+                MakeDirty(0);
                 position = value;
             }
         }
 
-        public Matrix3 GlobalTransform { get; }
+        public Matrix3 GlobalTransform { get => globalTransform; }
 
         public float Rotation {
             get => rotation;
@@ -85,7 +87,7 @@ namespace GraphicalTest
                 if (value == rotation)
                     return;
                 rotation = (value + 2 * (float)Math.PI) % (2 * (float)Math.PI);
-                MakeDirty();
+                MakeDirty(0);
             }
         }
 
@@ -102,15 +104,19 @@ namespace GraphicalTest
                 child.UpdateGlobalTransforms();
         }
 
-        public void MakeDirty()
+        public void MakeDirty(int level)
         {
+            if (dirty == true)
+                return;
+
+            //Console.WriteLine("Dirty "+level.ToString());
             dirty = true;
 
             if (parent != null)
-                parent.MakeDirty();
+                parent.MakeDirty(level-1);
 
             foreach (SceneObject child in children)
-                child.MakeDirty();
+                child.MakeDirty(level+1);
         }
 
         internal void UpdateLocalTransforms()
@@ -122,18 +128,21 @@ namespace GraphicalTest
             rotationShift = 0;                                      //Reset it to zero
 
             if (dirty==true)
-                localTransform = baseTransform * Transform;
+                localTransform = baseTransform * TransformMatrix;
 
             foreach (SceneObject child in children)
                 child.UpdateLocalTransforms();
         }
 
-        internal void Draw()
+        internal void DrawRecursive()
         {
-            //Personal draw code
+            float globalRotation = (float)Math.Atan2(globalTransform.m[2],globalTransform.m[1]); ;
+
+            DrawTextureEx(image, new Vector2(globalTransform.m7, globalTransform.m8), globalRotation, 1, Color.WHITE);
 
             foreach (SceneObject child in children)
-                child.Draw();
+                child.DrawRecursive();
         }
+
     }
 }

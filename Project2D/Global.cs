@@ -31,6 +31,11 @@ namespace GraphicalTest
             return new MFG.Vector3(distance*(float)Math.Sin(direction), distance * (float)Math.Cos(direction),0);
         }
 
+        internal static MFG.Vector3 PointOffsetDistDir(float distance, float direction)
+        {
+            return new MFG.Vector3(distance * (float)Math.Sin(direction), distance * (float)Math.Cos(direction), 1);
+        }
+
         internal static void Log(float val)
         {
             Console.WriteLine(val);
@@ -85,11 +90,14 @@ namespace GraphicalTest
 
     struct SpriteSet
     {
-        internal Image[] images;
+        internal Texture2D[] images;
 
         public SpriteSet(Image[] images)
         {
-            this.images = images;
+            Texture2D[] temp = new Texture2D[images.Length];
+            for (int i = 0; i < images.Length; i++)
+                temp[i] = LoadTextureFromImage(images[i]);
+            this.images = temp;
         }
     }
 }
