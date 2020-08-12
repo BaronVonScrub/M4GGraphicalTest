@@ -113,5 +113,23 @@ namespace MathClasses
                 m[i] = newMat.m[i];
 
         }
+
+        public override bool Equals(object obj) => obj is Matrix3 matrix && EqualityComparer<float[]>.Default.Equals(m, matrix.m) && m1 == matrix.m1 && m2 == matrix.m2 && m3 == matrix.m3 && m4 == matrix.m4 && m5 == matrix.m5 && m6 == matrix.m6 && m7 == matrix.m7 && m8 == matrix.m8 && m9 == matrix.m9;
+
+        public override int GetHashCode()
+        {
+            var hashCode = 2046835463;
+            hashCode = hashCode * -1521134295 + EqualityComparer<float[]>.Default.GetHashCode(m);
+            hashCode = hashCode * -1521134295 + m1.GetHashCode();
+            hashCode = hashCode * -1521134295 + m2.GetHashCode();
+            hashCode = hashCode * -1521134295 + m3.GetHashCode();
+            hashCode = hashCode * -1521134295 + m4.GetHashCode();
+            hashCode = hashCode * -1521134295 + m5.GetHashCode();
+            hashCode = hashCode * -1521134295 + m6.GetHashCode();
+            hashCode = hashCode * -1521134295 + m7.GetHashCode();
+            hashCode = hashCode * -1521134295 + m8.GetHashCode();
+            hashCode = hashCode * -1521134295 + m9.GetHashCode();
+            return hashCode;
+        }
     }
 }

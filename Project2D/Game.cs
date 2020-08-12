@@ -24,11 +24,14 @@ namespace GraphicalTest
 
         private float deltaTime = 0.005f;
         PlayerController playerController;
-        SceneObject scene = new SceneObject();
 
         public Game()
         {
-            playerController = new PlayerController(new Tank(new Vector3(0,0,0), new Vector3(0,0,0), 0, 0, TANK_BLACK));
+            playerController = new PlayerController(
+                new Tank(
+                    new  MFG.Vector3(0,0,0),
+                    new  MFG.Vector3(0,0,0),
+                    0, 0, TANK_BLACK, Scene));
         }
 
         public void Init()
@@ -67,12 +70,12 @@ namespace GraphicalTest
 
             playerController.ProcessInput();
 
-            scene.UpdateLocalTransforms();
-            scene.UpdateGlobalTransforms();
+            Scene.UpdateLocalTransforms();
+            Scene.UpdateGlobalTransforms();
 
             BeginDrawing();
             ClearBackground(Color.LIGHTGRAY);
-            scene.Draw();
+            Scene.Draw();
             EndDrawing();
 
         }

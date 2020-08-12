@@ -1,4 +1,4 @@
-/* Raymath.cs
+ /* Raymath.cs
 *
 * Copyright 2019 Chris Dill
 *

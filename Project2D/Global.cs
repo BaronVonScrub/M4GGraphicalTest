@@ -20,17 +20,15 @@ namespace GraphicalTest
             RED
         }
 
-        internal static List<Tank> allTanks = new List<Tank>();
-        internal static List<Bullet> allBullets = new List<Bullet>();
-        internal static List<Turret> allTurrets = new List<Turret>();
-
         private static float deltaTime;
 
         internal static float DeltaTime { get => deltaTime; set => deltaTime = value; }
 
-        internal static Vector3 DistDirToXY(float distance, float direction)
+        public static SceneObject Scene { get; set; } = new SceneObject();
+
+        internal static MFG.Vector3 DistDirToXY(float distance, float direction)
         {
-            return new Vector3(distance*(float)Math.Sin(direction), distance * (float)Math.Cos(direction));
+            return new MFG.Vector3(distance*(float)Math.Sin(direction), distance * (float)Math.Cos(direction),0);
         }
 
         internal static void Log(float val)
@@ -43,7 +41,7 @@ namespace GraphicalTest
             Console.WriteLine(val.ToString());
         }
 
-        internal static void Log(Vector3 val)
+        internal static void Log(MFG.Vector3 val)
         {
             Console.WriteLine("{"+val.x+","+val.y+","+val.z+"}");
         }
@@ -51,10 +49,10 @@ namespace GraphicalTest
 
     struct TankState
     {
-        Vector3 position, velocity;
+        MFG.Vector3 position, velocity;
         Turret turret;
 
-        public TankState(Vector3 position, Vector3 velocity, Turret turret)
+        public TankState(MFG.Vector3 position, MFG.Vector3 velocity, Turret turret)
         {
             this.position = position;
             this.velocity = velocity;
@@ -64,10 +62,10 @@ namespace GraphicalTest
 
     struct TurretState
     {
-        Vector3 relativePosition;
+        MFG.Vector3 relativePosition;
         float aimDirection;
 
-        public TurretState(Vector3 relativePosition, float aimDirection)
+        public TurretState(MFG.Vector3 relativePosition, float aimDirection)
         {
             this.relativePosition = relativePosition;
             this.aimDirection = aimDirection;
@@ -76,35 +74,22 @@ namespace GraphicalTest
 
     struct BulletState
     {
-        Vector3 position, velocity;
+        MFG.Vector3 position, velocity;
 
-        public BulletState(Vector3 position, Vector3 velocity)
+        public BulletState(MFG.Vector3 position, MFG.Vector3 velocity)
         {
             this.position = position;
             this.velocity = velocity;
         }
     }
 
-    struct TankSpriteSet
+    struct SpriteSet
     {
-        internal Image body;
-        internal TurretSpriteSet turretSet;
+        internal Image[] images;
 
-        public TankSpriteSet(Image body, Image barrel, Image bullet)
+        public SpriteSet(Image[] images)
         {
-            this.body = body;
-            turretSet = new TurretSpriteSet(barrel, bullet);
-        }
-    }
-
-    struct TurretSpriteSet
-    {
-        internal Image barrel, bullet;
-
-        public TurretSpriteSet(Image barrel, Image bullet)
-        {
-            this.barrel = barrel;
-            this.bullet = bullet;
+            this.images = images;
         }
     }
 }

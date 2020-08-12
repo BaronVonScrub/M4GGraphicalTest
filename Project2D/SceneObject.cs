@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using MFG = MathClasses;
 using System.Text;
 using MathClasses;
+using Raylib;
+using static Raylib.Raylib;
 using static GraphicalTest.GlobalVariables;
 
 namespace GraphicalTest
@@ -10,19 +12,34 @@ namespace GraphicalTest
     class SceneObject
     {
         private bool dirty = false;
-        private SceneObject parent;
+        private SceneObject parent = Scene;
         private List<SceneObject> children = new List<SceneObject>();
         private float scale = 1;
         private float rotation = 0;
         private float rotationShift = 0;
 
-        private Vector3 position = new Vector3(0, 0, 1);
-        private Vector3 velocity = new Vector3(0, 0, 0);
-        private Vector3 acceleration = new Vector3(0, 0, 0);
+        protected MFG.Vector3 position = new MFG.Vector3(0, 0, 1);
+        protected MFG.Vector3 velocity = new MFG.Vector3(0, 0, 0);
+        protected SpriteSet sprites;
+        protected Image image;
+        internal MFG.Vector3 acceleration = new MFG.Vector3(0, 0, 0);
         private Matrix3 globalTransform = new Matrix3();
         private Matrix3 baseTransform = new Matrix3();
         private Matrix3 localTransform = new Matrix3();
-        private float MaxSpeed = Int32.MaxValue;
+        protected float MaxSpeed = Int32.MaxValue;
+
+        public SceneObject()
+        {
+            this.parent = null;
+        }
+        public SceneObject(MFG.Vector3 position, MFG.Vector3 velocity, float rotation, SpriteSet sprites, SceneObject parent)
+        {
+            this.Position = position;
+            this.Velocity = velocity;
+            this.Rotation = rotation;
+            this.sprites = sprites;
+            this.parent = parent;
+        }
 
         private Matrix3 Transform
         {
@@ -37,7 +54,7 @@ namespace GraphicalTest
 
         public float RotationShift { set => rotationShift = value; }
 
-        public Vector3 Velocity
+        public MFG.Vector3 Velocity
         {
             get => velocity;
 
@@ -49,7 +66,7 @@ namespace GraphicalTest
             }
         }
 
-        public Vector3 Position { get => position;
+        public MFG.Vector3 Position { get => position;
             set
             {
                 if (value == position)

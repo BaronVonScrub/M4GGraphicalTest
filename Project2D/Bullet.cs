@@ -6,21 +6,18 @@ using System.Threading.Tasks;
 using static GraphicalTest.GlobalVariables;
 using MFG = MathClasses;
 using Raylib;
+using static GraphicalTest.GlobalVariables;
 
 namespace GraphicalTest
 {
     class Bullet : SceneObject
     {
         private static float speed = 20;
-        Vector3 position, velocity;
-        Image sprite;
 
-        public Bullet(Vector3 position, float dir, Image sprite)
+        public Bullet(MFG.Vector3 position, float rotation, SpriteSet sprites) : base(position, DistDirToXY(speed, rotation), rotation, sprites, Scene)
         {
-            this.position = position;
-            velocity = new Vector3(speed, dir,0);
-            this.sprite = sprite;
-            allBullets.Add(this);
+            MaxSpeed = 50F;
+            image = sprites.images[0];
         }
     }
 }

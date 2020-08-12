@@ -11,29 +11,29 @@ namespace GraphicalTest
 {
     static class Sprites
     {
-        internal static TankSpriteSet TANK_BEIGE =
-            new TankSpriteSet(LoadImage("../Images/Tanks/tankBeige_outline.png"),
+        internal static SpriteSet TANK_BEIGE =
+            new SpriteSet(new Image[]{LoadImage("../Images/Tanks/tankBeige_outline.png"),
                               LoadImage("../Images/Tanks/barrelBeige_outline.png"),
-                              LoadImage("../Images/Bullets/bulletBeigeSilver_outline.png"));
+                              LoadImage("../Images/Bullets/bulletBeigeSilver_outline.png") });
 
-        internal static TankSpriteSet TANK_BLACK =
-            new TankSpriteSet(LoadImage("../Images/Tanks/tankBlack_outline.png"),
+        internal static SpriteSet TANK_BLACK =
+            new SpriteSet(new Image[]{LoadImage("../Images/Tanks/tankBlack_outline.png"),
                               LoadImage("../Images/Tanks/barrelBlack_outline.png"),
-                              LoadImage("../Images/Bullets/bulletSilverSilver_outline.png"));
+                              LoadImage("../Images/Bullets/bulletSilverSilver_outline.png") });
 
-        internal static TankSpriteSet TANK_BLUE =
-            new TankSpriteSet(LoadImage("../Images/Tanks/tankBlue_outline.png"),
+        internal static SpriteSet TANK_BLUE =
+            new SpriteSet(new Image[]{LoadImage("../Images/Tanks/tankBlue_outline.png"),
                               LoadImage("../Images/Tanks/barrelBlue_outline.png"),
-                              LoadImage("../Images/Bullets/bulletBlueSilver_outline.png"));
+                              LoadImage("../Images/Bullets/bulletBlueSilver_outline.png") });
 
-        internal static TankSpriteSet TANK_GREEN =
-            new TankSpriteSet(LoadImage("../Images/Tanks/tankGreen_outline.png"),
+        internal static SpriteSet TANK_GREEN =
+            new SpriteSet(new Image[]{LoadImage("../Images/Tanks/tankGreen_outline.png"),
                               LoadImage("../Images/Tanks/barrelGreen_outline.png"),
-                              LoadImage("../Images/Bullets/bulletGreenSilver_outline.png"));
+                              LoadImage("../Images/Bullets/bulletGreenSilver_outline.png") });
 
-        internal static TankSpriteSet TANK_RED =
-            new TankSpriteSet(LoadImage("../Images/Tanks/tankRed_outline.png"),
+        internal static SpriteSet TANK_RED =
+            new SpriteSet(new Image[]{LoadImage("../Images/Tanks/tankRed_outline.png"),
                               LoadImage("../Images/Tanks/barrelRed_outline.png"),
-                              LoadImage("../Images/Bullets/bulletRedSilver_outline.png"));
+                              LoadImage("../Images/Bullets/bulletRedSilver_outline.png") });
     }
 }
