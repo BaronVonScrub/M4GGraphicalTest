@@ -89,5 +89,12 @@ namespace MathClasses
                 m[i] = newMat.m[i];
 
         }
+
+        public static Matrix3 MatrixRotateZ(float v)
+        {
+            return new Matrix3((float)Math.Cos(-v), (float)-Math.Sin(-v), 0,
+                                      (float)Math.Sin(-v), (float)Math.Cos(-v), 0,
+                                      0, 0, 1);
+        }
     }
 }

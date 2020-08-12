@@ -24,7 +24,7 @@ namespace GraphicalTest
         protected Texture2D image;
         internal MFG.Vector3 acceleration = new MFG.Vector3(0, 0, 0);
         private Matrix3 globalTransform = new Matrix3();
-        private Matrix3 baseTransform = new Matrix3();
+        protected Matrix3 baseTransform = new Matrix3();
         protected Matrix3 localTransform = new Matrix3();
         protected float MaxSpeed = Int32.MaxValue;
 
@@ -48,9 +48,9 @@ namespace GraphicalTest
             get
             {
                 return
-                    new Matrix3(scale, 0, 0, 0, scale, 0, 0, 0, 1) *
-                    new Matrix3((float)Math.Cos(Rotation), (float)Math.Sin(Rotation), 0, (float)-Math.Sin(Rotation), (float)Math.Cos(Rotation), 0, 0, 0, 1) *
-                    new Matrix3(1, 0, 0, 0, 1, 0, Position.x, Position.y, 1);
+                    new Matrix3(1, 0, 0, 0, 1, 0, Position.x, Position.y, 1) *
+                    MFG.Matrix3.MatrixRotateZ(Rotation) *
+                    new Matrix3(scale, 0, 0, 0, scale, 0, 0, 0, 1);
             }
         }
 
@@ -136,9 +136,9 @@ namespace GraphicalTest
 
         internal void DrawRecursive()
         {
-            float globalRotation = (float)Math.Atan2(globalTransform.m[2],globalTransform.m[1]); ;
+            float globalRotation = (float)Math.Atan2(globalTransform.m2,globalTransform.m1);
 
-            DrawTextureEx(image, new Vector2(globalTransform.m7, globalTransform.m8), globalRotation, 1, Color.WHITE);
+            DrawTextureEx(image, new Vector2(globalTransform.m7-image.width/2, globalTransform.m8-image.height/2), globalRotation*(float)(180.0f / Math.PI), 1, Color.WHITE);
 
             foreach (SceneObject child in children)
                 child.DrawRecursive();

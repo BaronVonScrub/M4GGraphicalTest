@@ -16,8 +16,8 @@ namespace GraphicalTest
     {
         static float AccRate = 30F;
         static float DecRate = 15F;
-        static float TurnSpeed = 1F;
-        static float TurretSpeed = 1F;
+        static float TurnSpeed = -5F;
+        static float TurretSpeed = 5F;
 
         internal Turret turret;
 
@@ -27,6 +27,8 @@ namespace GraphicalTest
             MaxSpeed = 50F;
             image = sprites.images[0];
             turret = new Turret(new  MFG.Vector3(0,0,0),0,sprites, this);
+            //baseTransform *= new MFG.Matrix3(1,0,0,0,1,0,image.width/2,image.height/2,1);
+            //baseTransform *= MFG.Matrix3.MatrixRotateZ(rotation-(float)Math.PI/2);
         }
 
         internal  MFG.Vector3 Forward() => acceleration = DistDirToXY(AccRate, Rotation);
