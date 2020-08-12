@@ -22,11 +22,5 @@ namespace GraphicalTest
             this.sprite = sprite;
             allBullets.Add(this);
         }
-
-        internal BulletState Update()
-        {
-            position += velocity*DeltaTime;
-            return new BulletState(position,velocity);
-        }
     }
 }

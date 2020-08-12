@@ -22,6 +22,8 @@ namespace GraphicalTest
 
         MFG.Vector3 position;
         MFG.Vector3 velocity;
+        MFG.Vector3 acceleration;
+
         internal Turret turret;
         TankSpriteSet sprites;
         Image body;
@@ -40,7 +42,7 @@ namespace GraphicalTest
             }
         }
 
-        public float PointDirection                                         //Rotation modulo
+        public float Rotation                                         //Rotation modulo
         {
             get => pointDirection;
             set
@@ -49,7 +51,7 @@ namespace GraphicalTest
             }
         }
 
-        public Tank(MFG.Vector3 position, MFG.Vector3 velocity, float pointDirection, float turretRot, TankSpriteSet sprites)
+        public Tank(MFG.Vector3 position, MFG.Vector3 velocity, float rotation, float turretRot, TankSpriteSet sprites)
         {
             this.position = position;
             this.Velocity = velocity;
@@ -58,28 +60,18 @@ namespace GraphicalTest
 
             allTanks.Add(this);
 
-            this.PointDirection = pointDirection;
+            this.Rotation = rotation;
         }
 
-        internal MFG.Vector3 Forward() => Velocity += DeltaTime * DistDirToXY(AccRate, PointDirection);
-        internal MFG.Vector3 Backward() => Velocity += DeltaTime * DistDirToXY(DecRate, PointDirection+(float)Math.PI);
+        internal MFG.Vector3 Forward() => acceleration = DistDirToXY(AccRate, Rotation);
+        internal MFG.Vector3 Backward() => acceleration = DistDirToXY(DecRate, Rotation+(float)Math.PI);
 
-        internal float TurnLeft() => PointDirection += DeltaTime * TurnSpeed;
-        internal float TurnRight() => PointDirection -= DeltaTime * TurnSpeed;
+        internal float TurnLeft() => Rotation += DeltaTime * TurnSpeed;
+        internal float TurnRight() => Rotation -= DeltaTime * TurnSpeed;
 
         internal float TurretLeft() => turret.AimDirection += DeltaTime * TurretSpeed;
         internal float TurretRight() => turret.AimDirection -= DeltaTime * TurretSpeed;
 
         internal Bullet Fire() => turret.Fire();
-
-        internal TankState Update()
-        {
-            position += velocity * DeltaTime;
-            return new TankState(position,Velocity,turret);
-        }
-
-        internal void Draw()
-        {
-        }
     }
 }

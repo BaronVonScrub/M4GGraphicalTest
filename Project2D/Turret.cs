@@ -15,7 +15,6 @@ namespace GraphicalTest
     {
         private static float length=10;
 
-        MFG.Vector3 relativePosition;
         private MFG.Vector3 aimPosition;
         float aimDirection;
         internal Image sprite;
@@ -38,17 +37,6 @@ namespace GraphicalTest
             allTurrets.Add(this);
         }
 
-
-        public TurretState Update()
-        {
-            return new TurretState(relativePosition,aimDirection);
-        }
-
         internal Bullet Fire() => new Bullet(aimPosition,aimDirection,bulletSprite);
-
-        internal void Draw()
-        {
-            
-        }
     }
 }
