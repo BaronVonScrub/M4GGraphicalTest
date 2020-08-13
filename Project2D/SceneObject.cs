@@ -18,7 +18,6 @@ namespace GraphicalTest
         private float rotationShift = 0;
 
         protected float friction = 0.9F;
-        private float globalRotation = 0;
 
         protected MFG.Vector3 position = new MFG.Vector3(0, 0, 1);
         protected MFG.Vector3 velocity = new MFG.Vector3(0, 0, 0);
@@ -26,10 +25,8 @@ namespace GraphicalTest
         protected SpriteSet sprites;
         protected Texture2D image;
         internal MFG.Vector3 acceleration = new MFG.Vector3(0, 0, 0);
-        private Matrix3 globalTransform = new Matrix3();
         protected Matrix3 baseTransform = new Matrix3();
         protected Matrix3 localTransform = new Matrix3();
-        protected float MaxSpeed = Int32.MaxValue;
         protected float MinSpeed = 0.01F;
 
         public SceneObject()
@@ -63,8 +60,6 @@ namespace GraphicalTest
         internal void PhysicsRecursive()
 
         {
-            GlobalRotation = GlobalRotation;
-
             Velocity += acceleration * DeltaTime;
             acceleration = new MFG.Vector3(0, 0, 0);
 
@@ -86,10 +81,7 @@ namespace GraphicalTest
             set                                                             //Cap speed
             {
                 velocity = value;
-                if (velocity.Magnitude() > MaxSpeed)
-                    velocity = velocity * (MaxSpeed / velocity.Magnitude());
-                else if
-                (velocity.Magnitude() < MinSpeed)
+                if (velocity.Magnitude() < MinSpeed)
                     velocity = new MFG.Vector3(0, 0, 0);
             }
         }
@@ -104,8 +96,6 @@ namespace GraphicalTest
             }
         }
 
-        public Matrix3 GlobalTransform { get => globalTransform; }
-
         public float Rotation {
             get => rotation;
             set
@@ -117,16 +107,18 @@ namespace GraphicalTest
             }
         }
 
-        protected float GlobalRotation { get => (float)Math.Atan2(globalTransform.m2, globalTransform.m1); set => globalRotation = value; }
+        public float GlobalRotation { get => (float)Math.Atan2(GlobalTransform.m2, GlobalTransform.m1); }
+        public Matrix3 GlobalTransform { get; set; } = new MFG.Matrix3();
 
         public void GlobalTransformsRecursive()
         {
+ 
             if (dirty == false)
                 return;
             dirty = false;
 
             if (parent != null)
-            globalTransform = parent.GlobalTransform * localTransform;
+            GlobalTransform = parent.GlobalTransform * localTransform;
 
             foreach (SceneObject child in children)
                 child.GlobalTransformsRecursive();
@@ -154,8 +146,6 @@ namespace GraphicalTest
 
             localTransform = baseTransform * TransformMatrix;
 
-            GlobalRotation = GlobalRotation;
-
             foreach (SceneObject child in children)
                 child.LocalTransformsRecursive();
         }
@@ -163,7 +153,7 @@ namespace GraphicalTest
         internal void DrawRecursive()
         {
             DrawTextureEx(image,
-                new Vector2(globalTransform.m7, globalTransform.m8) + ConvertV3ToV2(GlobalVariables.RotationMatrix2D(GlobalRotation)*offset),
+                new Vector2(GlobalTransform.m7, GlobalTransform.m8) + ConvertV3ToV2(GlobalVariables.RotationMatrix2D(GlobalRotation)*offset),
                 GlobalRotation * (float)(180.0f / Math.PI),
                 scale, Color.WHITE);
 
@@ -174,7 +164,7 @@ namespace GraphicalTest
         internal void DrawDebugRecursive()
         {
 
-            DrawLine((int)globalTransform.m7, (int)globalTransform.m8, (int)(globalTransform.m7 + DistDirToXY(100, GlobalRotation).x), (int)(globalTransform.m8 + DistDirToXY(100, GlobalRotation).y), Color.RED);                 // Debug line
+            DrawLine((int)GlobalTransform.m7, (int)GlobalTransform.m8, (int)(GlobalTransform.m7 + DistDirToXY(100, GlobalRotation).x), (int)(GlobalTransform.m8 + DistDirToXY(100, GlobalRotation).y), Color.RED);                 // Debug line
 
             foreach (SceneObject child in children)
                 child.DrawDebugRecursive();

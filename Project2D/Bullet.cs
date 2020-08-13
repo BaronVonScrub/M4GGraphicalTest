@@ -14,7 +14,6 @@ namespace GraphicalTest
 
         public Bullet(MFG.Vector3 position, float rotation, SpriteSet sprites) : base(position, DistDirToXY(speed, rotation), rotation+(float)Math.PI, sprites, Scene)
         {
-            MaxSpeed = speed;
             image = sprites.images[2];
             friction = 0;
             offset = new MFG.Vector3(-image.width / 2, -image.height / 2, 0);

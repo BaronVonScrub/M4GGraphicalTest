@@ -8,7 +8,6 @@ using MFG = MathClasses;
 using static Raylib.Raylib;
 using Raylib;
 
-
 namespace GraphicalTest
 {
     class Turret : SceneObject
@@ -23,22 +22,23 @@ namespace GraphicalTest
                 if (value == rotation)
                     return;
                 rotation = (value + 2 * (float)Math.PI) % (2 * (float)Math.PI);
-                aimPosition = PointOffsetDistDir(length,rotation);
+                AimPosition = PointOffsetDistDir(length,rotation);
                 MakeDirty(0);
             }
         }
 
+        public MFG.Vector3 AimPosition { get => GlobalTransform*aimPosition; set => aimPosition = value; }
+
         public Turret(MFG.Vector3 position, float rotation, SpriteSet sprites, SceneObject parent)
             : base(position, new MFG.Vector3(0, 0, 0), rotation, sprites, parent)
         {
-            MaxSpeed = 0F;
             image = sprites.images[1];
             offset = new MFG.Vector3(-image.width / 2, -image.height / 5, 0);
             length = image.height;
-            aimPosition = PointOffsetDistDir(length, rotation);
+            AimPosition = PointOffsetDistDir(length, rotation);
 
         }
 
-        internal Bullet Fire() => new Bullet(GlobalTransform*aimPosition,GlobalRotation,sprites);
+        internal Bullet Fire() => new Bullet(AimPosition,GlobalRotation,sprites);
     }
 }

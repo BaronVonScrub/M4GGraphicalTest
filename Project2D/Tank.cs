@@ -31,10 +31,10 @@ namespace GraphicalTest
         public Tank(MFG.Vector3 position,  MFG.Vector3 velocity, float rotation, float turretRot, SpriteSet sprites, SceneObject parent)
             : base(position,velocity, rotation, sprites, parent)
         {
-            MaxSpeed = 100F;
             image = sprites.images[0];
             offset = new MFG.Vector3(-image.width / 2, -image.height / 2, 0);
             turret = new Turret( new MFG.Vector3(0,0,0) , 0,sprites, this);
+            friction = 0.9F;
         }
 
         public override void PersonalRecursive()
@@ -57,6 +57,7 @@ namespace GraphicalTest
             if (CooldownCount != 0)
                 return;
 
+            Velocity += DistDirToXY(150,turret.GlobalRotation + (float)Math.PI);
             CooldownCount = cooldown;
             turret.Fire();
         }
