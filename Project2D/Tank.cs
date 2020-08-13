@@ -37,17 +37,17 @@ namespace GraphicalTest
             turret = new Turret( new MFG.Vector3(0,0,0) , 0,sprites, this);
         }
 
-        public override void Update_PersonalRecursive()
+        public override void PersonalRecursive()
         {
             CooldownCount -= DeltaTime;
-            base.Update_PersonalRecursive();
+            base.PersonalRecursive();
         }
 
         internal  MFG.Vector3 Forward() => acceleration = DistDirToXY(AccRate, GlobalRotation);
         internal  MFG.Vector3 Backward() => acceleration = DistDirToXY(DecRate, GlobalRotation+(float)Math.PI);
 
-        internal float TurnLeft() => RotationShift = TurnSpeed;
-        internal float TurnRight() => RotationShift = -TurnSpeed;
+        internal float TurnLeft() => RotationShift = -TurnSpeed;
+        internal float TurnRight() => RotationShift = TurnSpeed;
 
         internal float TurretLeft() => turret.RotationShift = -TurretSpeed;
         internal float TurretRight() => turret.RotationShift = TurretSpeed;

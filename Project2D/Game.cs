@@ -73,15 +73,15 @@ namespace GraphicalTest
 
             playerController.ProcessInput();
 
-            Scene.Update_PersonalRecursive();
-            Scene.Update_PhysicsRecursive();
-            Scene.Update_LocalTransformsRecursive();
-            Scene.Update_GlobalTransformsRecursive();
+            Scene.PersonalRecursive();
+            Scene.PhysicsRecursive();
+            Scene.LocalTransformsRecursive();
+            Scene.GlobalTransformsRecursive();
 
             BeginDrawing();
             ClearBackground(Color.LIGHTGRAY);
-            Scene.Update_DrawRecursive();
-            //Scene.Update_DrawDebugRecursive();
+            Scene.DrawRecursive();
+            //Scene.DrawDebugRecursive();
             EndDrawing();
 
         }

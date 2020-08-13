@@ -60,7 +60,24 @@ namespace GraphicalTest
 
         public float RotationShift { set => rotationShift = value; }
 
-        internal void Update_PhysicsRecursive() => throw new NotImplementedException();
+        internal void PhysicsRecursive()
+
+        {
+            GlobalRotation = GlobalRotation;
+
+            Velocity += acceleration * DeltaTime;
+            acceleration = new MFG.Vector3(0, 0, 0);
+
+            Position += Velocity * DeltaTime;
+            Velocity *= (float)Math.Pow(1 - friction, DeltaTime);
+
+            Rotation += rotationShift * DeltaTime;
+
+            rotationShift = 0;                                      //Reset it to zero
+
+            foreach (SceneObject child in children)
+                child.PhysicsRecursive();
+        }
 
         public MFG.Vector3 Velocity
         {
@@ -102,7 +119,7 @@ namespace GraphicalTest
 
         protected float GlobalRotation { get => (float)Math.Atan2(globalTransform.m2, globalTransform.m1); set => globalRotation = value; }
 
-        public void Update_GlobalTransformsRecursive()
+        public void GlobalTransformsRecursive()
         {
             if (dirty == false)
                 return;
@@ -112,7 +129,7 @@ namespace GraphicalTest
             globalTransform = parent.GlobalTransform * localTransform;
 
             foreach (SceneObject child in children)
-                child.Update_GlobalTransformsRecursive();
+                child.GlobalTransformsRecursive();
         }
 
         public void MakeDirty(int level)
@@ -130,31 +147,20 @@ namespace GraphicalTest
                 child.MakeDirty(level+1);
         }
 
-        internal void Update_LocalTransformsRecursive()
+        internal void LocalTransformsRecursive()
         {
-            GlobalRotation = GlobalRotation;
+            if (dirty == false)
+                return;
 
-            Velocity += acceleration * DeltaTime;
-            acceleration = new MFG.Vector3(0, 0, 0);
-
-            Position += Velocity * DeltaTime;
-            Velocity *= (float)Math.Pow(1-friction, DeltaTime);
-
-            Rotation += rotationShift * DeltaTime;
-
-            rotationShift = 0;                                      //Reset it to zero
-           
-
-            if (dirty==true)
-                localTransform = baseTransform * TransformMatrix;
+            localTransform = baseTransform * TransformMatrix;
 
             GlobalRotation = GlobalRotation;
 
             foreach (SceneObject child in children)
-                child.Update_LocalTransformsRecursive();
+                child.LocalTransformsRecursive();
         }
 
-        internal void Update_DrawRecursive()
+        internal void DrawRecursive()
         {
             DrawTextureEx(image,
                 new Vector2(globalTransform.m7, globalTransform.m8) + ConvertV3ToV2(GlobalVariables.RotationMatrix2D(GlobalRotation)*offset),
@@ -162,22 +168,22 @@ namespace GraphicalTest
                 scale, Color.WHITE);
 
             foreach (SceneObject child in children)
-                child.Update_DrawRecursive();
+                child.DrawRecursive();
         }
 
-        internal void Update_DrawDebugRecursive()
+        internal void DrawDebugRecursive()
         {
 
             DrawLine((int)globalTransform.m7, (int)globalTransform.m8, (int)(globalTransform.m7 + DistDirToXY(100, GlobalRotation).x), (int)(globalTransform.m8 + DistDirToXY(100, GlobalRotation).y), Color.RED);                 // Debug line
 
             foreach (SceneObject child in children)
-                child.Update_DrawDebugRecursive();
+                child.DrawDebugRecursive();
         }
 
-        public virtual void Update_PersonalRecursive()
+        public virtual void PersonalRecursive()
         {
             foreach (SceneObject child in children)
-                child.Update_PersonalRecursive();
+                child.PersonalRecursive();
         }
     }
 }
