@@ -13,7 +13,7 @@ namespace GraphicalTest
 {
     class Turret : SceneObject
     {
-        private static float length=10;
+        private static float length=0;
         private float rotation=0;
         private MFG.Vector3 aimPosition;
 
@@ -33,11 +33,12 @@ namespace GraphicalTest
         {
             MaxSpeed = 0F;
             image = sprites.images[1];
+            offset = new MFG.Vector3(-image.width / 2, -image.height / 5, 0);
+            length = image.height;
             aimPosition = PointOffsetDistDir(length, rotation);
-            offset = new MFG.Vector3(-image.width / 2, -image.height / 5, 1);
-            //this.position -= new MFG.Vector3(image.width / 2, image.height / 5, 0);
+
         }
 
-        internal Bullet Fire() => new Bullet(aimPosition,rotation,sprites);
+        internal Bullet Fire() => new Bullet(GlobalTransform*aimPosition,GlobalRotation,sprites);
     }
 }

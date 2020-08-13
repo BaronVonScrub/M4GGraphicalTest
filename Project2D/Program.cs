@@ -13,7 +13,7 @@ namespace GraphicalTest
     {
         static void Main(string[] args)
         {
-            InitWindow(640, 480, "Hello World");
+            InitWindow(1600, 950, "Hello World");
             Game game = new Game();
             game.Init();
 

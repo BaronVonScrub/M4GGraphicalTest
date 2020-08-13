@@ -29,9 +29,12 @@ namespace GraphicalTest
         {
             playerController = new PlayerController(
                 new Tank(
-                    new  MFG.Vector3(0,0,1),
+                    new  MFG.Vector3(320,475,1),
                     new  MFG.Vector3(0,0,0),
-                    0, 0, TANK_BLACK, Scene));
+                    -(float)Math.PI/2, 0, TANK_BLACK, Scene));
+            new Tank(new MFG.Vector3(1280, 475, 1),
+                    new MFG.Vector3(0, 0, 0),
+                    (float)Math.PI / 2, 0, TANK_RED, Scene);
         }
 
         public void Init()
@@ -70,12 +73,15 @@ namespace GraphicalTest
 
             playerController.ProcessInput();
 
-            Scene.UpdateLocalTransforms();
-            Scene.UpdateGlobalTransforms();
+            Scene.Update_PersonalRecursive();
+            Scene.Update_PhysicsRecursive();
+            Scene.Update_LocalTransformsRecursive();
+            Scene.Update_GlobalTransformsRecursive();
 
             BeginDrawing();
             ClearBackground(Color.LIGHTGRAY);
-            Scene.DrawRecursive();
+            Scene.Update_DrawRecursive();
+            //Scene.Update_DrawDebugRecursive();
             EndDrawing();
 
         }

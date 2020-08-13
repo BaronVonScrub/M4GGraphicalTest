@@ -16,10 +16,17 @@ namespace GraphicalTest
     {
         static float AccRate = 100F;
         static float DecRate = 25F;
-        static float TurnSpeed = -3F;
-        static float TurretSpeed = 3F;
+        static float TurnSpeed = 1F;
+        static float TurretSpeed = 1F;
+        private float cooldown = 3f;
+        private float cooldownCount = 0f;
 
         internal Turret turret;
+
+        public float CooldownCount {
+            get => cooldownCount;
+            set => cooldownCount = (float)Math.Max(0, value);
+        }
 
         public Tank(MFG.Vector3 position,  MFG.Vector3 velocity, float rotation, float turretRot, SpriteSet sprites, SceneObject parent)
             : base(position,velocity, rotation, sprites, parent)
@@ -30,15 +37,28 @@ namespace GraphicalTest
             turret = new Turret( new MFG.Vector3(0,0,0) , 0,sprites, this);
         }
 
-        internal  MFG.Vector3 Forward() => acceleration = DistDirToXY(AccRate, globalRotation);
-        internal  MFG.Vector3 Backward() => acceleration = DistDirToXY(DecRate, globalRotation+(float)Math.PI);
+        public override void Update_PersonalRecursive()
+        {
+            CooldownCount -= DeltaTime;
+            base.Update_PersonalRecursive();
+        }
+
+        internal  MFG.Vector3 Forward() => acceleration = DistDirToXY(AccRate, GlobalRotation);
+        internal  MFG.Vector3 Backward() => acceleration = DistDirToXY(DecRate, GlobalRotation+(float)Math.PI);
 
         internal float TurnLeft() => RotationShift = TurnSpeed;
         internal float TurnRight() => RotationShift = -TurnSpeed;
 
-        internal float TurretLeft() => turret.RotationShift = TurretSpeed;
-        internal float TurretRight() => turret.RotationShift = -TurretSpeed;
+        internal float TurretLeft() => turret.RotationShift = -TurretSpeed;
+        internal float TurretRight() => turret.RotationShift = TurretSpeed;
 
-        internal Bullet Fire() => turret.Fire();
+        internal void Fire()
+        {
+            if (CooldownCount != 0)
+                return;
+
+            CooldownCount = cooldown;
+            turret.Fire();
+        }
     }
 }
