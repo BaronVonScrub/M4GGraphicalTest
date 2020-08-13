@@ -137,9 +137,11 @@ namespace GraphicalTest
 
         internal void DrawRecursive()
         {
-            float globalRotation = (float)Math.Atan2(globalTransform.m2,globalTransform.m1);
+            float globalRotation = (float)Math.Atan2(globalTransform.m2, globalTransform.m1);
 
-            DrawTextureEx(image, new Vector2(globalTransform.m7-image.width/2, globalTransform.m8-image.height/2), globalRotation*(float)(180.0f / Math.PI), 1, Color.WHITE);
+            DrawTextureEx(image, new Vector2(globalTransform.m7, globalTransform.m8)-new Vector2(origin.x, origin.y), globalRotation * (float)(180.0f / Math.PI), 1, Color.WHITE);
+
+            DrawLine((int)position.x, (int)position.y, (int)(position.x+DistDirToXY(100,globalRotation).x), (int)(position.y + DistDirToXY(100, globalRotation).y), Color.RED);                 // Debug line
 
             foreach (SceneObject child in children)
                 child.DrawRecursive();

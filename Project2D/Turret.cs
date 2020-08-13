@@ -24,7 +24,6 @@ namespace GraphicalTest
                     return;
                 rotation = (value + 2 * (float)Math.PI) % (2 * (float)Math.PI);
                 aimPosition = PointOffsetDistDir(length,rotation);
-                origin = new MFG.Vector3(image.width/5,image.height/2,1);
                 MakeDirty(0);
             }
         }
@@ -35,6 +34,8 @@ namespace GraphicalTest
             MaxSpeed = 0F;
             image = sprites.images[1];
             aimPosition = PointOffsetDistDir(length, rotation);
+            origin = new MFG.Vector3(image.width / 2, image.height / 5, 1);
+            this.position -= new MFG.Vector3(image.width / 2, image.height / 5, 0);
         }
 
         internal Bullet Fire() => new Bullet(aimPosition,rotation,sprites);
