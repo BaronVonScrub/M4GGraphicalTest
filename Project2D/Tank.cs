@@ -27,6 +27,7 @@ namespace GraphicalTest
             MaxSpeed = 50F;
             image = sprites.images[0];
             turret = new Turret(new  MFG.Vector3(0,0,0),0,sprites, this);
+            origin = new MFG.Vector3(image.width/2,image.height/2,1);
             //baseTransform *= new MFG.Matrix3(1,0,0,0,1,0,image.width/2,image.height/2,1);
             //baseTransform *= MFG.Matrix3.MatrixRotateZ(rotation-(float)Math.PI/2);
         }

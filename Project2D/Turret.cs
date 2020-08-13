@@ -24,6 +24,7 @@ namespace GraphicalTest
                     return;
                 rotation = (value + 2 * (float)Math.PI) % (2 * (float)Math.PI);
                 aimPosition = PointOffsetDistDir(length,rotation);
+                origin = new MFG.Vector3(image.width/5,image.height/2,1);
                 MakeDirty(0);
             }
         }

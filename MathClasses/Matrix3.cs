@@ -96,5 +96,16 @@ namespace MathClasses
                                       (float)Math.Sin(-v), (float)Math.Cos(-v), 0,
                                       0, 0, 1);
         }
+
+        public static Matrix3 Rotate2DAroundArbitraryPoint(float rotation, Vector3 point)
+        {
+            float r = rotation;
+            Vector3 p=point;
+
+            return new Matrix3(
+                (float)Math.Cos(r), (float)Math.Sin(r), 0,
+                (float)-Math.Sin(r), (float)Math.Cos(r), 0,
+                -p.x * (float)Math.Cos(r) + p.y * (float)Math.Sin(r) + p.x, -p.x * (float)Math.Sin(r) - p.y * (float)Math.Cos(r) + p.y, 1);
+        }
     }
 }

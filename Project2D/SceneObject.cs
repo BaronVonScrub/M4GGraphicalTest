@@ -20,6 +20,7 @@ namespace GraphicalTest
 
         protected MFG.Vector3 position = new MFG.Vector3(0, 0, 1);
         protected MFG.Vector3 velocity = new MFG.Vector3(0, 0, 0);
+        protected MFG.Vector3 origin = new MFG.Vector3(0,0,1);
         protected SpriteSet sprites;
         protected Texture2D image;
         internal MFG.Vector3 acceleration = new MFG.Vector3(0, 0, 0);
@@ -49,7 +50,7 @@ namespace GraphicalTest
             {
                 return
                     new Matrix3(1, 0, 0, 0, 1, 0, Position.x, Position.y, 1) *
-                    MFG.Matrix3.MatrixRotateZ(Rotation) *
+                    MFG.Matrix3.Rotate2DAroundArbitraryPoint(Rotation,origin) *
                     new Matrix3(scale, 0, 0, 0, scale, 0, 0, 0, 1);
             }
         }
