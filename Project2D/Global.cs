@@ -28,12 +28,40 @@ namespace GraphicalTest
 
         internal static MFG.Vector3 DistDirToXY(float distance, float direction)
         {
-            return new MFG.Vector3(distance*(float)Math.Sin(direction), distance * (float)Math.Cos(direction),0);
+            return new MFG.Vector3(distance*(float)-Math.Sin(direction), distance * (float)Math.Cos(direction),0);
+        }
+
+        internal static Vector2 DistDirToXYV2(float distance, float direction)
+        {
+            return new Vector2(distance * (float)-Math.Sin(direction), distance * (float)Math.Cos(direction));
         }
 
         internal static MFG.Vector3 PointOffsetDistDir(float distance, float direction)
         {
             return new MFG.Vector3(distance * (float)Math.Sin(direction), distance * (float)Math.Cos(direction), 1);
+        }
+
+        internal static Vector2 ConvertV3ToV2(MFG.Vector3 vec)
+        {
+            return new Vector2(vec.x, vec.y);
+        }
+
+        public static MFG.Matrix3 RotationMatrix2D(float v)
+        {
+            return new MFG.Matrix3((float)Math.Cos(-v), (float)-Math.Sin(-v), 0,
+                                      (float)Math.Sin(-v), (float)Math.Cos(-v), 0,
+                                      0, 0, 1);
+        }
+
+        public static MFG.Matrix3 RotationMatrix2D(float rotation, Vector3 pivot)
+        {
+            float r = rotation;
+            Vector3 p = pivot;
+
+            return new MFG.Matrix3(
+                (float)Math.Cos(r), (float)Math.Sin(r), 0,
+                (float)-Math.Sin(r), (float)Math.Cos(r), 0,
+                -p.x * (float)Math.Cos(r) + p.y * (float)Math.Sin(r) + p.x, -p.x * (float)Math.Sin(r) - p.y * (float)Math.Cos(r) + p.y, 1);
         }
 
         internal static void Log(float val)

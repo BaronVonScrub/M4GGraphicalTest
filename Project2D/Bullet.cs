@@ -17,6 +17,7 @@ namespace GraphicalTest
         {
             MaxSpeed = 20F;
             image = sprites.images[2];
+            friction = 0;
         }
     }
 }

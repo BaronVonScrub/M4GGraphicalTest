@@ -34,8 +34,8 @@ namespace GraphicalTest
             MaxSpeed = 0F;
             image = sprites.images[1];
             aimPosition = PointOffsetDistDir(length, rotation);
-            origin = new MFG.Vector3(image.width / 2, image.height / 5, 1);
-            this.position -= new MFG.Vector3(image.width / 2, image.height / 5, 0);
+            offset = new MFG.Vector3(-image.width / 2, -image.height / 5, 1);
+            //this.position -= new MFG.Vector3(image.width / 2, image.height / 5, 0);
         }
 
         internal Bullet Fire() => new Bullet(aimPosition,rotation,sprites);

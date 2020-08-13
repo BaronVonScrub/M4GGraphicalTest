@@ -248,7 +248,7 @@ namespace Raylib
 
         // Returns z-rotation matrix (angle in radians)
         [DllImport(nativeLibName, CallingConvention = CallingConvention.Cdecl)]
-        public static extern Matrix MatrixRotateZ(float angle);
+        public static extern Matrix RotationMatrix2D(float angle);
 
         // Returns scaling matrix
         [DllImport(nativeLibName, CallingConvention = CallingConvention.Cdecl)]

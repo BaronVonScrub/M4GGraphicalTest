@@ -1,11 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using MFG = MathClasses;
-using System.Text;
-using MathClasses;
+﻿using MathClasses;
 using Raylib;
-using static Raylib.Raylib;
+using System;
+using System.Collections.Generic;
 using static GraphicalTest.GlobalVariables;
+using static Raylib.Raylib;
+using MFG = MathClasses;
 
 namespace GraphicalTest
 {
@@ -18,9 +17,12 @@ namespace GraphicalTest
         private float rotation = 0;
         private float rotationShift = 0;
 
+        protected float friction = 0.1F;
+        protected float globalRotation = 0;
+
         protected MFG.Vector3 position = new MFG.Vector3(0, 0, 1);
         protected MFG.Vector3 velocity = new MFG.Vector3(0, 0, 0);
-        protected MFG.Vector3 origin = new MFG.Vector3(0,0,1);
+        protected MFG.Vector3 offset = new MFG.Vector3(0,0,0);
         protected SpriteSet sprites;
         protected Texture2D image;
         internal MFG.Vector3 acceleration = new MFG.Vector3(0, 0, 0);
@@ -50,7 +52,7 @@ namespace GraphicalTest
             {
                 return
                     new Matrix3(1, 0, 0, 0, 1, 0, Position.x, Position.y, 1) *
-                    MFG.Matrix3.Rotate2DAroundArbitraryPoint(Rotation,origin) *
+                    GlobalVariables.RotationMatrix2D(Rotation) *
                     new Matrix3(scale, 0, 0, 0, scale, 0, 0, 0, 1);
             }
         }
@@ -122,8 +124,16 @@ namespace GraphicalTest
 
         internal void UpdateLocalTransforms()
         {
+            globalRotation = (float)Math.Atan2(globalTransform.m2, globalTransform.m1);
+
             Velocity += acceleration * DeltaTime;
+            acceleration = new MFG.Vector3(0, 0, 0);
+
             Position += velocity * DeltaTime;
+            velocity *= (float)Math.Pow(friction, DeltaTime);
+            if (velocity.Magnitude() < 0.01)
+                velocity = new MFG.Vector3(0, 0, 0);
+
             Rotation += rotationShift * DeltaTime;
 
             rotationShift = 0;                                      //Reset it to zero
@@ -131,21 +141,24 @@ namespace GraphicalTest
             if (dirty==true)
                 localTransform = baseTransform * TransformMatrix;
 
+            globalRotation = (float)Math.Atan2(globalTransform.m2, globalTransform.m1);
+
             foreach (SceneObject child in children)
                 child.UpdateLocalTransforms();
         }
 
         internal void DrawRecursive()
         {
-            float globalRotation = (float)Math.Atan2(globalTransform.m2, globalTransform.m1);
 
-            DrawTextureEx(image, new Vector2(globalTransform.m7, globalTransform.m8)-new Vector2(origin.x, origin.y), globalRotation * (float)(180.0f / Math.PI), 1, Color.WHITE);
+            DrawTextureEx(image,
+                new Vector2(globalTransform.m7, globalTransform.m8) + ConvertV3ToV2(GlobalVariables.RotationMatrix2D(globalRotation)*offset),
+                globalRotation * (float)(180.0f / Math.PI),
+                1, Color.WHITE);
 
-            DrawLine((int)position.x, (int)position.y, (int)(position.x+DistDirToXY(100,globalRotation).x), (int)(position.y + DistDirToXY(100, globalRotation).y), Color.RED);                 // Debug line
+            DrawLine((int)globalTransform.m7, (int)globalTransform.m8, (int)(globalTransform.m7 + DistDirToXY(100,globalRotation).x), (int)(globalTransform.m8 + DistDirToXY(100, globalRotation).y), Color.RED);                 // Debug line
 
             foreach (SceneObject child in children)
                 child.DrawRecursive();
         }
-
     }
 }
