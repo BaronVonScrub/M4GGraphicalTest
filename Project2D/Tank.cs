@@ -35,7 +35,7 @@ namespace GraphicalTest
             offset = new MFG.Vector3(-image.width / 2, -image.height / 2, 0);
             turret = new Turret( new MFG.Vector3(0,0,0) , 0,sprites, this);
             friction = 0.9F;
-            boxSize = CalcBoxSize(offset,image);
+            maxBoxDimension = CalcBoxSize(offset,image);
         }
 
         public override void PersonalRecursive()

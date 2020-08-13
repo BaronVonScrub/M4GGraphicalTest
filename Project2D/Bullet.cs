@@ -18,7 +18,7 @@ namespace GraphicalTest
             friction = 0;
             offset = new MFG.Vector3(-image.width / 2, -image.height / 2, 0);
             scale = 0.8F;
-            boxSize = CalcBoxSize(offset, image);
+            maxBoxDimension = CalcBoxSize(offset, image);
         }
     }
 }

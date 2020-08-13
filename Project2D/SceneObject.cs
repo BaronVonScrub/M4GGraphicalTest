@@ -28,7 +28,7 @@ namespace GraphicalTest
         protected Matrix3 baseTransform = new Matrix3();
         protected Matrix3 localTransform = new Matrix3();
         protected float MinSpeed = 0.01F;
-        internal float boxSize = float.MaxValue;
+        internal float maxBoxDimension = float.MaxValue;
 
         public SceneObject()
         {

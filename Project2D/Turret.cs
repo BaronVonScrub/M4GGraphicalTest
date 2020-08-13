@@ -36,7 +36,7 @@ namespace GraphicalTest
             offset = new MFG.Vector3(-image.width / 2, -image.height / 5, 0);
             length = image.height;
             AimPosition = PointOffsetDistDir(length, rotation);
-            boxSize = CalcBoxSize(offset, image);
+            maxBoxDimension = CalcBoxSize(offset, image);
         }
 
         internal Bullet Fire() => new Bullet(AimPosition,GlobalRotation,sprites);

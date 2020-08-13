@@ -73,25 +73,50 @@ namespace GraphicalTest
                 -p.x * (float)Math.Cos(r) + p.y * (float)Math.Sin(r) + p.x, -p.x * (float)Math.Sin(r) - p.y * (float)Math.Cos(r) + p.y, 1);
         }
 
+
+        //Return all valid collisions between objects in a given list
         internal static List<Collision> CollisionCheck(List<SceneObject> objList)
         {
-            List<Collision> collisionList = new List<Collision>();
+            List<Collision> collisionList = new List<Collision>();                                                      //Prep a list
             do
             {
-                SceneObject currObj = objList[0];
+                SceneObject currObj = objList[0];                                                                       //Use first object
                 for (int i = 1; i < objList.Count; i++)
                 {
-                    SceneObject otherObj = objList[i];
-                    if (DistanceBetweenObjs(currObj, otherObj) > currObj.boxSize + otherObj.boxSize)
-                        break;
-                    //FURTHER CHECKS
-                    collisionList.Add(new Collision(currObj, otherObj));
+                    SceneObject otherObj = objList[i];                                                                  //Against each other object
+
+                    //if (currObj.TypeIgnoreList.Contains(otherObj.GetType()))                                          //If it is a type ignore,
+                        //continue;                                                                                     //Skip
+
+                    //if (currObj.SpecificIgnoreList.Contains(otherObj))                                                //If it is a specific ignore,
+                        //continue;                                                                                     //Skip
+
+                    if (DistanceBetweenObjs(currObj, otherObj) > currObj.maxBoxDimension + otherObj.maxBoxDimension)    //If they are too far apart to touch,
+                        continue;                                                                                       //Skip
+
+                    //if (!collides(currObj.Box,otherObj.box))                                                          //If oriented bounding boxes don't collide
+                        //continue                                                                                      //Skip
+
+                    collisionList.Add(new Collision(currObj, otherObj));                                                //Add pair to final list if all checks passed
                 }
-                objList.Remove(currObj);
+                objList.Remove(currObj);                                                                                //Remove considered object
             }
-            while (objList.Count != 0);
-            return collisionList;
+            while (objList.Count != 0);                                                                                 //Do it until they're all processed
+            return collisionList;                                                                                       //Return the list
         }
+
+        internal struct Collision
+        {
+            SceneObject a;
+            SceneObject b;
+
+            public Collision(SceneObject a, SceneObject b)
+            {
+                this.a = a;
+                this.b = b;
+            }
+        }
+
 
         internal static float DistanceBetweenObjs(SceneObject a, SceneObject b)
         {
@@ -163,18 +188,6 @@ namespace GraphicalTest
             for (int i = 0; i < images.Length; i++)
                 temp[i] = LoadTextureFromImage(images[i]);
             this.images = temp;
-        }
-    }
-
-    struct Collision
-    {
-        SceneObject a;
-        SceneObject b;
-
-        public Collision(SceneObject a, SceneObject b)
-        {
-            this.a = a;
-            this.b = b;
         }
     }
 }
