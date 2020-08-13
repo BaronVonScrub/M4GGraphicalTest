@@ -75,6 +75,11 @@ namespace GraphicalTest
 
             Scene.PersonalRecursive();
             Scene.PhysicsRecursive();
+
+            var objList = new List<SceneObject>();
+            Scene.CollectRecursive(objList);
+            Collisions = CollisionCheck(objList);
+
             Scene.LocalTransformsRecursive();
             Scene.GlobalTransformsRecursive();
 

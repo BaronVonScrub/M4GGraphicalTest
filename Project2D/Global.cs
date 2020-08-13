@@ -26,6 +26,8 @@ namespace GraphicalTest
 
         public static SceneObject Scene { get; set; } = new SceneObject();
 
+        public static List<Collision> Collisions { get; set; } = new List<Collision>();
+
         internal static MFG.Vector3 DistDirToXY(float distance, float direction)
         {
             return new MFG.Vector3(distance*(float)-Math.Sin(direction), distance * (float)Math.Cos(direction),0);
@@ -53,6 +55,13 @@ namespace GraphicalTest
                                       0, 0, 1);
         }
 
+        internal static float CalcBoxSize(MFG.Vector3 offset, Texture2D image)
+        {
+            float xx = Math.Max(Math.Abs(offset.x), Math.Abs(image.width - offset.x));
+            float yy = Math.Max(Math.Abs(offset.y), Math.Abs(image.height - offset.y));
+            return (float)Math.Sqrt(xx * xx + yy * yy);
+        }
+
         public static MFG.Matrix3 RotationMatrix2D(float rotation, Vector3 pivot)
         {
             float r = rotation;
@@ -62,6 +71,34 @@ namespace GraphicalTest
                 (float)Math.Cos(r), (float)Math.Sin(r), 0,
                 (float)-Math.Sin(r), (float)Math.Cos(r), 0,
                 -p.x * (float)Math.Cos(r) + p.y * (float)Math.Sin(r) + p.x, -p.x * (float)Math.Sin(r) - p.y * (float)Math.Cos(r) + p.y, 1);
+        }
+
+        internal static List<Collision> CollisionCheck(List<SceneObject> objList)
+        {
+            List<Collision> collisionList = new List<Collision>();
+            do
+            {
+                SceneObject currObj = objList[0];
+                for (int i = 1; i < objList.Count; i++)
+                {
+                    SceneObject otherObj = objList[i];
+                    if (DistanceBetweenObjs(currObj, otherObj) > currObj.boxSize + otherObj.boxSize)
+                        break;
+                    //FURTHER CHECKS
+                    collisionList.Add(new Collision(currObj, otherObj));
+                }
+                objList.Remove(currObj);
+            }
+            while (objList.Count != 0);
+            return collisionList;
+        }
+
+        internal static float DistanceBetweenObjs(SceneObject a, SceneObject b)
+        {
+            var xx = Math.Abs(a.Position.x - b.Position.x);
+            var yy = Math.Abs(a.Position.y - b.Position.y);
+            return (float)Math.Sqrt(xx * xx + yy * yy);
+
         }
 
         internal static void Log(float val)
@@ -126,6 +163,18 @@ namespace GraphicalTest
             for (int i = 0; i < images.Length; i++)
                 temp[i] = LoadTextureFromImage(images[i]);
             this.images = temp;
+        }
+    }
+
+    struct Collision
+    {
+        SceneObject a;
+        SceneObject b;
+
+        public Collision(SceneObject a, SceneObject b)
+        {
+            this.a = a;
+            this.b = b;
         }
     }
 }

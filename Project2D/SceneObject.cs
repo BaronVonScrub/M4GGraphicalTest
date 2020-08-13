@@ -28,6 +28,7 @@ namespace GraphicalTest
         protected Matrix3 baseTransform = new Matrix3();
         protected Matrix3 localTransform = new Matrix3();
         protected float MinSpeed = 0.01F;
+        internal float boxSize = float.MaxValue;
 
         public SceneObject()
         {
@@ -72,6 +73,13 @@ namespace GraphicalTest
 
             foreach (SceneObject child in children)
                 child.PhysicsRecursive();
+        }
+
+        internal void CollectRecursive(List<SceneObject> received)
+        {
+            received.Add(this);
+            foreach (SceneObject child in children)
+                child.CollectRecursive(received);
         }
 
         public MFG.Vector3 Velocity
