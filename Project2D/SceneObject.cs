@@ -43,6 +43,7 @@ namespace GraphicalTest
             this.sprites = sprites;
             this.parent = parent;
             parent.children.Add(this);
+            ObjectList.Add(this);                                                                                                   //MUST REMOVE THIS REFERENCE ON DESTRUCTION
         }
 
         protected Matrix3 TransformMatrix
@@ -73,13 +74,6 @@ namespace GraphicalTest
 
             foreach (SceneObject child in children)
                 child.PhysicsRecursive();
-        }
-
-        internal void CollectRecursive(List<SceneObject> received)
-        {
-            received.Add(this);
-            foreach (SceneObject child in children)
-                child.CollectRecursive(received);
         }
 
         public MFG.Vector3 Velocity
