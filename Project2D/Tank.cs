@@ -33,7 +33,7 @@ namespace GraphicalTest
         {
             image = sprites.images[0];
             offset = new MFG.Vector3(-image.width / 2, -image.height / 2, 0);
-            turret = new Turret(new MFG.Vector3(0, 0, 0), 0, sprites, this);
+            turret = new Turret(new MFG.Vector3(0, 0, 1), 0, sprites, this);
             friction = 0.9F;
             maxBoxDimension = CalcBoxSize(offset, image);
             Box = GetDefaultBoundingBox();

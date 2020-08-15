@@ -48,14 +48,19 @@ namespace GraphicalTest
             this.Position = position;
             this.Velocity = velocity;
             this.Rotation = rotation;
-            this.localTransform = TransformMatrix;
+            this.localTransform = LocalTransform;
+            this.GlobalTransform = parent.GlobalTransform * localTransform;
             this.sprites = sprites;
             this.parent = parent;
-            parent.children.Add(this);
+            parent.children.Add(this);                                                                                       //MUST REMOVE THIS REFERENCE ON DESTRUCTION
             ObjectList.Add(this);                                                                                            //MUST REMOVE THIS REFERENCE ON DESTRUCTION
+            specificIgnore.Add(parent);
+            if (parent!=Scene)
+                specificIgnore.AddRange(parent.specificIgnore);
+            parent.specificIgnore.Add(this);                                                                                 //MUST REMOVE THIS REFERENCE ON DESTRUCTION
         }
 
-        protected Matrix3 TransformMatrix
+        protected Matrix3 LocalTransform
         {
             get
             {
@@ -134,7 +139,7 @@ namespace GraphicalTest
         public float GlobalRotation { get => (float)Math.Atan2(GlobalTransform.m2, GlobalTransform.m1); }
         public Matrix3 GlobalTransform { get; set; } = new MFG.Matrix3();
 
-        public MFG.Vector3 GlobalPosition { get => GlobalTransform * position; }
+        public MFG.Vector3 GlobalPosition { get => new MFG.Vector3(GlobalTransform.m7, GlobalTransform.m8,1) + GlobalVariables.RotationMatrix2D(GlobalRotation) * offset; }
 
         public void GlobalTransformsRecursive()
         {
@@ -170,7 +175,7 @@ namespace GraphicalTest
             if (dirty == false)
                 return;
 
-            localTransform = baseTransform * TransformMatrix;
+            localTransform = baseTransform * LocalTransform;
 
             foreach (SceneObject child in children)
                 child.LocalTransformsRecursive();

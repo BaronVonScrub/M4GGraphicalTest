@@ -78,7 +78,7 @@ namespace GraphicalTest
 
             CollisionChecks();
             if (Collisions.Count != 0)
-                System.Diagnostics.Debugger.Break();
+                Console.WriteLine("VALID COLLISION!!!");
             //CollisionProcess();
 
             Scene.LocalTransformsRecursive();

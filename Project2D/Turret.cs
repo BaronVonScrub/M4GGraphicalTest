@@ -37,8 +37,9 @@ namespace GraphicalTest
             length = image.height;
             AimPosition = PointOffsetDistDir(length, rotation);
             maxBoxDimension = CalcBoxSize(offset, image);
+            Box = GetDefaultBoundingBox();
         }
 
-        internal Bullet Fire() => new Bullet(AimPosition,GlobalRotation,sprites);
+        internal Bullet Fire() => new Bullet(AimPosition,GlobalRotation,sprites,specificIgnore,this);
     }
 }

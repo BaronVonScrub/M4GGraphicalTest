@@ -87,10 +87,10 @@ namespace GraphicalTest
                     {
                         SceneObject otherObj = ObjectList[j];
 
-                        if (currObj.typeIgnore.Contains(otherObj.GetType()))                                          //If it is a type ignore,
+                        if (currObj.typeIgnore.Contains(otherObj.GetType())||otherObj.typeIgnore.Contains(currObj.GetType()))                                          //If it is a type ignore,
                         continue;                                                                                         //Skip
 
-                        if (currObj.specificIgnore.Contains(otherObj))                                                //If it is a specific ignore,
+                        if (currObj.specificIgnore.Contains(otherObj)||otherObj.specificIgnore.Contains(currObj))                                                //If it is a specific ignore,
                         continue;                                                                                         //Skip
 
                         if (DistanceBetweenObjs(currObj, otherObj) > currObj.maxBoxDimension + otherObj.maxBoxDimension)    //If they are too far apart to touch,
@@ -166,10 +166,7 @@ namespace GraphicalTest
             return ((s >= 0 && s <= 1) && (t >= 0 && t <= 1));
         }
 
-        private static Boolean SameSlope(VecLine a, VecLine b)
-        {
-            return (a.moveVec.x / b.moveVec.x == a.moveVec.y / b.moveVec.y);
-        }
+
 
         internal struct VecLine
         {
