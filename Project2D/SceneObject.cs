@@ -96,9 +96,9 @@ namespace GraphicalTest
                 new MFG.Vector3[]
                 {
                 new MFG.Vector3(offset.x, offset.y, 1),
-                new MFG.Vector3(image.width - offset.x, offset.y, 1),
-                new MFG.Vector3(image.width - offset.x, image.height - offset.y, 1),
-                new MFG.Vector3(offset.x, image.height - offset.y, 1)
+                new MFG.Vector3(image.width + offset.x, offset.y, 1),
+                new MFG.Vector3(image.width + offset.x, image.height + offset.y, 1),
+                new MFG.Vector3(offset.x, image.height + offset.y, 1)
                 }
                 );
         }
@@ -196,6 +196,9 @@ namespace GraphicalTest
         {
 
             DrawLine((int)GlobalTransform.m7, (int)GlobalTransform.m8, (int)(GlobalTransform.m7 + DistDirToXY(100, GlobalRotation).x), (int)(GlobalTransform.m8 + DistDirToXY(100, GlobalRotation).y), Color.RED);                 // Debug line
+
+            for (int i=0;i<Box.vertices.Length; i++)
+            DrawLine((int)Box.vertices[i].x, (int)Box.vertices[i].y, (int)Box.vertices[(i+1)%Box.vertices.Length].x, (int)Box.vertices[(i + 1) % Box.vertices.Length].y,Color.RED);
 
             foreach (SceneObject child in children)
                 child.DrawDebugRecursive();

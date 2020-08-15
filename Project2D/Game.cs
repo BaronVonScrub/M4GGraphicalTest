@@ -87,7 +87,7 @@ namespace GraphicalTest
             BeginDrawing();
             ClearBackground(Color.LIGHTGRAY);
             Scene.DrawRecursive();
-            //Scene.DrawDebugRecursive();
+            Scene.DrawDebugRecursive();
             EndDrawing();
 
         }
