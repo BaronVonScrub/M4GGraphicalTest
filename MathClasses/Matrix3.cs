@@ -51,6 +51,16 @@ namespace MathClasses
             return newMat;
         }
 
+        public static Vector3[] operator *(Matrix3 m, Vector3[] v)
+        {
+            Vector3[] temp = new Vector3[v.Length];
+            for (int i = 0; i < temp.Length; i++)
+            {
+                temp[i] = m * v[i];
+            }
+            return temp;
+        }
+
         public void SetRotateX(float v)
         {
             Matrix3 rot = new Matrix3(1,                 0,                  0,

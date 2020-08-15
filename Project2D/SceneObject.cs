@@ -16,12 +16,18 @@ namespace GraphicalTest
         protected float scale = 1;
         private float rotation = 0;
         private float rotationShift = 0;
-
         protected float friction = 0.9F;
+
+        private BoundingBox box = new BoundingBox(new MFG.Vector3[0]);
+        internal BoundingBox Box{
+            get => new BoundingBox(GlobalTransform * box.vertices);
+            set => box = value;
+        }
 
         protected MFG.Vector3 position = new MFG.Vector3(0, 0, 1);
         protected MFG.Vector3 velocity = new MFG.Vector3(0, 0, 0);
         protected MFG.Vector3 offset = new MFG.Vector3(0,0,0);
+
         protected SpriteSet sprites;
         protected Texture2D image;
         internal MFG.Vector3 acceleration = new MFG.Vector3(0, 0, 0);
@@ -29,6 +35,9 @@ namespace GraphicalTest
         protected Matrix3 localTransform = new Matrix3();
         protected float MinSpeed = 0.01F;
         internal float maxBoxDimension = float.MaxValue;
+
+        internal List<Type> typeIgnore = new List<Type>();
+        internal List<SceneObject> specificIgnore = new List<SceneObject>();
 
         public SceneObject()
         {
@@ -43,7 +52,7 @@ namespace GraphicalTest
             this.sprites = sprites;
             this.parent = parent;
             parent.children.Add(this);
-            ObjectList.Add(this);                                                                                                   //MUST REMOVE THIS REFERENCE ON DESTRUCTION
+            ObjectList.Add(this);                                                                                            //MUST REMOVE THIS REFERENCE ON DESTRUCTION
         }
 
         protected Matrix3 TransformMatrix
@@ -74,6 +83,19 @@ namespace GraphicalTest
 
             foreach (SceneObject child in children)
                 child.PhysicsRecursive();
+        }
+
+        protected BoundingBox GetDefaultBoundingBox()
+        {
+            return new BoundingBox(
+                new MFG.Vector3[]
+                {
+                new MFG.Vector3(offset.x, offset.y, 1),
+                new MFG.Vector3(image.width - offset.x, offset.y, 1),
+                new MFG.Vector3(image.width - offset.x, image.height - offset.y, 1),
+                new MFG.Vector3(offset.x, image.height - offset.y, 1)
+                }
+                );
         }
 
         public MFG.Vector3 Velocity
@@ -111,6 +133,8 @@ namespace GraphicalTest
 
         public float GlobalRotation { get => (float)Math.Atan2(GlobalTransform.m2, GlobalTransform.m1); }
         public Matrix3 GlobalTransform { get; set; } = new MFG.Matrix3();
+
+        public MFG.Vector3 GlobalPosition { get => GlobalTransform * position; }
 
         public void GlobalTransformsRecursive()
         {

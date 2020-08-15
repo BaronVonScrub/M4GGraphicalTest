@@ -11,6 +11,7 @@ namespace GraphicalTest
 {
     static class Sprites
     {
+
         internal static SpriteSet TANK_BEIGE =
             new SpriteSet(new Image[]{LoadImage("../Images/Tanks/tankBeige_outline.png"),
                               LoadImage("../Images/Tanks/barrelBeige_outline.png"),

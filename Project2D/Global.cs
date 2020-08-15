@@ -64,10 +64,10 @@ namespace GraphicalTest
             return (float)Math.Sqrt(xx * xx + yy * yy);
         }
 
-        public static MFG.Matrix3 RotationMatrix2D(float rotation, Vector3 pivot)
+        public static MFG.Matrix3 RotationMatrix2D(float rotation, Raylib.Vector3 pivot)
         {
             float r = rotation;
-            Vector3 p = pivot;
+            Raylib.Vector3 p = pivot;
 
             return new MFG.Matrix3(
                 (float)Math.Cos(r), (float)Math.Sin(r), 0,
@@ -87,17 +87,17 @@ namespace GraphicalTest
                     {
                         SceneObject otherObj = ObjectList[j];
 
-                        //if (currObj.TypeIgnoreList.Contains(otherObj.GetType()))                                          //If it is a type ignore,
-                        //continue;                                                                                         //Skip
+                        if (currObj.typeIgnore.Contains(otherObj.GetType()))                                          //If it is a type ignore,
+                        continue;                                                                                         //Skip
 
-                        //if (currObj.SpecificIgnoreList.Contains(otherObj))                                                //If it is a specific ignore,
-                        //continue;                                                                                         //Skip
+                        if (currObj.specificIgnore.Contains(otherObj))                                                //If it is a specific ignore,
+                        continue;                                                                                         //Skip
 
                         if (DistanceBetweenObjs(currObj, otherObj) > currObj.maxBoxDimension + otherObj.maxBoxDimension)    //If they are too far apart to touch,
                             continue;                                                                                       //Skip
 
-                        //if (!collides(currObj.Box,otherObj.box))                                                          //If oriented bounding boxes don't collide
-                        //continue                                                                                          //Skip
+                    if (!Collides(currObj.Box, otherObj.Box))                                                          //If oriented bounding boxes don't collide
+                        continue;                                                                                     //Skip
 
                         collisionList.Add(new Collision(currObj, otherObj));                                                //Add pair to final list if all checks passed
                     }
@@ -105,9 +105,82 @@ namespace GraphicalTest
             Collisions =  collisionList;
         }
 
-        internal static void CollisionProcess()
+        internal static Boolean Collides(BoundingBox a, BoundingBox b)
         {
+            MFG.Vector3 origin = new MFG.Vector3(0, 0, 1);
+            int aLen = a.vertices.Length;
+            int bLen = b.vertices.Length;
 
+            for (int i = 0; i < aLen; i++)
+            {
+                VecLine lineA = new VecLine(a.vertices[i],a.vertices[(i + 1) % aLen]);
+                for (int j = 0; j < bLen; j++)
+                {
+                    VecLine lineB = new VecLine(b.vertices[j], b.vertices[(j + 1) % bLen]);
+                    if (Intersects(lineA, lineB))
+                        return true;
+                }
+            }
+            return false;
+        }
+
+        private static bool Intersects(VecLine a, VecLine b)
+        {
+            #region Derivation maths
+            //Parametric line = line.point + w*line.vector, 0 <= w <= 1
+            //So,
+            //Parametric lineA = a.p+s*a.v, 0 <= s <= 1
+            //Parametric lineB = b.p+t*b.v, 0 <= t <= 1
+
+            //lineA x = a.p.x+s*a.v.x;
+            //lineB x = b.p.x+t*b.v.x;
+            //lineA y = a.p.y+s*a.v.y;
+            //lineB y = b.p.y+t*b.v.y;
+
+            //The line segments intersect where a.x = b.x and a.y = b.y
+
+            //lineA x = lineB x
+            //a.p.x+s*a.v.x = b.p.x+t*b.v.x
+            //s=(b.p.x+t*b.v.x - a.p.x)/a.v.x
+
+            //lineA y = lineB y
+            //a.p.y+s*a.v.y = b.p.y+t*b.v.y
+            //s=(b.p.y+t*b.v.y-a.p.y)/a.v.y
+
+            //(b.p.x+t*b.v.x - a.p.x)/a.v.x = (b.p.y+t*b.v.y-a.p.y)/a.v.y
+            //a.v.y*(b.p.x + t*b.v.x - a.p.x) = a.v.x*(b.p.y+t*b.v.y-a.p.y)
+            //a.v.y*(b.p.x - a.p.x) = a.v.x*(b.p.y+t*b.v.y-a.p.y) - a.v.y*t*b.v.x
+            //a.v.y*(b.p.x - a.p.x) = a.v.x*(b.p.y-a.p.y) - a.v.y*t*b.v.x + a.v.x*t*b.v.y
+            //a.v.x*(b.p.y-a.p.y) - a.v.y*(b.p.x - a.p.x) = a.v.y*t*b.v.x + a.v.x*t*b.v.y
+            //a.v.x*(b.p.y-a.p.y) - a.v.y*(b.p.x - a.p.x) = t*(a.v.y*b.v.x + a.v.x*b.v.y)
+            #endregion
+
+            //t=(a.v.x*(b.p.y-a.p.y) - a.v.y*(b.p.x - a.p.x))/(a.v.y*b.v.x + a.v.x*b.v.y)
+            float t = (a.moveVec.x * (b.startPoint.y - a.startPoint.y) - a.moveVec.y * (b.startPoint.x - a.startPoint.x))/(a.moveVec.y*b.moveVec.x + a.moveVec.x*b.moveVec.y);
+
+            //From above
+            //s=(b.p.x+t*b.v.x - a.p.x)/a.v.x
+            float s = (b.startPoint.x+t*b.moveVec.x - a.startPoint.x)/a.moveVec.x;
+
+            //(s,t) is the point of intersection; if they both exist within the range 0,1, then the lines intersect
+            return ((s >= 0 && s <= 1) && (t >= 0 && t <= 1));
+        }
+
+        private static Boolean SameSlope(VecLine a, VecLine b)
+        {
+            return (a.moveVec.x / b.moveVec.x == a.moveVec.y / b.moveVec.y);
+        }
+
+        internal struct VecLine
+        {
+            internal MFG.Vector3 startPoint;
+            internal MFG.Vector3 moveVec;
+
+            internal VecLine(MFG.Vector3 startPoint, MFG.Vector3 endPoint)
+            {
+                this.startPoint = startPoint;
+                this.moveVec = endPoint - startPoint;
+            }
         }
 
         internal struct Collision
@@ -125,8 +198,8 @@ namespace GraphicalTest
 
         internal static float DistanceBetweenObjs(SceneObject a, SceneObject b)
         {
-            var xx = Math.Abs(a.Position.x - b.Position.x);
-            var yy = Math.Abs(a.Position.y - b.Position.y);
+            var xx = Math.Abs(a.GlobalPosition.x - b.GlobalPosition.x);
+            var yy = Math.Abs(a.GlobalPosition.y - b.GlobalPosition.y);
             return (float)Math.Sqrt(xx * xx + yy * yy);
 
         }
@@ -193,6 +266,16 @@ namespace GraphicalTest
             for (int i = 0; i < images.Length; i++)
                 temp[i] = LoadTextureFromImage(images[i]);
             this.images = temp;
+        }
+    }
+
+    internal struct BoundingBox
+    {
+        internal MFG.Vector3[] vertices;
+
+        internal BoundingBox(MFG.Vector3[] vertices)
+        {
+            this.vertices = vertices;
         }
     }
 }

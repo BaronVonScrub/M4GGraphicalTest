@@ -77,7 +77,9 @@ namespace GraphicalTest
             Scene.PhysicsRecursive();
 
             CollisionChecks();
-            CollisionProcess();
+            if (Collisions.Count != 0)
+                System.Diagnostics.Debugger.Break();
+            //CollisionProcess();
 
             Scene.LocalTransformsRecursive();
             Scene.GlobalTransformsRecursive();

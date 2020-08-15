@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Raylib;
 using static Raylib.Raylib;
 using static GraphicalTest.Sprites;
+using System.IO;
 
 namespace GraphicalTest
 {

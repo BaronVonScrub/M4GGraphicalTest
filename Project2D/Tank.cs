@@ -28,14 +28,15 @@ namespace GraphicalTest
             set => cooldownCount = (float)Math.Max(0, value);
         }
 
-        public Tank(MFG.Vector3 position,  MFG.Vector3 velocity, float rotation, float turretRot, SpriteSet sprites, SceneObject parent)
-            : base(position,velocity, rotation, sprites, parent)
+        public Tank(MFG.Vector3 position, MFG.Vector3 velocity, float rotation, float turretRot, SpriteSet sprites, SceneObject parent)
+            : base(position, velocity, rotation, sprites, parent)
         {
             image = sprites.images[0];
             offset = new MFG.Vector3(-image.width / 2, -image.height / 2, 0);
-            turret = new Turret( new MFG.Vector3(0,0,0) , 0,sprites, this);
+            turret = new Turret(new MFG.Vector3(0, 0, 0), 0, sprites, this);
             friction = 0.9F;
-            maxBoxDimension = CalcBoxSize(offset,image);
+            maxBoxDimension = CalcBoxSize(offset, image);
+            Box = GetDefaultBoundingBox();
         }
 
         public override void PersonalRecursive()
