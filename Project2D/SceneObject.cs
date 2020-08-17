@@ -184,7 +184,7 @@ namespace GraphicalTest
         internal void DrawRecursive()
         {
             DrawTextureEx(image,
-                new Vector2(GlobalTransform.m7, GlobalTransform.m8) + ConvertV3ToV2(GlobalVariables.RotationMatrix2D(GlobalRotation)*offset),
+                new Vector2(GlobalTransform.m7, GlobalTransform.m8) + ConvertV3ToV2(GlobalVariables.RotationMatrix2D(GlobalRotation)*offset*scale),
                 GlobalRotation * (float)(180.0f / Math.PI),
                 scale, Color.WHITE);
 
@@ -197,8 +197,12 @@ namespace GraphicalTest
 
             DrawLine((int)GlobalTransform.m7, (int)GlobalTransform.m8, (int)(GlobalTransform.m7 + DistDirToXY(100, GlobalRotation).x), (int)(GlobalTransform.m8 + DistDirToXY(100, GlobalRotation).y), Color.RED);                 // Debug line
 
-            for (int i=0;i<Box.vertices.Length; i++)
-            DrawLine((int)Box.vertices[i].x, (int)Box.vertices[i].y, (int)Box.vertices[(i+1)%Box.vertices.Length].x, (int)Box.vertices[(i + 1) % Box.vertices.Length].y,Color.RED);
+            for (int i = 0; i < Box.vertices.Length; i++)
+            {
+                MFG.Vector3 v1 = Box.vertices[i];
+                MFG.Vector3 v2 = Box.vertices[(i + 1) % Box.vertices.Length];
+                DrawLine((int)v1.x, (int)v1.y, (int)v2.x,(int)v2.y, Color.RED);
+            }
 
             foreach (SceneObject child in children)
                 child.DrawDebugRecursive();
