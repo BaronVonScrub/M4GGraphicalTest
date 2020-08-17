@@ -166,6 +166,15 @@ namespace GraphicalTest
             return ((s >= 0 && s <= 1) && (t >= 0 && t <= 1));
         }
 
+        internal static void CollisionProcess()
+        {
+            foreach (Collision coll in Collisions)
+            {
+                coll.a.Destroy();
+                coll.b.Destroy();
+            }
+        }
+
 
 
         internal struct VecLine
@@ -182,8 +191,8 @@ namespace GraphicalTest
 
         internal struct Collision
         {
-            SceneObject a;
-            SceneObject b;
+            internal SceneObject a;
+            internal SceneObject b;
 
             public Collision(SceneObject a, SceneObject b)
             {

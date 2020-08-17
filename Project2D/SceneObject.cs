@@ -19,14 +19,15 @@ namespace GraphicalTest
         protected float friction = 0.9F;
 
         private BoundingBox box = new BoundingBox(new MFG.Vector3[0]);
-        internal BoundingBox Box{
+        internal BoundingBox Box
+        {
             get => new BoundingBox(GlobalTransform * box.vertices);
             set => box = value;
         }
 
         protected MFG.Vector3 position = new MFG.Vector3(0, 0, 1);
         protected MFG.Vector3 velocity = new MFG.Vector3(0, 0, 0);
-        protected MFG.Vector3 offset = new MFG.Vector3(0,0,0);
+        protected MFG.Vector3 offset = new MFG.Vector3(0, 0, 0);
 
         protected SpriteSet sprites;
         protected Texture2D image;
@@ -35,6 +36,7 @@ namespace GraphicalTest
         protected Matrix3 localTransform = new Matrix3();
         protected float MinSpeed = 0.01F;
         internal float maxBoxDimension = float.MaxValue;
+        private Boolean invulnerable = false;
 
         internal List<Type> typeIgnore = new List<Type>();
         internal List<SceneObject> specificIgnore = new List<SceneObject>();
@@ -42,6 +44,7 @@ namespace GraphicalTest
         public SceneObject()
         {
             this.parent = null;
+            this.invulnerable = true;
         }
         public SceneObject(MFG.Vector3 position, MFG.Vector3 velocity, float rotation, SpriteSet sprites, SceneObject parent)
         {
@@ -55,7 +58,7 @@ namespace GraphicalTest
             parent.children.Add(this);                                                                                       //MUST REMOVE THIS REFERENCE ON DESTRUCTION
             ObjectList.Add(this);                                                                                            //MUST REMOVE THIS REFERENCE ON DESTRUCTION
             specificIgnore.Add(parent);
-            if (parent!=Scene)
+            if (parent != Scene)
                 specificIgnore.AddRange(parent.specificIgnore);
             parent.specificIgnore.Add(this);                                                                                 //MUST REMOVE THIS REFERENCE ON DESTRUCTION
         }
@@ -115,7 +118,9 @@ namespace GraphicalTest
             }
         }
 
-        public MFG.Vector3 Position { get => position;
+        public MFG.Vector3 Position
+        {
+            get => position;
             set
             {
                 if (value == position)
@@ -125,7 +130,8 @@ namespace GraphicalTest
             }
         }
 
-        public float Rotation {
+        public float Rotation
+        {
             get => rotation;
             set
             {
@@ -139,17 +145,17 @@ namespace GraphicalTest
         public float GlobalRotation { get => (float)Math.Atan2(GlobalTransform.m2, GlobalTransform.m1); }
         public Matrix3 GlobalTransform { get; set; } = new MFG.Matrix3();
 
-        public MFG.Vector3 GlobalPosition { get => new MFG.Vector3(GlobalTransform.m7, GlobalTransform.m8,1) + GlobalVariables.RotationMatrix2D(GlobalRotation) * offset; }
+        public MFG.Vector3 GlobalPosition { get => new MFG.Vector3(GlobalTransform.m7, GlobalTransform.m8, 1) + GlobalVariables.RotationMatrix2D(GlobalRotation) * offset; }
 
         public void GlobalTransformsRecursive()
         {
- 
+
             if (dirty == false)
                 return;
             dirty = false;
 
             if (parent != null)
-            GlobalTransform = parent.GlobalTransform * localTransform;
+                GlobalTransform = parent.GlobalTransform * localTransform;
 
             foreach (SceneObject child in children)
                 child.GlobalTransformsRecursive();
@@ -164,10 +170,10 @@ namespace GraphicalTest
             dirty = true;
 
             if (parent != null)
-                parent.MakeDirty(level-1);
+                parent.MakeDirty(level - 1);
 
             foreach (SceneObject child in children)
-                child.MakeDirty(level+1);
+                child.MakeDirty(level + 1);
         }
 
         internal void LocalTransformsRecursive()
@@ -184,7 +190,7 @@ namespace GraphicalTest
         internal void DrawRecursive()
         {
             DrawTextureEx(image,
-                new Vector2(GlobalTransform.m7, GlobalTransform.m8) + ConvertV3ToV2(GlobalVariables.RotationMatrix2D(GlobalRotation)*offset*scale),
+                new Vector2(GlobalTransform.m7, GlobalTransform.m8) + ConvertV3ToV2(GlobalVariables.RotationMatrix2D(GlobalRotation) * offset * scale),
                 GlobalRotation * (float)(180.0f / Math.PI),
                 scale, Color.WHITE);
 
@@ -201,17 +207,32 @@ namespace GraphicalTest
             {
                 MFG.Vector3 v1 = Box.vertices[i];
                 MFG.Vector3 v2 = Box.vertices[(i + 1) % Box.vertices.Length];
-                DrawLine((int)v1.x, (int)v1.y, (int)v2.x,(int)v2.y, Color.RED);
+                DrawLine((int)v1.x, (int)v1.y, (int)v2.x, (int)v2.y, Color.RED);
             }
 
             foreach (SceneObject child in children)
                 child.DrawDebugRecursive();
         }
 
-        public virtual void PersonalRecursive()
+        internal virtual void PersonalRecursive()
         {
             foreach (SceneObject child in children)
                 child.PersonalRecursive();
+        }
+
+        internal virtual void Destroy()
+        {
+            if (invulnerable)
+                return;
+
+            parent.children.Remove(this);
+            ObjectList.Remove(this);
+            parent.specificIgnore.Remove(this);
+
+            foreach (SceneObject child in children)
+                child.Destroy();
+
+            parent.Destroy();
         }
     }
 }

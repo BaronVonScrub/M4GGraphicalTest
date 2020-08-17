@@ -39,7 +39,7 @@ namespace GraphicalTest
             Box = GetDefaultBoundingBox();
         }
 
-        public override void PersonalRecursive()
+        internal override void PersonalRecursive()
         {
             CooldownCount -= DeltaTime;
             base.PersonalRecursive();

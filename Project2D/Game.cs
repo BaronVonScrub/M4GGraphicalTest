@@ -79,7 +79,7 @@ namespace GraphicalTest
             CollisionChecks();
             if (Collisions.Count != 0)
                 Console.WriteLine("VALID COLLISION!!!");
-            //CollisionProcess();
+            CollisionProcess();
 
             Scene.LocalTransformsRecursive();
             Scene.GlobalTransformsRecursive();
@@ -87,7 +87,7 @@ namespace GraphicalTest
             BeginDrawing();
             ClearBackground(Color.LIGHTGRAY);
             Scene.DrawRecursive();
-            Scene.DrawDebugRecursive();
+            //Scene.DrawDebugRecursive();
             EndDrawing();
 
         }
