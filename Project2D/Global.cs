@@ -62,6 +62,7 @@ namespace GraphicalTest
                 -p.x * (float)Math.Cos(r) + p.y * (float)Math.Sin(r) + p.x, -p.x * (float)Math.Sin(r) - p.y * (float)Math.Cos(r) + p.y, 1);
         }
 
+
         //Return all valid collisions between objects in a given list
         internal static void CollisionChecks()
         {
@@ -92,6 +93,12 @@ namespace GraphicalTest
             Collisions = collisionList;
         }
 
+         /*
+         * Narrow phase collision detection considers each line of the bounding box of object A vs each line in the bounding box of object B.
+         * If slopes match+not collinear, it escapes as false.
+         * It then checks for collisions by representing each line as a parametric linear equation point+t*vector, then checks for where their (x,y) match.
+         * If the lines collide such that both parametric variables are between 0 and 1, there is a collision between the line segments.
+         */
         internal static bool Collides(BoundingBox a, BoundingBox b)
         {
             var origin = new MFG.Vector3(0, 0, 1);
@@ -106,6 +113,7 @@ namespace GraphicalTest
                     var lineB = new VecLine(b.vertices[j], b.vertices[(j + 1) % bLen]);
                     if (Intersects(lineA, lineB))
                     {
+                        //Debug line
                         Console.WriteLine("Line collision: "
                                                             + lineA.p.x.ToString() + "," + lineA.p.y.ToString() + "+" + lineA.v.x.ToString() + "," + lineA.v.y.ToString() + " and " +
                                                             lineB.p.x.ToString() + "," + lineB.p.y.ToString() + "+" + lineB.v.x.ToString() + "," + lineB.v.y.ToString());
@@ -161,10 +169,10 @@ namespace GraphicalTest
             //if ) a.v.Dot(b.v) == a.v.Magnitude() * b.v.Magnitude() || a.v.Dot(b.v) == -a.v.Magnitude() * b.v.Magnitude()))
             //parallel or antiparallel; will not cross unless collinear.Add check for this
             #endregion
-            if ((E * H == 0) || (F * G - E * H < 0.000001F))    //EDGE CASE DETECTED, Parallel or AntiParallel (?)
+            if ((E * H == 0) || (F * G - E * H < 0.000001F))    //EDGE CASE DETECTED?
                 #region Derivation maths
                 //I think this handles the above dot product check.
-                //ADD CHECK FOR COLLINEARITY
+                //CHECK FOR COLLINEARITY
                 //If some w exists such that a.p + w*a.v = b.p, they are collinear.
                 //So if w exists such that a.p.x+w*a.v.x = b.p.x AND a.p.y+w*a.v.y = b.p.y, then they are collinear.
                 //a.p.x+w*a.v.x = b.p.x
