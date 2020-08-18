@@ -17,7 +17,7 @@ namespace GraphicalTest
             image = sprites.images[2];
             friction = 0;
             offset = new MFG.Vector3(-image.width / 2, -image.height / 2, 0);
-            scale = 0.8F;
+            scale = 1F;
             maxBoxDimension = CalcBoxSize(offset, image);
             Box = GetDefaultBoundingBox();
             specificIgnore.AddRange(ignoreList.FindAll(x=>(x!=Scene)));

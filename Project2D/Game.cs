@@ -29,16 +29,15 @@ namespace GraphicalTest
         Rectangle tex = new Rectangle(0, 0, 128, 128);
         Image grass = LoadImage("../Images/Environment/grass.png");
 
-        Image alpha = GenImagePerlinNoise(WindowWidth, WindowHeight, 50, 50, 4.0f);
+        Image alpha = GenImagePerlinNoise(128, 128, 50, 50, 4.0f);
         Image dirt = LoadImage("../Images/Environment/dirt.png");
-        Image noise = LoadImage("../Images/Environment/noise.png");
+
         Texture2D background;
         Texture2D overlay;
 
         public Game()
         {
-            //ImageFormat(ref alpha, 1);
-            ImageAlphaMask(ref dirt,noise);
+            ImageAlphaMask(ref dirt,alpha);
 
             background = LoadTextureFromImage(grass);
             overlay = LoadTextureFromImage(dirt);
@@ -74,6 +73,7 @@ namespace GraphicalTest
         {
             #region Time
             lastTime = currentTime;
+            LastTime = lastTime;
             currentTime = stopwatch.ElapsedMilliseconds;
             deltaTime = (currentTime - lastTime) / 1000.0f;
             timer += deltaTime;
@@ -94,8 +94,6 @@ namespace GraphicalTest
             Scene.PhysicsRecursive();
 
             CollisionChecks();
-            if (Collisions.Count != 0)
-                Console.WriteLine("VALID COLLISION!!!");
             CollisionProcess();
 
             Scene.LocalTransformsRecursive();
