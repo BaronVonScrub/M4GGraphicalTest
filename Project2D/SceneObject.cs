@@ -229,10 +229,18 @@ namespace GraphicalTest
             ObjectList.Remove(this);
             parent.specificIgnore.Remove(this);
 
-            foreach (SceneObject child in children)
-                child.Destroy();
+            if (children.Count!=0)
+                do
+                {
+                    children[0].Destroy();
+                }
+                while (children.Count != 0);
 
-            parent.Destroy();
+            if (parent != null)
+            {
+                parent.Destroy();
+                parent = null;
+            }
         }
     }
 }

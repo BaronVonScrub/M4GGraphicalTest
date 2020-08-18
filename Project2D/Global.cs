@@ -30,6 +30,9 @@ namespace GraphicalTest
 
         public static List<Collision> Collisions { get; set; } = new List<Collision>();
 
+        public static readonly int WindowWidth = 1600;
+        public static readonly int WindowHeight = 950;
+
         internal static MFG.Vector3 DistDirToXY(float distance, float direction)
         {
             return new MFG.Vector3(distance*(float)-Math.Sin(direction), distance * (float)Math.Cos(direction),0);

@@ -25,8 +25,24 @@ namespace GraphicalTest
         private float deltaTime = 0.005f;
         PlayerController playerController;
 
+        Rectangle view = new Rectangle(0, 0, 1600,950);
+        Rectangle tex = new Rectangle(0, 0, 128, 128);
+        Image grass = LoadImage("../Images/Environment/grass.png");
+
+        Image alpha = GenImagePerlinNoise(WindowWidth, WindowHeight, 50, 50, 4.0f);
+        Image dirt = LoadImage("../Images/Environment/dirt.png");
+        Image noise = LoadImage("../Images/Environment/noise.png");
+        Texture2D background;
+        Texture2D overlay;
+
         public Game()
         {
+            //ImageFormat(ref alpha, 1);
+            ImageAlphaMask(ref dirt,noise);
+
+            background = LoadTextureFromImage(grass);
+            overlay = LoadTextureFromImage(dirt);
+
             playerController = new PlayerController(
                 new Tank(
                     new  MFG.Vector3(320,475,1),
@@ -35,6 +51,7 @@ namespace GraphicalTest
             new Tank(new MFG.Vector3(1280, 475, 1),
                     new MFG.Vector3(0, 0, 0),
                     (float)Math.PI / 2, 0, TANK_RED, Scene);
+
         }
 
         public void Init()
@@ -86,10 +103,16 @@ namespace GraphicalTest
 
             BeginDrawing();
             ClearBackground(Color.LIGHTGRAY);
+            DrawBackground();
             Scene.DrawRecursive();
-            //Scene.DrawDebugRecursive();
+            Scene.DrawDebugRecursive();
             EndDrawing();
+        }
 
+        public void DrawBackground()
+        {
+            DrawTextureQuad(background, new Vector2(1,1), Vector2.Zero, view, Color.WHITE);
+            DrawTextureQuad(overlay, new Vector2(1,1), Vector2.Zero, view, Color.WHITE);
         }
     }
 }
