@@ -21,12 +21,18 @@ namespace GraphicalTest
         private float cooldown = 3f;
         private float cooldownCount = 0f;
 
+        private static Rectangle healthRec = new Rectangle(-30,50,60,10);
+
         internal Turret turret;
+        private int maxHealth = 100;
 
         public float CooldownCount {
             get => cooldownCount;
             set => cooldownCount = (float)Math.Max(0, value);
         }
+        public int Health { get; private set; } = 100;
+        public Rectangle HealthRec { get => new Rectangle(healthRec.x+GlobalPosition.x, healthRec.y + GlobalPosition.y,healthRec.width,healthRec.height); }
+        public Rectangle CurrHealthRec { get => new Rectangle(healthRec.x + GlobalPosition.x, healthRec.y + GlobalPosition.y, healthRec.width/maxHealth*Health, healthRec.height); }
 
         public Tank(MFG.Vector3 position, MFG.Vector3 velocity, float rotation, float turretRot, SpriteSet sprites, SceneObject parent)
             : base(position, velocity, rotation, sprites, parent)
@@ -59,9 +65,30 @@ namespace GraphicalTest
             if (CooldownCount != 0)
                 return;
 
-            Velocity += DistDirToXY(150,turret.GlobalRotation + (float)Math.PI);
+            ReboundFrom(turret.Fire(), 150);
             CooldownCount = cooldown;
-            turret.Fire();
+        }
+
+        internal void Damage()
+        {
+            Health -= 1;
+            if (Health == 0)
+                Destroy();
+        }
+
+        internal void Damage(int amount)
+        {
+            Health -= amount;
+            if (Health <= 0)
+                Destroy();
+        }
+
+        internal void DrawHealthBar()
+        {
+            if (Health==maxHealth)
+                return;
+            DrawRectangleRec(HealthRec, Color.RED);
+            DrawRectangleRec(CurrHealthRec, Color.GREEN);
         }
     }
 }

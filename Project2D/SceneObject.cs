@@ -43,7 +43,7 @@ namespace GraphicalTest
 
         public SceneObject()
         {
-            this.parent = null;
+            this.Parent = null;
             this.invulnerable = true;
         }
         public SceneObject(MFG.Vector3 position, MFG.Vector3 velocity, float rotation, SpriteSet sprites, SceneObject parent)
@@ -54,7 +54,7 @@ namespace GraphicalTest
             this.localTransform = LocalTransform;
             this.GlobalTransform = parent.GlobalTransform * localTransform;
             this.sprites = sprites;
-            this.parent = parent;
+            this.Parent = parent;
             parent.children.Add(this);                                                                                       //MUST REMOVE THIS REFERENCE ON DESTRUCTION
             ObjectList.Add(this);                                                                                            //MUST REMOVE THIS REFERENCE ON DESTRUCTION
             specificIgnore.Add(parent);
@@ -145,7 +145,8 @@ namespace GraphicalTest
         public float GlobalRotation { get => (float)Math.Atan2(GlobalTransform.m2, GlobalTransform.m1); }
         public Matrix3 GlobalTransform { get; set; } = new MFG.Matrix3();
 
-        public MFG.Vector3 GlobalPosition { get => new MFG.Vector3(GlobalTransform.m7, GlobalTransform.m8, 1) + GlobalVariables.RotationMatrix2D(GlobalRotation) * offset; }
+        public MFG.Vector3 GlobalPosition { get => new MFG.Vector3(GlobalTransform.m7, GlobalTransform.m8, 1); }
+        internal SceneObject Parent { get => parent; set => parent = value; }
 
         public void GlobalTransformsRecursive()
         {
@@ -154,8 +155,8 @@ namespace GraphicalTest
                 return;
             dirty = false;
 
-            if (parent != null)
-                GlobalTransform = parent.GlobalTransform * localTransform;
+            if (Parent != null)
+                GlobalTransform = Parent.GlobalTransform * localTransform;
 
             foreach (SceneObject child in children)
                 child.GlobalTransformsRecursive();
@@ -169,8 +170,8 @@ namespace GraphicalTest
             //Console.WriteLine("Dirty "+level.ToString());
             dirty = true;
 
-            if (parent != null)
-                parent.MakeDirty(level - 1);
+            if (Parent != null)
+                Parent.MakeDirty(level - 1);
 
             foreach (SceneObject child in children)
                 child.MakeDirty(level + 1);
@@ -221,13 +222,13 @@ namespace GraphicalTest
         }
 
         internal virtual void Destroy()
-        {
+         {
             if (invulnerable)
                 return;
 
-            parent.children.Remove(this);
+            Parent.children.Remove(this);
             ObjectList.Remove(this);
-            parent.specificIgnore.Remove(this);
+            Parent.specificIgnore.Remove(this);
 
             if (children.Count!=0)
                 do
@@ -236,11 +237,21 @@ namespace GraphicalTest
                 }
                 while (children.Count != 0);
 
-            if (parent != null)
+            if (Parent != null)
             {
-                parent.Destroy();
-                parent = null;
+                Parent.Destroy();
+                Parent = null;
             }
+        }
+
+        internal void ReboundFrom(SceneObject other, float amount)
+        {
+            Velocity = DistDirToXY(amount, DirectionTo(other) + (float)Math.PI);
+        }
+
+        private float DirectionTo(SceneObject other)
+        {
+            return (float)Math.Atan2(other.Position.y-Position.y, other.Position.x - Position.x)-(float)Math.PI/2;
         }
     }
 }

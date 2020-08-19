@@ -99,7 +99,7 @@ namespace GraphicalTest
          * It then checks for collisions by representing each line as a parametric linear equation point+t*vector, then checks for where their (x,y) match.
          * If the lines collide such that both parametric variables are between 0 and 1, there is a collision between the line segments.
          */
-        internal static bool Collides(BoundingBox a, BoundingBox b)
+        private static bool Collides(BoundingBox a, BoundingBox b)
         {
             var origin = new MFG.Vector3(0, 0, 1);
             int aLen = a.vertices.Length;
@@ -112,13 +112,7 @@ namespace GraphicalTest
                 {
                     var lineB = new VecLine(b.vertices[j], b.vertices[(j + 1) % bLen]);
                     if (Intersects(lineA, lineB))
-                    {
-                        //Debug line
-                        Console.WriteLine("Line collision: "
-                                                            + lineA.p.x.ToString() + "," + lineA.p.y.ToString() + "+" + lineA.v.x.ToString() + "," + lineA.v.y.ToString() + " and " +
-                                                            lineB.p.x.ToString() + "," + lineB.p.y.ToString() + "+" + lineB.v.x.ToString() + "," + lineB.v.y.ToString());
                         return true;
-                    }
                 }
             }
             return false;
@@ -179,8 +173,83 @@ namespace GraphicalTest
         {
             foreach (Collision coll in Collisions)
             {
-                Console.WriteLine("COLLISION! " + LastTime.ToString());
+                SceneObject a = coll.a;
+                SceneObject b = coll.b;
+                switch (a.GetType().Name+","+b.GetType().Name)
+                {
+                    case "Tank,Tank":
+                        {
+                            Bounce(a,b);
+                            (a as Tank).Damage();
+                            (b as Tank).Damage();
+                        }
+                        break;
+                    case "Bullet,Bullet":
+                        {
+                            a.Destroy();
+                            b.Destroy();
+                        }
+                        break;
+                    case "Turret,Tank":
+                        {
+                            Bounce(a.Parent,b);
+                            (a.Parent as Tank).Damage();
+                        }
+                        break;
+                    case "Tank,Turret":
+                        {
+                            Bounce(a, b.Parent);
+                            (b.Parent as Tank).Damage();
+                        }
+                        break;
+                    case "Turret,Bullet":
+                        {
+                            (a.Parent as Tank).Damage(10);
+                            b.Destroy();
+                        }
+                        break;
+                    case "Bullet,Turret":
+                        {
+                            a.Destroy();
+                            (b.Parent as Tank).Damage(10);
+                        }
+                        break;
+                    case "Tank,Bullet":
+                        {
+                            (a as Tank).Damage(10);
+                            b.Destroy();
+                        }
+                        break;
+                    case "Bullet,Tank":
+                        {
+                            a.Destroy();
+                            (b as Tank).Damage(10);
+                        }
+                        break;
+                    default:
+                        Console.WriteLine("Unexpected collision between " + a.GetType().Name + " and " + b.GetType().Name);
+                        break;
+                };
             }
+            Collisions = null;
+        }
+
+        internal static void DrawHealthBars()
+        {
+            foreach (SceneObject obj in ObjectList)
+            {
+                if (obj.GetType() != typeof(Tank))
+                    continue;
+
+                (obj as Tank).DrawHealthBar();
+            }
+        }
+
+        internal static void Bounce(SceneObject a, SceneObject b)
+        {
+            float vel = (a.Velocity.Magnitude() + b.Velocity.Magnitude());
+            a.ReboundFrom(b, vel);
+            b.ReboundFrom(a, vel);
         }
 
         internal struct VecLine
@@ -223,42 +292,6 @@ namespace GraphicalTest
         internal static void Log(MFG.Vector3 val) => Console.WriteLine("{" + val.x + "," + val.y + "," + val.z + "}");
     }
 
-    internal struct TankState
-    {
-        private readonly MFG.Vector3 position, velocity;
-        private readonly Turret turret;
-
-        public TankState(MFG.Vector3 position, MFG.Vector3 velocity, Turret turret)
-        {
-            this.position = position;
-            this.velocity = velocity;
-            this.turret = turret;
-        }
-    }
-
-    internal struct TurretState
-    {
-        private readonly MFG.Vector3 relativePosition;
-        private readonly float aimDirection;
-
-        public TurretState(MFG.Vector3 relativePosition, float aimDirection)
-        {
-            this.relativePosition = relativePosition;
-            this.aimDirection = aimDirection;
-        }
-    }
-
-    internal struct BulletState
-    {
-        private readonly MFG.Vector3 position, velocity;
-
-        public BulletState(MFG.Vector3 position, MFG.Vector3 velocity)
-        {
-            this.position = position;
-            this.velocity = velocity;
-        }
-    }
-
     internal struct SpriteSet
     {
         internal Texture2D[] images;
@@ -275,7 +308,6 @@ namespace GraphicalTest
     internal struct BoundingBox
     {
         internal MFG.Vector3[] vertices;
-
         internal BoundingBox(MFG.Vector3[] vertices) => this.vertices = vertices;
     }
 }

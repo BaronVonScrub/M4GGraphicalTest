@@ -26,7 +26,6 @@ namespace GraphicalTest
         PlayerController playerController;
 
         Rectangle view = new Rectangle(0, 0, 1600,950);
-        Rectangle tex = new Rectangle(0, 0, 128, 128);
         Image grass = LoadImage("../Images/Environment/grass.png");
 
         Image alpha = GenImagePerlinNoise(128, 128, 50, 50, 4.0f);
@@ -50,7 +49,6 @@ namespace GraphicalTest
             new Tank(new MFG.Vector3(1280, 475, 1),
                     new MFG.Vector3(0, 0, 0),
                     (float)Math.PI / 2, 0, TANK_RED, Scene);
-
         }
 
         public void Init()
@@ -102,7 +100,8 @@ namespace GraphicalTest
             ClearBackground(Color.LIGHTGRAY);
             DrawBackground();
             Scene.DrawRecursive();
-            Scene.DrawDebugRecursive();
+            DrawHealthBars();
+            //Scene.DrawDebugRecursive();
             EndDrawing();
         }
 
