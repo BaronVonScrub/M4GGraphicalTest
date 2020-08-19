@@ -2,7 +2,7 @@
 using Raylib;
 using System;
 using System.Collections.Generic;
-using static GraphicalTest.GlobalVariables;
+using static GraphicalTest.Global;
 using static Raylib.Raylib;
 using MFG = MathClasses;
 
@@ -69,7 +69,7 @@ namespace GraphicalTest
             {
                 return
                     new Matrix3(1, 0, 0, 0, 1, 0, Position.x, Position.y, 1) *
-                    GlobalVariables.RotationMatrix2D(Rotation) *
+                    Global.RotationMatrix2D(Rotation) *
                     new Matrix3(scale, 0, 0, 0, scale, 0, 0, 0, 1);
             }
         }
@@ -191,7 +191,7 @@ namespace GraphicalTest
         internal void DrawRecursive()
         {
             DrawTextureEx(image,
-                new Vector2(GlobalTransform.m7, GlobalTransform.m8) + ConvertV3ToV2(GlobalVariables.RotationMatrix2D(GlobalRotation) * offset * scale),
+                new Vector2(GlobalTransform.m7, GlobalTransform.m8) + ConvertV3ToV2(Global.RotationMatrix2D(GlobalRotation) * offset * scale),
                 GlobalRotation * (float)(180.0f / Math.PI),
                 scale, Color.WHITE);
 

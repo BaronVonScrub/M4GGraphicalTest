@@ -8,8 +8,10 @@ namespace MathClasses
 {
     public class Vector4
     {
+        //Stored values
         public float x, y, z, w;
 
+        //Base constructor is a zero vector
         public Vector4()
         {
             x = 0;
@@ -18,6 +20,7 @@ namespace MathClasses
             w = 0;
         }
 
+        //Allows construction via floats
         public Vector4(float xx, float yy, float zz, float ww)
         {
             x = xx;
@@ -26,14 +29,7 @@ namespace MathClasses
             w = ww;
         }
 
-        public Vector4(float xx, float yy, float zz)
-        {
-            x = xx;
-            y = yy;
-            z = zz;
-            w = 1;
-        }
-
+        //Allows addition of two vectors
         public static Vector4 operator +(Vector4 a, Vector4 b)
         {
             Vector4 newVec = new Vector4
@@ -45,6 +41,8 @@ namespace MathClasses
             };
             return newVec;
         }
+
+        //Allows subtraction of two vectors
         public static Vector4 operator -(Vector4 a, Vector4 b)
         {
             Vector4 newVec = new Vector4
@@ -57,6 +55,7 @@ namespace MathClasses
             return newVec;
         }
 
+        //Allows multiplication of a vector by a scalar, vector first
         public static Vector4 operator *(Vector4 a, float b)
         {
             Vector4 newVec = new Vector4
@@ -69,6 +68,7 @@ namespace MathClasses
             return newVec;
         }
 
+        //Allows multiplication of a vector by a scalar, scalar first
         public static Vector4 operator *(float b, Vector4 a)
         {
             Vector4 newVec = new Vector4
@@ -81,6 +81,7 @@ namespace MathClasses
             return newVec;
         }
 
+        //Allows premultiplication of a vector by a Matrix
         public static Vector4 operator *(Matrix4 m, Vector4 v)
         {
             Vector4 newVec = new Vector4
@@ -93,17 +94,21 @@ namespace MathClasses
             return newVec;
         }
 
+        //Returns the dot product of the matrix
         public float Dot(Vector4 v)
         {
             {
                 return x * v.x + y * v.y + z * v.z + w * v.w;
             }
         }
+
+        //Returns the magnitude of the matrix
         public float Magnitude()
         {
-            return (float)Math.Sqrt(x * x + y * y + z * z);
+            return (float)Math.Sqrt(x * x + y * y + z * z + w * w);
         }
 
+        //Normalizes the current matrix to magnitude 1
         public void Normalize()
         {
             float mag = Magnitude();
@@ -112,6 +117,7 @@ namespace MathClasses
             z /= mag;
         }
 
+        //Returns the cross product of the current vector
         public Vector4 Cross(Vector4 v)
         {
             Vector4 newVec = new Vector4();

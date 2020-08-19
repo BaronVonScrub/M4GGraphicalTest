@@ -4,7 +4,7 @@ using static GraphicalTest.Game;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using static GraphicalTest.GlobalVariables;
+using static GraphicalTest.Global;
 using System.IO;
 using Raylib;
 using static Raylib.Raylib;

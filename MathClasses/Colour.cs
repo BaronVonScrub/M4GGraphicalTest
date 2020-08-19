@@ -8,8 +8,10 @@ namespace MathClasses
 {
     public class Colour
     {
+        //Data storage of the colour
         public uint colour;
 
+        //Bitmasks for the component colours
         [Flags]
         private enum ColourBitmask : uint
         {
@@ -19,16 +21,20 @@ namespace MathClasses
             ALPHA = 255,
         }
 
+        //Base constructor is black
         public Colour()
         {
             colour = 0;
         }
 
+        //Creates a colour from provided component bytes by bitshifting in succession
         public Colour(byte red, byte green, byte blue, byte alpha)
         {
             colour = (uint)(red << 24) + (uint)(green << 16) + (uint)(blue << 8) + (uint)alpha;
         }
 
+        //Getters get the component colour by masking for the correct byte, then bitshifting them to the appropriate values
+        //Setters set the component colour by first blanking out the correct byte, then combining with the new colour byte bitshifted to the correct position.
         public byte GetRed()
         {
             return (byte)((colour & (uint)ColourBitmask.RED) >> 24);
@@ -64,6 +70,7 @@ namespace MathClasses
         {
             colour = (uint)((byte)(colour & ~(uint)ColourBitmask.ALPHA) | alpha);
         }
+        //
 
     }
 }

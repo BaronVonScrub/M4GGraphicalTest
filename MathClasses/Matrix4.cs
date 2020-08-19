@@ -8,6 +8,7 @@ namespace MathClasses
 {
     public class Matrix4
     {
+        //Assigning a matrix with property accessors allows easy manipulation of the data within the unit test requirements
         public float[] m = new float[16];
 
         public float m1 { get => m[0]; set => m[0] = value; }
@@ -26,7 +27,9 @@ namespace MathClasses
         public float m14 { get => m[13]; set => m[13] = value; }
         public float m15 { get => m[14]; set => m[14] = value; }
         public float m16 { get => m[15]; set => m[15] = value; }
+        //
 
+        //Default constructor creates an identity matrix
         public Matrix4()
         {
             m1 = 1; m2 = 0; m3 = 0; m4 = 0;
@@ -35,14 +38,7 @@ namespace MathClasses
             m13= 0; m14= 0; m15= 0; m16= 1;
         }
 
-        public Matrix4(float i1, float i2, float i3, float i4, float i5, float i6, float i7, float i8, float i9)
-        {
-            m1 = i1; m2 = i2; m3 = i3; m4 = 0;
-            m5 = i4; m6 = i5; m7 = i6; m8 = 0;
-            m9 = i7; m10 = i8; m11 = i9; m12 = 0;
-            m13 = 0; m14 = 0; m15 = 0; m16 = 1;
-        }
-
+        //Allows initalization of a matrix via float constructor
         public Matrix4(float i1, float i2, float i3, float i4, float i5, float i6, float i7, float i8, float i9, float i10, float i11, float i12, float i13, float i14, float i15, float i16)
         {
             m1 = i1; m2 = i2; m3 = i3; m4 = i4;
@@ -51,8 +47,13 @@ namespace MathClasses
             m13 = i13; m14 = i14; m15 = i15; m16 = i16;
         }
 
+        //Allows initalization of a matrix via float array constructor
         public Matrix4(float[] i){ m = i; }
 
+        //Allows initalization of a matrix as a copy of another matrix
+        public Matrix4(Matrix4 M) { m = M.m; }
+
+        //Allows the mulitplication of two matrices: See Matrix3*Matrix3 for code explanation
         public static Matrix4 operator *(Matrix4 a, Matrix4 b)
         {
             Matrix4 newMat = new Matrix4(new float[16]);
@@ -68,20 +69,21 @@ namespace MathClasses
             return newMat;
         }
 
+        //Sets the rotation of the matrix in the X direction
         public void SetRotateX(float v)
         {
-            Matrix4 rot = new Matrix4(1, 0, 0, 0,
+            Matrix4 rot = new Matrix4(1, 0, 0, 0,                                       //The rotation matrix
                                       0, (float)Math.Cos(-v), (float)-Math.Sin(-v), 0,
                                       0, (float)Math.Sin(-v), (float)Math.Cos(-v), 0,
                                       0, 0, 0, 1);
 
-            Matrix4 newMat = this * rot;
+            Matrix4 newMat = this * rot;                                                //Multiply the existing by the rotation matrix
 
-            for (int i = 0; i < 16; i++)
-                m[i] = newMat.m[i];
+            m = newMat.m;                                                               //Assign the calculated values to the current matrix
 
         }
 
+        //Rotates Y analagously as above
         public void SetRotateY(float v)
         {
             Matrix4 rot = new Matrix4((float)Math.Cos(-v), 0, (float)Math.Sin(-v), 0,
@@ -91,11 +93,11 @@ namespace MathClasses
 
             Matrix4 newMat = this * rot;
 
-            for (int i = 0; i < 16; i++)
-                m[i] = newMat.m[i];
+            m = newMat.m;
 
         }
 
+        //Rotates Z analagously as above
         public void SetRotateZ(float v)
         {
             Matrix4 rot = new Matrix4((float)Math.Cos(-v), (float)-Math.Sin(-v), 0, 0,
@@ -105,8 +107,7 @@ namespace MathClasses
 
             Matrix4 newMat = this * rot;
 
-            for (int i = 0; i < 16; i++)
-                m[i] = newMat.m[i];
+            m = newMat.m;
 
         }
     }

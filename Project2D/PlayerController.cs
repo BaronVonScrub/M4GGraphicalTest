@@ -1,18 +1,22 @@
 ﻿using Raylib;
 using static Raylib.Raylib;
 using System;
-using static GraphicalTest.GlobalVariables;
+using static GraphicalTest.Global;
 
 namespace GraphicalTest
 {
     class PlayerController
     {
+        //The playercontroller has an associated tank
         Tank player;
+
+        //Constructor assigns a tank
         public PlayerController(Tank player)
         {
             this.player = player;
         }
 
+        //Processes player input, converts it to tank commands
         public void ProcessInput()
         {
             if (IsKeyDown(KeyboardKey.KEY_W) && !IsKeyDown(KeyboardKey.KEY_S))      player.Forward();

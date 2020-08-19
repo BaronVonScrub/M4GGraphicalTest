@@ -8,6 +8,7 @@ namespace MathClasses
 {
     public class Matrix3
     {
+        //Assigning a matrix with property accessors allows easy manipulation of the data within the unit test requirements
         public float[] m = new float[9];
 
         public float m1 { get => m[0]; set => m[0] = value; }
@@ -19,7 +20,9 @@ namespace MathClasses
         public float m7 { get => m[6]; set => m[6] = value; }
         public float m8 { get => m[7]; set => m[7] = value; }
         public float m9 { get => m[8]; set => m[8] = value; }
+        //
 
+        //Default constructor creates an identity matrix
         public Matrix3()
         {
             m1 = 1; m2 = 0; m3 = 0;
@@ -27,6 +30,7 @@ namespace MathClasses
             m7 = 0; m8 = 0; m9 = 1;
         }
 
+        //Allows initalization of a matrix via float constructor
         public Matrix3(float i1, float i2, float i3, float i4, float i5, float i6, float i7, float i8, float i9)
         {
             m1 = i1; m2 = i2; m3 = i3;
@@ -34,46 +38,42 @@ namespace MathClasses
             m7 = i7; m8 = i8; m9 = i9;
         }
 
+        //Allows initalization of a matrix via float array constructor
         public Matrix3(float[] i){ m = i; }
 
+        //Allows initalization of a matrix as a copy of another matrix
+        public Matrix3(Matrix3 M) { m = M.m; }
+
+        //Allows the mulitplication of two matrices
         public static Matrix3 operator *(Matrix3 a, Matrix3 b)
         {
-            Matrix3 newMat = new Matrix3(new float[9]);
-            int dim = 3;
+            Matrix3 newMat = new Matrix3(new float[9]);                 //Creates a zero'ed matrix
+            int dim = 3;                                                //The dimension of the matrix is 3 (altering this attribute allows the same code to be used for other sizes)
 
-            for (int col = 0; col < dim; col++)
-                for (int row = 0; row < dim; row++)
-                    for (int term = 0; term < dim; term++)
-                        newMat.m[col * dim + row] +=
+            for (int col = 0; col < dim; col++)                         //For each column
+                for (int row = 0; row < dim; row++)                     //For each row
+                    for (int term = 0; term < dim; term++)              //For each term formed by their combining
+                        newMat.m[col * dim + row] +=                    //Add the term to the appropriate index in the new matrix
                             a.m[row+dim*term]*
                             b.m[col*dim+term];
 
-            return newMat;
+            return newMat;                                              //Return the formed matrix
         }
 
-        public static Vector3[] operator *(Matrix3 m, Vector3[] v)
-        {
-            Vector3[] temp = new Vector3[v.Length];
-            for (int i = 0; i < temp.Length; i++)
-            {
-                temp[i] = m * v[i];
-            }
-            return temp;
-        }
-
+        //Sets the rotation of the matrix in the X direction
         public void SetRotateX(float v)
         {
             Matrix3 rot = new Matrix3(1,                 0,                  0,
                                       0,(float)Math.Cos(-v),(float)-Math.Sin(-v),
                                       0,(float)Math.Sin(-v),(float)Math.Cos(-v));
 
-            Matrix3 newMat = this * rot;
+            Matrix3 newMat = this * rot;                                            //Multiply the existing by the rotation matrix
 
-            for (int i = 0; i < 9; i++)
-                m[i] = newMat.m[i];
+            m = newMat.m;                                                           //Assign the calculated values to the current matrix
 
         }
 
+        //Rotates Y analagously as above
         public void SetRotateY(float v)
         {
             Matrix3 rot = new Matrix3((float)Math.Cos(-v), 0, (float)Math.Sin(-v),
@@ -82,11 +82,11 @@ namespace MathClasses
 
             Matrix3 newMat = this * rot;
 
-            for (int i = 0; i < 9; i++)
-                m[i] = newMat.m[i];
+            m = newMat.m;
 
         }
 
+        //Rotates Z analagously as above
         public void SetRotateZ(float v)
         {
             Matrix3 rot = new Matrix3((float)Math.Cos(-v), (float)-Math.Sin(-v), 0,
@@ -95,11 +95,11 @@ namespace MathClasses
 
             Matrix3 newMat = this * rot;
 
-            for (int i = 0; i < 9; i++)
-                m[i] = newMat.m[i];
+            m = newMat.m;
 
         }
 
+        //Returns the inversion of the current matrix, or null if it is not invertible
         public Matrix3 GetInverted()
         {
             Matrix3 mat = new Matrix3();
@@ -121,6 +121,17 @@ namespace MathClasses
             mat.m9 = (m1 * m5 - m4 * m2) * invdet;
 
             return mat;
+        }
+
+        //Returns an array of vectors formed by the multiplication of each vector in the provided array, by the provided matrix
+        public static Vector3[] operator *(Matrix3 m, Vector3[] v)
+        {
+            Vector3[] temp = new Vector3[v.Length];
+            for (int i = 0; i < temp.Length; i++)
+            {
+                temp[i] = m * v[i];
+            }
+            return temp;
         }
     }
 }

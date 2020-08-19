@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using static GraphicalTest.GlobalVariables;
+using static GraphicalTest.Global;
 using System.Text;
 using System.Threading.Tasks;
 using MFG = MathClasses;
@@ -13,48 +13,46 @@ namespace GraphicalTest
     class CollisionManager
     {
 
+        //Stores all detected collisions
         public static List<Collision> Collisions { get; set; } = new List<Collision>();
 
         //Return all valid collisions between objects in a given list
         internal static void CollisionChecks()
         {
-            var collisionList = new List<Collision>();                                                          //Prep a list
+            var collisionList = new List<Collision>();                                                                     //Prep a list
 
             for (int i = 0; i < ObjectList.Count; i++)                                                                     //For each object
             {
                 SceneObject currObj = ObjectList[i];
                 {
-                    if (currObj.GetType() == typeof(Bullet))
+                    if (currObj.GetType() == typeof(Bullet))                                                              //If it is a bullet
                         if (currObj.GlobalPosition.x < 0 || currObj.GlobalPosition.x > WindowWidth || currObj.GlobalPosition.y < 0 || currObj.GlobalPosition.y > WindowHeight)
-                        {
-                            collisionList.Add(new Collision(currObj));
-                            continue;
+                        {                                                                                                 //If it has left the window boundaries
+                            collisionList.Add(new Collision(currObj));                                                    //Add a null collision to the list
+                            continue;                                                                                     //Continue to next object
                         }
                     
                 }
-                for (int j = i + 1; j < ObjectList.Count; j++)                                                             //For each object beyond that
+                for (int j = i + 1; j < ObjectList.Count; j++)                                                             //For each object beyond the current
                 {
                     SceneObject otherObj = ObjectList[j];
 
-                    if (currObj.typeIgnore.Contains(otherObj.GetType()) || otherObj.typeIgnore.Contains(currObj.GetType()))                                          //If it is a type ignore,
-                        continue;                                                                                         //Skip
+                    if (currObj.typeIgnore.Contains(otherObj.GetType()) || otherObj.typeIgnore.Contains(currObj.GetType())) //If either object ignores the others' type
+                        continue;                                                                                           //Skip
 
-                    if (currObj.specificIgnore.Contains(otherObj) || otherObj.specificIgnore.Contains(currObj))                                                //If it is a specific ignore,
-                        continue;                                                                                         //Skip
+                    if (currObj.specificIgnore.Contains(otherObj) || otherObj.specificIgnore.Contains(currObj))             //If either object ignores the other specifically
+                        continue;                                                                                           //Skip
 
-                    if (DistanceBetweenObjs(currObj, otherObj) > currObj.maxBoxDimension + otherObj.maxBoxDimension)    //If they are too far apart to touch,
-                        continue;                                                                                       //Skip
+                    if (DistanceBetweenObjs(currObj, otherObj) > currObj.maxBoxDimension + otherObj.maxBoxDimension)        //If they are too far apart to actually touch,
+                        continue;                                                                                           //Skip
 
-                    if (!Collides(currObj.Box, otherObj.Box))                                                          //If oriented bounding boxes don't collide
-                        continue;                                                                                     //Skip
+                    if (!Collides(currObj.Box, otherObj.Box))                                                               //If oriented bounding boxes don't collide
+                        continue;                                                                                           //Skip
 
-                    collisionList.Add(new Collision(currObj, otherObj));                                                //Add pair to final list if all checks passed
+                    collisionList.Add(new Collision(currObj, otherObj));                                                    //Add pair to final list if all checks passed
                 }
             }
-
-
-
-            Collisions = collisionList;
+            Collisions = collisionList;                                                                                     //Update the list of Collisions
         }
 
         /*
@@ -69,35 +67,40 @@ namespace GraphicalTest
             int aLen = a.vertices.Length;
             int bLen = b.vertices.Length;
 
-            for (int i = 0; i < aLen; i++)
+            for (int i = 0; i < aLen; i++)                                                              //For each vertex comprising the bounding box of the first object
             {
-                var lineA = new VecLine(a.vertices[i], a.vertices[(i + 1) % aLen]);
-                for (int j = 0; j < bLen; j++)
+                var lineA = new VecLine(a.vertices[i], a.vertices[(i + 1) % aLen]);                     //Create a line to the next vertex
+                for (int j = 0; j < bLen; j++)                                                          //For each vertex comprising the bounding box of the first object
                 {
-                    var lineB = new VecLine(b.vertices[j], b.vertices[(j + 1) % bLen]);
-                    if (Intersects(lineA, lineB))
-                        return true;
+                    var lineB = new VecLine(b.vertices[j], b.vertices[(j + 1) % bLen]);                 //Create a line to the next vertex
+                    if (Intersects(lineA, lineB))                                                       //Do the line segments intersect?
+                        return true;                                                                    //Yes! So the boxes collide!
                 }
             }
-            return false;
+            return false;                                                                               //No, none do, so the boxes don't collide.
         }
 
+        //Checks if the provided lines intersect
+        //Derived from https://blogs.sas.com/content/iml/2018/07/09/intersection-line-segments.html
         private static bool Intersects(VecLine a, VecLine b)
         {
-            //Derived from https://blogs.sas.com/content/iml/2018/07/09/intersection-line-segments.html
+            //Convert the lines to 4 points
             MFG.Vector3 p1 = a.p;
             MFG.Vector3 p2 = a.p + a.v;
             MFG.Vector3 q1 = b.p;
             MFG.Vector3 q2 = b.p + b.v;
 
+            //Form a matrix from the vector differences between the points
             MFG.Matrix3 A = new MFG.Matrix3((p2 - p1).x, (p2 - p1).y, 0, (q1 - q2).x, (q1 - q2).y, 0, 0, 0, 1);
 
+            //Form a vector from the differences between the start points
             MFG.Vector3 B = q1 - p1;
 
             //Then
             //A*t = b
             //t = A^-1 * b
 
+            //Get the inverted matrix as required by the previous maths
             MFG.Matrix3 inverted = A.GetInverted();
 
             if (inverted != null)                                                                       //If it is invertible, they don't share a slope. The lines will intersect.
@@ -107,16 +110,17 @@ namespace GraphicalTest
             }
             else                                                                                        //Otherwise, if they share a slope,
             {                                                                                           //Check for overlaps
-                if (IsBetween(p1, p2, q1))                                                                //Is q1 between p1 and p2?
-                    return true;
+                if (IsBetween(p1, p2, q1))                                                              //Is q1 between p1 and p2?
+                    return true;                                                                        //They collide!
                 if (IsBetween(p1, p2, q2))                                                              //Is q2 between p1 and p2?
-                    return true;
+                    return true;                                                                        //They collide!
                 if (IsBetween(q1, q2, p1))                                                              //Is p11 between q1 and q2?
-                    return true;
-                return false;
+                    return true;                                                                        //They collide!
+                return false;                                                                           //If there were no overlaps, they don't collide!
             }
         }
 
+        //Checks if c is collinearly contained within a and b
         //Derived from https://stackoverflow.com/a/328122
         private static Boolean IsBetween(MFG.Vector3 a, MFG.Vector3 b, MFG.Vector3 c)
         {
@@ -132,7 +136,7 @@ namespace GraphicalTest
             return true;
         }
 
-
+        //Processes the list of collisions
         internal static void CollisionProcess()
         {
             foreach (Collision coll in Collisions)
@@ -140,87 +144,77 @@ namespace GraphicalTest
                 SceneObject a = coll.a;
                 SceneObject b = coll.b;
 
-                string container;
-                if (b == null)
-                    container = a.GetType().Name + ",NULL";
-                else
-                    container = a.GetType().Name + "," + b.GetType().Name;
+                string container;                                                               //Contains info on what types are colliding
+                if (b == null)                                                                  //If it is a null collision
+                    container = a.GetType().Name + ",NULL";                                     //Note as such
+                else                                                                            //Otherwise
+                    container = a.GetType().Name + "," + b.GetType().Name;                      //Note both types
 
-                switch (container)
+                switch (container)                                                              //Look at the info
                     {
-                        case "Bullet,NULL":
+                        case "Bullet,NULL":                                                     //case "x,y": Read these cases as "I am an x colliding with a y"
                             {
                             a.Destroy();
                             }
                         break;
-                        case "Tank,Tank":
+                        case "Tank,Tank":                                                       //If two tanks collide
                             {
-                                Bounce(a, b);
-                                (a as Tank).Damage();
+                                Bounce(a, b);                                                   //Bounce the tanks off of each other (Easy to stop repeat collisions)
+                                (a as Tank).Damage();                                           //Damage both tanks
                                 (b as Tank).Damage();
                             }
                             break;
-                        case "Bullet,Bullet":
+                        case "Bullet,Bullet":                                                   //If two bullets collide, destroy them both
                             {
                                 a.Destroy();
                                 b.Destroy();
                             }
                             break;
-                        case "Turret,Tank":
+                        case "Turret,Tank":                                                     //If a turret collides with a tank, bounce the tanks, and damage the turret's tank.
                             {
                                 Bounce(a.Parent, b);
                                 (a.Parent as Tank).Damage();
                             }
                             break;
-                        case "Tank,Turret":
+                        case "Tank,Turret":                                                     //Inverted case of previous
                             {
                                 Bounce(a, b.Parent);
                                 (b.Parent as Tank).Damage();
                             }
                             break;
-                        case "Turret,Bullet":
+                        case "Turret,Bullet":                                                   //If a turret collides with a bullet, damage the turret's tank, destroy the bullet
                             {
                                 (a.Parent as Tank).Damage(10);
                                 b.Destroy();
                             }
                             break;
-                        case "Bullet,Turret":
+                        case "Bullet,Turret":                                                   //Inverted case of previous
                             {
                                 a.Destroy();
                                 (b.Parent as Tank).Damage(10);
                             }
                             break;
-                        case "Tank,Bullet":
+                        case "Tank,Bullet":                                                     //If a tank collides with a bullet, damage the tank, destroy the bullet
                             {
                                 (a as Tank).Damage(10);
                                 b.Destroy();
                             }
                             break;
-                        case "Bullet,Tank":
+                        case "Bullet,Tank":                                                     //Inverted case of previous
                             {
                                 a.Destroy();
                                 (b as Tank).Damage(10);
                             }
                             break;
-                        default:
-                            Console.WriteLine("Unexpected collision between " + a.GetType().Name + " and " + b.GetType().Name);
+                        default:                                                                //If anything else
+                            Console.WriteLine("Unexpected collision between " + a.GetType().Name + " and " + b.GetType().Name); //Record unexepected collision
                             break;
                     };
             }
-            Collisions = null;
+            Collisions = null;                                                                  //Clear the current list of collisions
         }
 
-        internal static void DrawHealthBars()
-        {
-            foreach (SceneObject obj in ObjectList)
-            {
-                if (obj.GetType() != typeof(Tank))
-                    continue;
-
-                (obj as Tank).DrawHealthBar();
-            }
-        }
-
+        //Bounce two objects off of each other; does not conserve momentum, so not physically accurate, but useful!
         internal static void Bounce(SceneObject a, SceneObject b)
         {
             float vel = (a.Velocity.Magnitude() + b.Velocity.Magnitude());
@@ -228,6 +222,7 @@ namespace GraphicalTest
             b.ReboundFrom(a, vel);
         }
 
+        //Stores a line as a start point and a vector
         internal struct VecLine
         {
             internal MFG.Vector3 p;
@@ -240,6 +235,7 @@ namespace GraphicalTest
             }
         }
 
+        //Stores a collision by remembering the two objects involved
         internal struct Collision
         {
             internal SceneObject a;
@@ -258,7 +254,7 @@ namespace GraphicalTest
             }
         }
 
-
+        //Returns the distance between object a and obejct b
         internal static float DistanceBetweenObjs(SceneObject a, SceneObject b)
         {
             float xx = Math.Abs(a.GlobalPosition.x - b.GlobalPosition.x);
@@ -266,14 +262,9 @@ namespace GraphicalTest
             return (float)Math.Sqrt(xx * xx + yy * yy);
 
         }
-
-        internal static void Log(float val) => Console.WriteLine(val);
-
-        internal static void Log(Bullet val) => Console.WriteLine(val.ToString());
-
-        internal static void Log(MFG.Vector3 val) => Console.WriteLine("{" + val.x + "," + val.y + "," + val.z + "}");
     }
 
+    //Stores a list of textures as created from an image array provided
     internal struct SpriteSet
     {
         internal Texture2D[] images;
@@ -287,6 +278,7 @@ namespace GraphicalTest
         }
     }
 
+    //Stores a bounding box as an array of Vector3 vertices
     internal struct BoundingBox
     {
         internal MFG.Vector3[] vertices;
