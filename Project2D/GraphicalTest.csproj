@@ -52,6 +52,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Bullet.cs" />
+    <Compile Include="CollisionManager.cs" />
     <Compile Include="Global.cs" />
     <Compile Include="PlayerController.cs" />
     <Compile Include="SceneObject.cs" />

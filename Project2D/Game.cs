@@ -8,6 +8,7 @@ using Raylib;
 using static Raylib.Raylib;
 using static GraphicalTest.GlobalVariables;
 using static GraphicalTest.Sprites;
+using static GraphicalTest.CollisionManager;
 using MFG = MathClasses;
 
 namespace GraphicalTest
