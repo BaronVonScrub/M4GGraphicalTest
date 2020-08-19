@@ -99,5 +99,28 @@ namespace MathClasses
                 m[i] = newMat.m[i];
 
         }
+
+        public Matrix3 GetInverted()
+        {
+            Matrix3 mat = new Matrix3();
+
+            float det = m1 * m5 * m9 - m1 * m6 * m8 - m2 * m4 * m9 + m2 * m6 * m7 + m3 * m4 * m8 - m3 * m5 * m7;
+            if (det == 0)
+                return null;    //Not invertible
+
+            float invdet = 1 / det;
+
+            mat.m1 = (m5 * m9 - m8 * m6) * invdet;
+            mat.m2 = (m3 * m8 - m2 * m9) * invdet;
+            mat.m3 = (m2 * m6 - m3 * m5) * invdet;
+            mat.m4 = (m6 * m7 - m4 * m9) * invdet;
+            mat.m5 = (m1 * m9 - m3 * m7) * invdet;
+            mat.m6 = (m4 * m3 - m1 * m6) * invdet;
+            mat.m7 = (m4 * m8 - m7 * m5) * invdet;
+            mat.m8 = (m7 * m2 - m1 * m8) * invdet;
+            mat.m9 = (m1 * m5 - m4 * m2) * invdet;
+
+            return mat;
+        }
     }
 }

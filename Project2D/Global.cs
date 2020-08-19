@@ -126,75 +126,54 @@ namespace GraphicalTest
 
         private static bool Intersects(VecLine a, VecLine b)
         {
-            #region Pseudonym variables
-            float A = a.p.x;
-            float B = a.p.y;
-            float C = b.p.x;
-            float D = b.p.y;
-            float E = a.v.x;
-            float F = a.v.y;
-            float G = b.v.x;
-            float H = b.v.y;
-            #endregion
+            //Derived from https://blogs.sas.com/content/iml/2018/07/09/intersection-line-segments.html
+            MFG.Vector3 p1 = a.p;
+            MFG.Vector3 p2 = a.p + a.v;
+            MFG.Vector3 q1 = b.p;
+            MFG.Vector3 q2 = b.p + b.v;
 
-            #region Derivation maths
-            //Parametric line = line.point + w*line.vector, 0 <= w <= 1
-            //So,
-            /*
-            lineA = a.p+s*a.v
-            lineB = b.p+t*b.v
+            MFG.Matrix3 A = new MFG.Matrix3((p2 - p1).x, (p2 - p1).y, 0, (q1 - q2).x, (q1 - q2).y, 0, 0, 0, 1);
 
-            lineA.x = A+s*E
-            lineB.x = C+t*G
+            MFG.Vector3 B = q1 - p1;
+            
+            //Then
+            //A*t = b
+            //t = A^-1 * b
 
-            lineA.y = B+s*F
-            lineB.y = D+t*H
+            MFG.Matrix3 inverted = A.GetInverted();
 
-            lineA.x=lineB.x
-            A+s*E=C+t*G
-            s=(C+t*G-A)/E
-
-            lineA.y=lineB.y
-            B+s*F=D+t*H
-            t=(B+s*F-D)/H
-
-            Substitution
-            t=(B+((C+t*G-A)/E)*F-D)/H
-            t=(F(C-A)+E(B-D))/(EH-FG)
-
-            s=(C+t*G-A)/E
-            */
-            #endregion
-            #region Parallel check pseudocode
-            //if ) a.v.Dot(b.v) == a.v.Magnitude() * b.v.Magnitude() || a.v.Dot(b.v) == -a.v.Magnitude() * b.v.Magnitude()))
-            //parallel or antiparallel; will not cross unless collinear.Add check for this
-            #endregion
-            if ((E * H == 0) || (F * G - E * H < 0.000001F))    //EDGE CASE DETECTED?
-                #region Derivation maths
-                //I think this handles the above dot product check.
-                //CHECK FOR COLLINEARITY
-                //If some w exists such that a.p + w*a.v = b.p, they are collinear.
-                //So if w exists such that a.p.x+w*a.v.x = b.p.x AND a.p.y+w*a.v.y = b.p.y, then they are collinear.
-                //a.p.x+w*a.v.x = b.p.x
-                //w = (b.p.x - a.p.x)/a.v.x
-                //w = (b.p.y. - a.p.y)/a.v.y
-                //Then (b.p.x - a.p.x)/a.v.x = (b.p.y. - a.p.y)/a.v.y
-                //Then a.v.y*(b.p.x-a.p.x) = a.v.x*(b.p.y. - a.p.y)
-                //(F(C-A) == E(D-B))
-                #endregion
-                if (F*(C-A) != E*(D-B))                         //If they are not collinear, as determined above
-                    return false;                               //Return false, as they will never meet.
-
-
-            //From above
-            float t = (F*(C - A) + E*(B - D)) / (E*H - F*G);
-
-            //From above
-            float s = (C + t * G - A) / E;
-
-            //(s,t) is the point of intersection; if they both exist within the range 0,1, then the lines intersect
-            return ((s >= 0 && s <= 1) && (t >= 0 && t <= 1));
+            if (inverted != null)                                                                       //If it is invertible, they don't share a slope. The lines will intersect.
+            {
+                MFG.Vector3 solution = inverted * B;                                                    //Solve the equation
+                return ((solution.x >= 0 && solution.x <= 1) && (solution.y >= 0 && solution.y <= 1));  //If the solution falls in the unit square, valid collision, else not.
+            }
+            else                                                                                        //Otherwise, if they share a slope,
+            {                                                                                           //Check for overlaps
+                if (IsBetween(p1,p2,q1))                                                                //Is q1 between p1 and p2?
+                    return true;
+                if (IsBetween(p1, p2, q2))                                                              //Is q2 between p1 and p2?
+                    return true;
+                if (IsBetween(q1, q2, p1))                                                              //Is p11 between q1 and q2?
+                    return true;
+                return false;
+            }
         }
+
+        //Derived from https://stackoverflow.com/a/328122
+        private static Boolean IsBetween(MFG.Vector3 a, MFG.Vector3 b, MFG.Vector3 c)
+        {
+            float crossProduct = (c.y - a.y) * (b.x - a.x) - (c.x - a.x) * (b.y - a.y);
+            if (Math.Abs(crossProduct) > 0.000001F)
+                return false;
+            float dotProduct = (c.x - a.x) * (b.x - a.x) + (c.y - a.y) * (b.y - a.y);
+            if (dotProduct < 0)
+                return false;
+            float squaredLengthBA = (b.x - a.x) * (b.x - a.x) + (b.y - a.y) * (b.y - a.y);
+            if (dotProduct > squaredLengthBA)
+                return false;
+            return true;
+        }
+
 
         internal static void CollisionProcess()
         {

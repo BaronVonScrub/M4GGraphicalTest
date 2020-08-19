@@ -62,7 +62,6 @@ namespace GraphicalTest
             {
                 Console.WriteLine("Stopwatch high-resolution frequency: {0} ticks per second", Stopwatch.Frequency);
             }
-
         }
 
         public void Shutdown()
