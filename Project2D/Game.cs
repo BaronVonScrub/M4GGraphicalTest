@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Raylib;
+using System;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Raylib;
-using static Raylib.Raylib;
+using static GraphicalTest.CollisionManager;
 using static GraphicalTest.Global;
 using static GraphicalTest.Sprites;
-using static GraphicalTest.CollisionManager;
-using MFG = MathClasses;
+using static Raylib.Raylib;
+using MFG = MathClassesAidan;
 
 namespace GraphicalTest
 {
@@ -30,7 +26,7 @@ namespace GraphicalTest
         PlayerController playerController;
 
         //Sets the view as a rectangle for drawing background
-        Rectangle view = new Rectangle(0, 0, 1600,950);
+        Rectangle view = new Rectangle(0, 0, 1600, 950);
 
         //Background image prep
         Image grass = LoadImage("../Images/Environment/grass.png");
@@ -43,7 +39,7 @@ namespace GraphicalTest
         public Game()
         {
             //Background texture prep
-            ImageAlphaMask(ref dirt,alpha);
+            ImageAlphaMask(ref dirt, alpha);
             background = LoadTextureFromImage(grass);
             overlay = LoadTextureFromImage(dirt);
             //
@@ -51,9 +47,9 @@ namespace GraphicalTest
             //Sets up the player controller with a new tank
             playerController = new PlayerController(
                 new Tank(
-                    new  MFG.Vector3(320,475,1),
-                    new  MFG.Vector3(0,0,0),
-                    -(float)Math.PI/2, 0, TANK_BLACK, Scene));
+                    new MFG.Vector3(320, 475, 1),
+                    new MFG.Vector3(0, 0, 0),
+                    -(float)Math.PI / 2, 0, TANK_BLACK, Scene));
 
             //Creates a new tank (Constructor adds to global Objectlist to maintain reference)
             new Tank(new MFG.Vector3(1280, 475, 1),
@@ -123,8 +119,8 @@ namespace GraphicalTest
         //Draws the background
         public void DrawBackground()
         {
-            DrawTextureQuad(background, new Vector2(1,1), Vector2.Zero, view, Color.WHITE);         //Draws the grass
-            DrawTextureQuad(overlay, new Vector2(1,1), Vector2.Zero, view, Color.WHITE);            //Draws the (alpha changed) dirt
+            DrawTextureQuad(background, new Vector2(1, 1), Vector2.Zero, view, Color.WHITE);         //Draws the grass
+            DrawTextureQuad(overlay, new Vector2(1, 1), Vector2.Zero, view, Color.WHITE);            //Draws the (alpha changed) dirt
         }
     }
 }

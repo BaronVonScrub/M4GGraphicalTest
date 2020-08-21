@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GraphicalTest", "Project2D\
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Raylib", "Raylib\Bindings\Raylib.shproj", "{F660FF67-D70E-4AE0-9080-D922243E9B6E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MathClasses", "MathClasses\MathClasses.csproj", "{93BC4FF5-4A18-468D-A676-F62F770A6937}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MathClassesAidan", "MathClasses\MathClassesAidan.csproj", "{93BC4FF5-4A18-468D-A676-F62F770A6937}"
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution

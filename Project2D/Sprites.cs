@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Raylib;
+﻿using Raylib;
 using static Raylib.Raylib;
-using System.IO;
 
 namespace GraphicalTest
 {
+
+    //These load the spritesets (as a struct) into memory, for later use
     static class Sprites
     {
 

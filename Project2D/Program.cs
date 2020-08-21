@@ -1,12 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Raylib;
-using static Raylib.Raylib;
-using static GraphicalTest.Sprites;
-using System.IO;
+﻿using static Raylib.Raylib;
 
 namespace GraphicalTest
 {

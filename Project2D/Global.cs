@@ -1,8 +1,7 @@
 ﻿using Raylib;
 using System;
 using System.Collections.Generic;
-using static Raylib.Raylib;
-using MFG = MathClasses;
+using MFG = MathClassesAidan;
 
 namespace GraphicalTest
 {

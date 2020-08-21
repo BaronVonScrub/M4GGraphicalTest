@@ -231,7 +231,7 @@ namespace Raylib
         public static extern Rectangle GuiScrollPanel(Rectangle bounds, Rectangle content, ref Vector2 scroll);
 
         // Basic controls set
-        
+
         // Label control, shows text
         [DllImport(nativeLibName, CallingConvention = CallingConvention.Cdecl)]
         public static extern void GuiLabel(Rectangle bounds, string text);

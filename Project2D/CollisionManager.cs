@@ -1,12 +1,9 @@
-﻿using System;
+﻿using Raylib;
+using System;
 using System.Collections.Generic;
-using System.Linq;
 using static GraphicalTest.Global;
-using System.Text;
-using System.Threading.Tasks;
-using MFG = MathClasses;
-using Raylib;
 using static Raylib.Raylib;
+using MFG = MathClassesAidan;
 
 namespace GraphicalTest
 {
@@ -31,7 +28,7 @@ namespace GraphicalTest
                             collisionList.Add(new Collision(currObj));                                                    //Add a null collision to the list
                             continue;                                                                                     //Continue to next object
                         }
-                    
+
                 }
                 for (int j = i + 1; j < ObjectList.Count; j++)                                                             //For each object beyond the current
                 {
@@ -151,65 +148,65 @@ namespace GraphicalTest
                     container = a.GetType().Name + "," + b.GetType().Name;                      //Note both types
 
                 switch (container)                                                              //Look at the info
-                    {
-                        case "Bullet,NULL":                                                     //case "x,y": Read these cases as "I am an x colliding with a y"
-                            {
+                {
+                    case "Bullet,NULL":                                                     //case "x,y": Read these cases as "I am an x colliding with a y"
+                        {
                             a.Destroy();
-                            }
+                        }
                         break;
-                        case "Tank,Tank":                                                       //If two tanks collide
-                            {
-                                Bounce(a, b);                                                   //Bounce the tanks off of each other (Easy to stop repeat collisions)
-                                (a as Tank).Damage();                                           //Damage both tanks
-                                (b as Tank).Damage();
-                            }
-                            break;
-                        case "Bullet,Bullet":                                                   //If two bullets collide, destroy them both
-                            {
-                                a.Destroy();
-                                b.Destroy();
-                            }
-                            break;
-                        case "Turret,Tank":                                                     //If a turret collides with a tank, bounce the tanks, and damage the turret's tank.
-                            {
-                                Bounce(a.Parent, b);
-                                (a.Parent as Tank).Damage();
-                            }
-                            break;
-                        case "Tank,Turret":                                                     //Inverted case of previous
-                            {
-                                Bounce(a, b.Parent);
-                                (b.Parent as Tank).Damage();
-                            }
-                            break;
-                        case "Turret,Bullet":                                                   //If a turret collides with a bullet, damage the turret's tank, destroy the bullet
-                            {
-                                (a.Parent as Tank).Damage(10);
-                                b.Destroy();
-                            }
-                            break;
-                        case "Bullet,Turret":                                                   //Inverted case of previous
-                            {
-                                a.Destroy();
-                                (b.Parent as Tank).Damage(10);
-                            }
-                            break;
-                        case "Tank,Bullet":                                                     //If a tank collides with a bullet, damage the tank, destroy the bullet
-                            {
-                                (a as Tank).Damage(10);
-                                b.Destroy();
-                            }
-                            break;
-                        case "Bullet,Tank":                                                     //Inverted case of previous
-                            {
-                                a.Destroy();
-                                (b as Tank).Damage(10);
-                            }
-                            break;
-                        default:                                                                //If anything else
-                            Console.WriteLine("Unexpected collision between " + a.GetType().Name + " and " + b.GetType().Name); //Record unexepected collision
-                            break;
-                    };
+                    case "Tank,Tank":                                                       //If two tanks collide
+                        {
+                            Bounce(a, b);                                                   //Bounce the tanks off of each other (Easy to stop repeat collisions)
+                            (a as Tank).Damage();                                           //Damage both tanks
+                            (b as Tank).Damage();
+                        }
+                        break;
+                    case "Bullet,Bullet":                                                   //If two bullets collide, destroy them both
+                        {
+                            a.Destroy();
+                            b.Destroy();
+                        }
+                        break;
+                    case "Turret,Tank":                                                     //If a turret collides with a tank, bounce the tanks, and damage the turret's tank.
+                        {
+                            Bounce(a.Parent, b);
+                            (a.Parent as Tank).Damage();
+                        }
+                        break;
+                    case "Tank,Turret":                                                     //Inverted case of previous
+                        {
+                            Bounce(a, b.Parent);
+                            (b.Parent as Tank).Damage();
+                        }
+                        break;
+                    case "Turret,Bullet":                                                   //If a turret collides with a bullet, damage the turret's tank, destroy the bullet
+                        {
+                            (a.Parent as Tank).Damage(10);
+                            b.Destroy();
+                        }
+                        break;
+                    case "Bullet,Turret":                                                   //Inverted case of previous
+                        {
+                            a.Destroy();
+                            (b.Parent as Tank).Damage(10);
+                        }
+                        break;
+                    case "Tank,Bullet":                                                     //If a tank collides with a bullet, damage the tank, destroy the bullet
+                        {
+                            (a as Tank).Damage(10);
+                            b.Destroy();
+                        }
+                        break;
+                    case "Bullet,Tank":                                                     //Inverted case of previous
+                        {
+                            a.Destroy();
+                            (b as Tank).Damage(10);
+                        }
+                        break;
+                    default:                                                                //If anything else
+                        Console.WriteLine("Unexpected collision between " + a.GetType().Name + " and " + b.GetType().Name); //Record unexepected collision
+                        break;
+                };
             }
             Collisions = null;                                                                  //Clear the current list of collisions
         }
