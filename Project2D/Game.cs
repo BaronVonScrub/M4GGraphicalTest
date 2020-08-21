@@ -17,7 +17,6 @@ namespace GraphicalTest
         private long currentTime = 0;
         private long lastTime = 0;
         private float timer = 0;
-        private int frames;
 
         private float deltaTime = 0.005f;
         //
@@ -85,10 +84,8 @@ namespace GraphicalTest
             timer += deltaTime;
             if (timer >= 1)
             {
-                frames = 0;
                 timer -= 1;
             }
-            frames++;
             #endregion
             //
 

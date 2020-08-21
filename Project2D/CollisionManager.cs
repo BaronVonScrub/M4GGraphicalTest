@@ -261,20 +261,6 @@ namespace GraphicalTest
         }
     }
 
-    //Stores a list of textures as created from an image array provided
-    internal struct SpriteSet
-    {
-        internal Texture2D[] images;
-
-        public SpriteSet(Image[] images)
-        {
-            var temp = new Texture2D[images.Length];
-            for (int i = 0; i < images.Length; i++)
-                temp[i] = LoadTextureFromImage(images[i]);
-            this.images = temp;
-        }
-    }
-
     //Stores a bounding box as an array of Vector3 vertices
     internal struct BoundingBox
     {

@@ -33,4 +33,18 @@ namespace GraphicalTest
                               LoadImage("../../Images/Tanks/barrelRed_outline.png"),
                               LoadImage("../../Images/Bullets/bulletRedSilver_outline.png") });
     }
+
+    //Stores a list of textures as created from an image array provided
+    internal struct SpriteSet
+    {
+        internal Texture2D[] images;
+
+        public SpriteSet(Image[] images)
+        {
+            var temp = new Texture2D[images.Length];
+            for (int i = 0; i < images.Length; i++)
+                temp[i] = LoadTextureFromImage(images[i]);
+            this.images = temp;
+        }
+    }
 }
