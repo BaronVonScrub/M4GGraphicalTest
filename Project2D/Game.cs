@@ -29,9 +29,9 @@ namespace GraphicalTest
         Rectangle view = new Rectangle(0, 0, 1600, 950);
 
         //Background image prep
-        Image grass = LoadImage("../Images/Environment/grass.png");
+        Image grass = LoadImage("../../Images/Environment/grass.png");
         Image alpha = GenImagePerlinNoise(128, 128, 50, 50, 4.0f);
-        Image dirt = LoadImage("../Images/Environment/dirt.png");
+        Image dirt = LoadImage("../../Images/Environment/dirt.png");
         Texture2D background;
         Texture2D overlay;
         //

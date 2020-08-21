@@ -526,7 +526,7 @@ namespace Raylib
         GAMEPAD_BUTTON_UNKNOWN = 0,
 
         // This is normally [A,B,X,Y]/[Circle,Triangle,Square,Cross]
-        // No support for 6 button controllers though..
+        // No support for 6 button controllers though../..
         GAMEPAD_BUTTON_LEFT_FACE_UP,
         GAMEPAD_BUTTON_LEFT_FACE_RIGHT,
         GAMEPAD_BUTTON_LEFT_FACE_DOWN,
@@ -568,8 +568,8 @@ namespace Raylib
         GAMEPAD_AXIS_RIGHT_Y,
 
         // Pressure levels for the back triggers
-        GAMEPAD_AXIS_LEFT_TRIGGER,      // [1..-1] (pressure-level)
-        GAMEPAD_AXIS_RIGHT_TRIGGER      // [1..-1] (pressure-level)
+        GAMEPAD_AXIS_LEFT_TRIGGER,      // [1../..-1] (pressure-level)
+        GAMEPAD_AXIS_RIGHT_TRIGGER      // [1../..-1] (pressure-level)
     }
 
     // Shader location point type
@@ -979,7 +979,7 @@ namespace Raylib
         [DllImport(nativeLibName, CallingConvention = CallingConvention.Cdecl)]
         public static extern int ColorToInt(Color color);
 
-        // Returns color normalized as float [0..1]
+        // Returns color normalized as float [0../..1]
         [DllImport(nativeLibName, CallingConvention = CallingConvention.Cdecl)]
         public static extern Vector4 ColorNormalize(Color color);
 
@@ -2026,7 +2026,7 @@ namespace Raylib
         [DllImport(nativeLibName, CallingConvention = CallingConvention.Cdecl)]
         public static extern void UnloadMaterial(Material material);
 
-        // Set texture for a material map type (MAP_DIFFUSE, MAP_SPECULAR...)
+        // Set texture for a material map type (MAP_DIFFUSE, MAP_SPECULAR../...)
         [DllImport(nativeLibName, CallingConvention = CallingConvention.Cdecl)]
         public static extern void SetMaterialTexture(ref Material material, int mapType, Texture2D texture);
 

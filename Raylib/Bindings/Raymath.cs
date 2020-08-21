@@ -255,7 +255,7 @@ namespace Raylib
         public static extern Matrix MatrixScale(float x, float y, float z);
 
         // Returns two matrix multiplication
-        // NOTE: When multiplying matrices... the order matters!
+        // NOTE: When multiplying matrices../... the order matters!
         [DllImport(nativeLibName, CallingConvention = CallingConvention.Cdecl)]
         public static extern Matrix MatrixMultiply(Matrix left, Matrix right);
 
