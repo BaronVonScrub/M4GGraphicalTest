@@ -75,18 +75,6 @@ namespace MathClassesAidan
             return newVec;
         }
 
-        //Allows premultiplication of a vector by a Matrix
-        public static Vector3 operator *(Matrix3 m, Vector3 v)
-        {
-            Vector3 newVec = new Vector3
-            {
-                x = m.m1 * v.x + m.m4 * v.y + m.m7 * v.z,
-                y = m.m2 * v.x + m.m5 * v.y + m.m8 * v.z,
-                z = m.m3 * v.x + m.m6 * v.y + m.m9 * v.z
-            };
-            return newVec;
-        }
-
         //Checks for equality of a matrix
         public static Boolean operator ==(Vector3 a, Vector3 b)
         {

@@ -9,6 +9,8 @@ Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Raylib", "Raylib\Bindings\R
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MathClassesAidan", "MathClasses\MathClassesAidan.csproj", "{93BC4FF5-4A18-468D-A676-F62F770A6937}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTesting", "UnitTesting\UnitTesting.csproj", "{A3865359-3DCD-4174-8C1A-C2C72A39476A}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		Raylib\Bindings\Raylib.projitems*{c24ac51d-cf9d-439a-8303-99706b312d78}*SharedItemsImports = 4
@@ -27,6 +29,10 @@ Global
 		{93BC4FF5-4A18-468D-A676-F62F770A6937}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{93BC4FF5-4A18-468D-A676-F62F770A6937}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{93BC4FF5-4A18-468D-A676-F62F770A6937}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A3865359-3DCD-4174-8C1A-C2C72A39476A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A3865359-3DCD-4174-8C1A-C2C72A39476A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A3865359-3DCD-4174-8C1A-C2C72A39476A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A3865359-3DCD-4174-8C1A-C2C72A39476A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

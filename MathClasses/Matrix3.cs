@@ -60,6 +60,28 @@ namespace MathClassesAidan
             return newMat;                                              //Return the formed matrix
         }
 
+        //Allows premultiplication of a vector by a Matrix
+        public static Vector3 operator *(Matrix3 m, Vector3 v)
+        {
+            Vector3 newVec = new Vector3
+            {
+                x = m.m1 * v.x + m.m4 * v.y + m.m7 * v.z,
+                y = m.m2 * v.x + m.m5 * v.y + m.m8 * v.z,
+                z = m.m3 * v.x + m.m6 * v.y + m.m9 * v.z
+            };
+            return newVec;
+        }
+
+        //Returns the transpose of the matrix
+        public Matrix3 Transpose()
+        {
+            Matrix3 trans = new Matrix3();
+            for (int pos = 0; pos<9; pos++)
+                trans.m[pos]=m[(pos%3)*3+(int)(pos/3)];
+            return trans;
+        }
+
+
         //Sets the rotation of the matrix in the X direction
         public void SetRotateX(float v)
         {

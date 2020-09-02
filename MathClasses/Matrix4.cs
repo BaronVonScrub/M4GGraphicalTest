@@ -69,6 +69,28 @@ namespace MathClassesAidan
             return newMat;
         }
 
+        //Allows premultiplication of a vector by a Matrix
+        public static Vector4 operator *(Matrix4 m, Vector4 v)
+        {
+            Vector4 newVec = new Vector4
+            {
+                x = m.m1 * v.x + m.m5 * v.y + m.m9 * v.z + m.m13 * v.w,
+                y = m.m2 * v.x + m.m6 * v.y + m.m10 * v.z + m.m14 * v.w,
+                z = m.m3 * v.x + m.m7 * v.y + m.m11 * v.z + m.m15 * v.w,
+                w = m.m4 * v.x + m.m8 * v.y + m.m12 * v.z + m.m16 * v.w
+            };
+            return newVec;
+        }
+
+        //Returns the transpose of the matrix
+        public Matrix4 Transpose()
+        {
+            Matrix4 trans = new Matrix4();
+            for (int pos = 0; pos<16; pos++)
+                trans.m[pos]=m[(pos%4)*4+(int)(pos/4)];
+            return trans;
+        }
+
         //Sets the rotation of the matrix in the X direction
         public void SetRotateX(float v)
         {

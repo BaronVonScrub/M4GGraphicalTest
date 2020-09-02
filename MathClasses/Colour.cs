@@ -41,7 +41,7 @@ namespace MathClassesAidan
         }
         public void SetRed(byte red)
         {
-            colour = (uint)((byte)(colour & ~(uint)ColourBitmask.RED) | red << 24);
+            colour = (uint)((colour & ~(uint)ColourBitmask.RED) | (uint)(red << 24));
         }
 
         public byte GetGreen()
@@ -50,7 +50,7 @@ namespace MathClassesAidan
         }
         public void SetGreen(byte green)
         {
-            colour = (uint)((byte)(colour & ~(uint)ColourBitmask.GREEN) | green << 16);
+            colour = (uint)((colour & ~(uint)ColourBitmask.GREEN) | (uint)(green << 16));
         }
 
         public byte GetBlue()
@@ -59,7 +59,7 @@ namespace MathClassesAidan
         }
         public void SetBlue(byte blue)
         {
-            colour = (uint)((byte)(colour & ~(uint)ColourBitmask.BLUE) | blue << 8);
+            colour = (uint)((colour & ~(uint)ColourBitmask.BLUE) | (uint)(blue << 8));
         }
 
         public byte GetAlpha()
@@ -68,7 +68,7 @@ namespace MathClassesAidan
         }
         public void SetAlpha(byte alpha)
         {
-            colour = (uint)((byte)(colour & ~(uint)ColourBitmask.ALPHA) | alpha);
+            colour = (uint)((colour & ~(uint)ColourBitmask.ALPHA) | alpha);
         }
         //
 
